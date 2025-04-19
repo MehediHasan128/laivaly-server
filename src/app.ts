@@ -3,12 +3,17 @@ import cors from 'cors';
 import notFound from './app/middlwares/notFound';
 import globalErrorHandler from './app/middlwares/globalErrorHandler';
 import express, { Application, NextFunction, Request, Response } from 'express';
+import router from './app/routes';
 
 const app: Application = express();
 
 // Perser
 app.use(express.json());
 app.use(cors());
+
+
+// Application routess
+app.use('/api/v1', router);
 
 app.get('/', (req, res) => {
   res.send('Hello World!');
