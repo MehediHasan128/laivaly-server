@@ -2,6 +2,7 @@
 import express, { Application, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import globalErrorHandler from './app/middlwares/globalErrorHandler';
+import notFound from './app/middlwares/notFound';
 
 const app: Application = express();
 
@@ -15,5 +16,6 @@ app.get('/', (req, res) => {
 
 // Use middlwaer
 app.use(globalErrorHandler as (err: any, req: Request, res: Response, next: NextFunction) => void);
+app.use(notFound as (req: Request, res: Response, next: NextFunction) => void);
 
 export default app;
