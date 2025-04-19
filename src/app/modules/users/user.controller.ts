@@ -5,14 +5,14 @@ import { UserServices } from "./user.services";
 
 const createUser = catchAsync(async(req, res) => {
 
-    const data = await UserServices.cresteUserIntoDB();
+    const data = await UserServices.cresteUserIntoDB(req.body);
 
     sendResponce(res, {
         success: true,
         statusCode: httpStatus.OK,
         message: '',
         data: data
-    })
+    });
 
 })
 

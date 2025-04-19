@@ -5,9 +5,10 @@ export type TBuyer = {
     userId: Types.ObjectId;
     userName: TUserName;
     userEmail: string;
+    password: string;
     profileImage: string;
-    dateOfBirth: Date;
-    gender: 'male' | 'female';
-    phoneNumber: string;
-    shippingAddress: TShippingAddress[];
+    dateOfBirth?: Date;
+    gender?: 'male' | 'female';
+    phoneNumber?: string;
+    shippingAddress?: TShippingAddress[];
 }
