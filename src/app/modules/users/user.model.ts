@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-escape */
 import { model, Schema } from "mongoose";
 import { TUser } from "./user.interface";
-import UserNameSchema from "../../global/model";
+import { UserNameSchema } from "../../global/model";
 
 const UserSchema = new Schema<TUser>({
 
