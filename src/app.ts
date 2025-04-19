@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import express, { Application, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
-import globalErrorHandler from './app/middlwares/globalErrorHandler';
 import notFound from './app/middlwares/notFound';
+import globalErrorHandler from './app/middlwares/globalErrorHandler';
+import express, { Application, NextFunction, Request, Response } from 'express';
 
 const app: Application = express();
 
@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(cors());
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.send('Hello World!');
 })
 
 // Use middlwaer
