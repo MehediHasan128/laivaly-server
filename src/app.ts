@@ -11,7 +11,6 @@ const app: Application = express();
 app.use(express.json());
 app.use(cors());
 
-
 // Application routess
 app.use('/api/v1', router);
 
