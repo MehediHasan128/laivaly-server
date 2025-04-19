@@ -1,8 +1,7 @@
+import { TUserName } from "../../global/interface";
+
 export type TUser = {
-    userName: {
-        firstName: string;
-        lastName: string;
-    };
+    userName: TUserName;
     userEmail: string;
     password: string;
     profileImage: string;
