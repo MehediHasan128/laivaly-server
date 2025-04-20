@@ -9,6 +9,10 @@ const BuyerSchema = new Schema<TBuyer>({
     required: [true, 'User ID is required'],
     ref: 'User',
   },
+  id: {
+    type: String,
+    required: [true, 'ID is required']
+  },
   userName: {
     type: UserNameSchema,
     required: [true, 'User name (first and last) name is required'],

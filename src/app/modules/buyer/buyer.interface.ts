@@ -3,6 +3,7 @@ import { TShippingAddress, TUserName } from "../../global/interface";
 
 export type TBuyer = {
     userId: Types.ObjectId;
+    id: string;
     userName: TUserName;
     userEmail: string;
     password: string;
