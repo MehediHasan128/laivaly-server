@@ -4,6 +4,8 @@ import { TUser } from "./user.interface";
 import { User } from "./user.model";
 import { Buyer } from "../buyer/buyer.model";
 import { generateUserID } from "../../utils/generateUserID";
+import AppError from "../../errors/AppError";
+import httpStatus from 'http-status';
 
 const cresteUserIntoDB = async (payload: TBuyer) => {
   
@@ -23,6 +25,13 @@ const cresteUserIntoDB = async (payload: TBuyer) => {
 
   // Set user role
   userData.role = 'buyer';
+
+
+  // Check the user is exists or not
+  const isUserExists = await User.findOne({userEmail: payload?.userEmail});
+  if(isUserExists){
+    throw new AppError(httpStatus.CONFLICT, 'User is already exists');
+  }
 
   
   // Start transaction rollback functionality
