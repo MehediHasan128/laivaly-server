@@ -6,7 +6,6 @@ import { ShippingAddressSchema, UserNameSchema } from '../../global/model';
 const BuyerSchema = new Schema<TBuyer>({
   userId: {
     type: Schema.Types.ObjectId,
-    required: [true, 'User ID is required'],
     ref: 'User',
   },
   id: {
