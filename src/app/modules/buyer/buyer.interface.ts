@@ -12,4 +12,5 @@ export type TBuyer = {
     gender?: 'male' | 'female';
     phoneNumber?: string;
     shippingAddress?: TShippingAddress[];
+    isDeleted: boolean;
 }

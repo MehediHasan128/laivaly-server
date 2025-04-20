@@ -5,12 +5,12 @@ import { BuyerServices } from "./buyer.services";
 
 const addBuyerInfo = catchAsync(async(req, res) => {
 
-    const data = await BuyerServices.addBuyerInfoIntoDB();
+    const data = await BuyerServices.addBuyerInfoIntoDB(req.params.buyerId, req.body);
 
     sendResponce(res, {
         success: true,
         statusCode: httpStatus.OK,
-        message: 'Account created successfully!',
+        message: 'Thanks for completing your profile!',
         data: data
     });
 

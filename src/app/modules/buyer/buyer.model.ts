@@ -49,6 +49,10 @@ const BuyerSchema = new Schema<TBuyer>({
   },
   shippingAddress: {
     type: [ShippingAddressSchema],
+  },
+  isDeleted: {
+    type: Boolean,
+    default: false
   }
 }, {timestamps: true});
 
