@@ -6,6 +6,10 @@ import { BuyerValidation } from './buyer.validation';
 const router = express.Router();
 
 // update buyer information
-router.patch('/update-buyer-info/:buyerId', validateRequest(BuyerValidation.updateBuyerValidationSchema), BuyerController.addBuyerInfo);
+router.patch(
+  '/update-buyer-info/:buyerId',
+  // validateRequest(BuyerValidation.updateBuyerValidationSchema),
+  BuyerController.addBuyerInfo,
+);
 
 export const BuyerRouter = router;

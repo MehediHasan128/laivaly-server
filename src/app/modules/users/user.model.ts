@@ -13,7 +13,8 @@ const UserSchema = new Schema<TUser>({
     },
     id: {
         type: String,
-        required: [true, 'ID is required']
+        required: [true, 'ID is required'],
+        unique: true
     },
     userEmail: {
         type: String,

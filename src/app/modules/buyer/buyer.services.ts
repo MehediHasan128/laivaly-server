@@ -12,7 +12,9 @@ const addBuyerInfoIntoDB = async(buyerId: string, payload: Partial<TBuyer>) => {
         throw new AppError(httpStatus.NOT_FOUND, 'Buyer not found');
     }
 
-    
+    const data = await Buyer.findOneAndUpdate({id: buyerId}, payload, {new: true});
+
+    return data;
 
 }
 

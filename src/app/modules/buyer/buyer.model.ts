@@ -11,7 +11,8 @@ const BuyerSchema = new Schema<TBuyer>({
   },
   id: {
     type: String,
-    required: [true, 'ID is required']
+    required: [true, 'ID is required'],
+    unique: true
   },
   userName: {
     type: UserNameSchema,
