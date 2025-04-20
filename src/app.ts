@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import cors from 'cors';
-import notFound from './app/middlwares/notFound';
-import globalErrorHandler from './app/middlwares/globalErrorHandler';
-import express, { Application, NextFunction, Request, Response } from 'express';
 import router from './app/routes';
+import notFound from './app/middlwares/notFound';
+import express, { Application, NextFunction, Request, Response } from 'express';
+import globalErrorHandler from './app/middlwares/globalErrorHandler';
 
 const app: Application = express();
 
