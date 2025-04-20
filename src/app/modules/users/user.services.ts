@@ -3,6 +3,7 @@ import { TBuyer } from "../buyer/buyer.interface";
 import { TUser } from "./user.interface";
 import { User } from "./user.model";
 import { Buyer } from "../buyer/buyer.model";
+import { generateUserID } from "../../utils/generateUserID";
 
 const cresteUserIntoDB = async (payload: TBuyer) => {
   
@@ -10,6 +11,9 @@ const cresteUserIntoDB = async (payload: TBuyer) => {
 
   // Set userName
   userData.userName = payload?.userName;
+
+  // Set id
+  userData.id = await generateUserID();
 
   // Set user email
   userData.userEmail = payload?.userEmail;
@@ -33,6 +37,7 @@ const cresteUserIntoDB = async (payload: TBuyer) => {
 
     // Set userId on buyer collection
     payload.userId = newUser[0]._id;
+    payload.id = newUser[0].id;
 
     // Create buyer on buyer collection
     const newBuyer = await Buyer.create(payload);

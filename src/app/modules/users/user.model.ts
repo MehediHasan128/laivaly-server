@@ -11,6 +11,10 @@ const UserSchema = new Schema<TUser>({
         type: UserNameSchema,
         required: [true, 'User name (first and last) name is required']
     },
+    id: {
+        type: String,
+        required: [true, 'ID is required']
+    },
     userEmail: {
         type: String,
         required: [true, 'Email address is required'],
@@ -58,7 +62,7 @@ UserSchema.pre('save', async function(next) {
     );
 
     next();
-})
+});
 
 
 export const User = model<TUser>('User', UserSchema);
