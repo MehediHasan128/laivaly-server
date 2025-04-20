@@ -28,20 +28,23 @@ const BuyerSchema = new Schema<TBuyer>({
   },
   profileImage: {
     type: String,
-    default: '',
+    default: null,
   },
   dateOfBirth: {
-    type: Date
+    type: Date,
+    default: null
   },
   gender: {
-    type: String
+    type: String,
+    default: null
   },
   phoneNumber: {
     type: String,
     match: [/^\+?[1-9]\d{1,14}$/, 'Phone number is invalid'],
+    default: null
   },
   shippingAddress: {
-    type: [ShippingAddressSchema]
+    type: [ShippingAddressSchema],
   }
 }, {timestamps: true});
 

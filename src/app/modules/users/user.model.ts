@@ -31,7 +31,7 @@ const UserSchema = new Schema<TUser>({
     },
     profileImage: {
         type: String,
-        default: ''
+        default: null
     },
     status: {
         type: String,
