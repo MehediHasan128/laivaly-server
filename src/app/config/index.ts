@@ -5,6 +5,7 @@ dotenv.config({ path: path.join(process.cwd(), '.env') });
 
 export default {
     port: process.env.PORT,
+    admin_pass: process.env.ADMIN_PASS,
     database_url: process.env.DATABASE_URL,
     bcrypt_salt_round: process.env.BCRYPT_SALT_ROUND,
     cloudinary_api_key: process.env.CLOUDINARY_API_KEY,
