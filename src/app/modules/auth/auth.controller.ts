@@ -35,7 +35,7 @@ const changePassword = catchAsync(async(req, res) => {
         data: data
     });
 
-})
+});
 
 
 export const AuthController = {

@@ -1,4 +1,5 @@
 import { TUserName } from "../../global/interface";
+import { userRole } from "./user.constant";
 
 export type TUser = {
     userName: TUserName;
@@ -10,3 +11,5 @@ export type TUser = {
     role: 'buyer' | 'admin';
     isDeleted: boolean;
 };
+
+export type TUserRole = (typeof userRole)[keyof typeof userRole];
