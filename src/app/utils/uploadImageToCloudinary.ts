@@ -3,7 +3,7 @@ import config from '../config';
 import fs from 'fs';
 import multer from 'multer';
 
-export const uploadImageToCloudinary = () => {
+export const uploadImageToCloudinary = (imagePath: string, imageName: string) => {
   cloudinary.config({
     cloud_name: config.cloudinary_cloud_name,
     api_key: config.cloudinary_api_key,
@@ -11,13 +11,13 @@ export const uploadImageToCloudinary = () => {
   });
 
   return cloudinary.uploader.upload(
-    'https://cdn.pixabay.com/photo/2024/05/26/10/15/bird-8788491_1280.jpg',
+    imagePath,
     {
-        public_id: 'name'
+        public_id: imageName
     },
     function(error, result) {
         console.log(result);
-        fs.unlink('https://cdn.pixabay.com/photo/2024/05/26/10/15/bird-8788491_1280.jpg', (err) => {
+        fs.unlink(imagePath, (err) => {
             if(err){
                 console.error(err);
             }

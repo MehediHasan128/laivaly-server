@@ -19,7 +19,7 @@ const addBuyerInfo = catchAsync(async(req, res) => {
 
 const addBuyerProfile = catchAsync(async(req, res) => {
 
-    const data = await BuyerServices.addBuyerProfilePictureIntoDB(req.params.buyerId);
+    const data = await BuyerServices.addBuyerProfilePictureIntoDB(req.params.buyerId, req.file);
 
     sendResponce(res, {
         success: true,

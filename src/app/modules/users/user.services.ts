@@ -44,12 +44,20 @@ const cresteUserIntoDB = async (payload: TBuyer) => {
     // Create user on user collection
     const newUser = await User.create([userData], {session});
 
+    if(!newUser){
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create user!')
+    }
+
     // Set userId on buyer collection
     payload.userId = newUser[0]._id;
     payload.id = newUser[0].id;
 
     // Create buyer on buyer collection
     const newBuyer = await Buyer.create(payload);
+
+    if(!newBuyer){
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create buyer!')
+    }
     
     await session.commitTransaction();
     await session.endSession();
