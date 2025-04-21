@@ -6,6 +6,7 @@ import comparePassword from '../../utils/comparePassword';
 import { createToken } from '../../utils/createToken';
 import config from '../../config';
 import { JwtPayload } from 'jsonwebtoken';
+import hashUserPassword from '../../utils/hashUserPassword';
 
 const userSignIn = async(payload: TAuthCredential) => {
 
@@ -57,7 +58,35 @@ const userSignIn = async(payload: TAuthCredential) => {
 
 const changeUserPassword = async(userData: JwtPayload, payload: TChangePassowd) => {
 
-    console.log(userData, payload);
+    // Check the user is exist or not
+    const isUserExists = await User.findOne({userEmail: userData?.userEmail});
+    if(!isUserExists){
+        throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+    }
+
+    // Check the user is delete or not
+    const isUserDelete = isUserExists?.isDeleted;
+    if(isUserDelete){
+        throw new AppError(httpStatus.FORBIDDEN, 'User is alreday deleted!');
+    }
+
+    // Check the user is delete or not
+    const userStatus = isUserExists?.status;
+    if(userStatus === 'banned'){
+        throw new AppError(httpStatus.BAD_REQUEST, 'User is banned!');
+    }
+
+
+    // Check the old password is correct or not
+    const isOldPasswordIsCorrect = await comparePassword(payload?.oldPassword, isUserExists?.password);
+    if(!isOldPasswordIsCorrect){
+        throw new AppError(httpStatus.BAD_REQUEST, 'Incorrect Password!');
+    }
+
+    // If old password is correct then bcrypt the new password and update
+    const newPassword = await hashUserPassword(payload?.newPassword, config.bcrypt_salt_round as string);
+
+    await User.findOneAndUpdate({userEmail: userData?.userEmail}, {password: newPassword}, {new: true});
 
 }
 
