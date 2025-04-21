@@ -1,6 +1,6 @@
 import httpStatus from 'http-status';
 import { User } from "../users/user.model"
-import { TAuthCredential, TUserToken } from "./auth.interface"
+import { TAuthCredential, TChangePassowd, TUserToken } from "./auth.interface"
 import AppError from '../../errors/AppError';
 import comparePassword from '../../utils/comparePassword';
 import { createToken } from '../../utils/createToken';
@@ -49,8 +49,15 @@ const userSignIn = async(payload: TAuthCredential) => {
         accessToken
     }
 
+};
+
+const changeUserPassword = async(payload: TChangePassowd) => {
+
+    console.log(payload);
+
 }
 
 export const AuthServices = {
-    userSignIn
+    userSignIn,
+    changeUserPassword
 }

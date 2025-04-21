@@ -6,6 +6,12 @@ export type TAuthCredential = {
 }
 
 
+export type TChangePassowd = {
+    oldPassword: string;
+    newPassword: string;
+}
+
+
 export type TUserToken = {
     userEmail: string;
     userId: Types.ObjectId;
