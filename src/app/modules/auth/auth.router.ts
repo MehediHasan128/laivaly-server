@@ -11,5 +11,7 @@ const router = express.Router();
 router.post('/user-signIn', validateRequest(AuthValidation.userSignInValidationSchema), AuthController.userSignIn)
 // Change user pass
 router.post('/change-password', Auth(userRole.buyer), validateRequest(AuthValidation.changlePasswordValidationSchema), AuthController.changePassword)
+// Change user pass
+router.post('/forget-password', validateRequest(AuthValidation.changlePasswordValidationSchema), AuthController.forgetPassword)
 
 export const AuthRouter = router;

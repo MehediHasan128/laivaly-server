@@ -90,7 +90,12 @@ const changeUserPassword = async(userData: JwtPayload, payload: TChangePassowd) 
 
 }
 
+const forgetUserPassword = async() => {
+
+}
+
 export const AuthServices = {
     userSignIn,
-    changeUserPassword
+    changeUserPassword,
+    forgetUserPassword
 }

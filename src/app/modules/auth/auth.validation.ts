@@ -23,7 +23,21 @@ const changlePasswordValidationSchema = z.object({
   }),
 });
 
+const forgetPasswordValidationSchema = z.object({
+  body: z.object({
+    userEmail: z
+      .string({
+        required_error: 'Email address is required',
+        invalid_type_error: 'Email address must be a string',
+      })
+      .email('Please provide a valid email address')
+      .trim()
+      .toLowerCase(),
+  }),
+});
+
 export const AuthValidation = {
   userSignInValidationSchema,
-  changlePasswordValidationSchema
+  changlePasswordValidationSchema,
+  forgetPasswordValidationSchema
 };
