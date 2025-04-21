@@ -1,8 +1,10 @@
 import httpStatus from 'http-status';
 import { User } from "../users/user.model"
-import { TAuthCredential } from "./auth.interface"
+import { TAuthCredential, TUserToken } from "./auth.interface"
 import AppError from '../../errors/AppError';
 import comparePassword from '../../utils/comparePassword';
+import { createToken } from '../../utils/createToken';
+import config from '../../config';
 
 const userSignIn = async(payload: TAuthCredential) => {
 
@@ -28,6 +30,23 @@ const userSignIn = async(payload: TAuthCredential) => {
     const isPasswordMatch = await comparePassword(payload?.password, isUserExists?.password);
     if(!isPasswordMatch){
         throw new AppError(httpStatus.BAD_REQUEST, 'Invalid credential');
+    }
+
+    // Create a json payload
+    const jwtPayload: TUserToken = {
+        userEmail: isUserExists?.userEmail,
+        userId: isUserExists?._id,
+        id: isUserExists?.id,
+        profileImage: isUserExists?.profileImage,
+        role: isUserExists?.role
+    };
+
+
+    // Create access token
+    const accessToken = createToken(jwtPayload, config.jwt_access_secret_token as string, Number(config.jwt_access_expire_in) as number);
+    
+    return {
+        accessToken
     }
 
 }
