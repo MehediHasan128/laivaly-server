@@ -14,9 +14,39 @@ const addBuyerInfo = catchAsync(async(req, res) => {
         data: data
     });
 
-})
+});
+
+
+const addBuyerProfile = catchAsync(async(req, res) => {
+
+    const data = await BuyerServices.addBuyerProfilePictureIntoDB(req.params.buyerId);
+
+    sendResponce(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: 'Successfully add your profile picture',
+        data: data
+    });
+
+});
+
+
+const addShippingAddress = catchAsync(async(req, res) => {
+
+    const data = await BuyerServices.addShippingAddressIntoDB(req.params.buyerId, req.body);
+
+    sendResponce(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: 'Thanks for completing your profile!',
+        data: data
+    });
+
+});
 
 
 export const BuyerController = {
-    addBuyerInfo
+    addBuyerInfo,
+    addShippingAddress,
+    addBuyerProfile
 }

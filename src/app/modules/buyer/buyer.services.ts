@@ -18,6 +18,19 @@ const addBuyerInfoIntoDB = async(buyerId: string, payload: Partial<TBuyer>) => {
 
 }
 
+
+const addBuyerProfilePictureIntoDB = async(buyerId: string) => {
+    console.log(buyerId);
+}
+
+
+const addShippingAddressIntoDB = async(buyerId: string, address: Pick<TBuyer, 'shippingAddress'>) => {
+    console.log(buyerId, address);
+}
+
+
 export const BuyerServices = {
-    addBuyerInfoIntoDB
+    addBuyerInfoIntoDB,
+    addShippingAddressIntoDB,
+    addBuyerProfilePictureIntoDB
 }

@@ -8,7 +8,7 @@ const router = express.Router();
 // update buyer information
 router.patch(
   '/update-buyer-info/:buyerId',
-  // validateRequest(BuyerValidation.updateBuyerValidationSchema),
+  validateRequest(BuyerValidation.updateBuyerValidationSchema),
   BuyerController.addBuyerInfo,
 );
 
