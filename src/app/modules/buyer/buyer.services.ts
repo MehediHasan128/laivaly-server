@@ -1,4 +1,6 @@
 import AppError from "../../errors/AppError";
+import { uploadImageToCloudinary } from "../../utils/uploadImageToCloudinary";
+import { User } from "../users/user.model";
 import { TBuyer } from "./buyer.interface";
 import { Buyer } from "./buyer.model";
 import httpStatus from 'http-status';
@@ -20,7 +22,25 @@ const addBuyerInfoIntoDB = async(buyerId: string, payload: Partial<TBuyer>) => {
 
 
 const addBuyerProfilePictureIntoDB = async(buyerId: string) => {
-    console.log(buyerId);
+    
+    // Const check the user is exists or not
+    const isUserExists = await User.findOne({id: buyerId});
+
+    if(!isUserExists){
+        throw new AppError(httpStatus.NOT_FOUND, 'User not found!');
+    };
+
+    // Check the user is user is delete or not
+    const isUserDelete = isUserExists?.isDeleted;
+
+    if(isUserDelete){
+        throw new AppError(httpStatus.BAD_REQUEST, 'User is already deleted!');
+    }
+
+
+    const uploadImage = await uploadImageToCloudinary();
+    console.log(uploadImage);
+
 }
 
 
