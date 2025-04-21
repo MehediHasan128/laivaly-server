@@ -5,6 +5,7 @@ import AppError from '../../errors/AppError';
 import comparePassword from '../../utils/comparePassword';
 import { createToken } from '../../utils/createToken';
 import config from '../../config';
+import { JwtPayload } from 'jsonwebtoken';
 
 const userSignIn = async(payload: TAuthCredential) => {
 
@@ -44,16 +45,19 @@ const userSignIn = async(payload: TAuthCredential) => {
 
     // Create access token
     const accessToken = createToken(jwtPayload, config.jwt_access_secret_token as string, Number(config.jwt_access_expire_in) as number);
+    // Create refresh token
+    const refreshToken = createToken(jwtPayload, config.jwt_refresh_secret_token as string, Number(config.jwt_refresh_expire_in) as number);
     
     return {
-        accessToken
+        accessToken,
+        refreshToken
     }
 
 };
 
-const changeUserPassword = async(payload: TChangePassowd) => {
+const changeUserPassword = async(userData: JwtPayload, payload: TChangePassowd) => {
 
-    console.log(payload);
+    console.log(userData, payload);
 
 }
 
