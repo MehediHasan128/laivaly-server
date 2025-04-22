@@ -1,6 +1,6 @@
 import httpStatus from 'http-status';
 import { User } from "../users/user.model"
-import { TAuthCredential, TChangePassowd, TUserToken } from "./auth.interface"
+import { TAuthCredential, TChangePassowd, TResetData, TUserToken } from "./auth.interface"
 import AppError from '../../errors/AppError';
 import comparePassword from '../../utils/comparePassword';
 import { createToken } from '../../utils/createToken';
@@ -10,6 +10,7 @@ import hashUserPassword from '../../utils/hashUserPassword';
 import path from 'path';
 import fs from 'fs';
 import sendMail from '../../utils/sendMail';
+import decodedToken from '../../utils/decodedToken';
 
 const userSignIn = async(payload: TAuthCredential) => {
 
@@ -139,8 +140,46 @@ const forgetUserPassword = async(userEmail: string) => {
 
 }
 
+const resetUserPaassword = async(resetData: TResetData, token: string) => {
+
+    // Check the user is exist or not
+    const isUserExists = await User.findOne({userEmail: resetData?.userEmail});
+    if(!isUserExists){
+        throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+    }
+
+    // Check the user is delete or not
+    const isUserDelete = isUserExists?.isDeleted;
+    if(isUserDelete){
+        throw new AppError(httpStatus.FORBIDDEN, 'User is alreday deleted!');
+    }
+
+    // Check the user is delete or not
+    const userStatus = isUserExists?.status;
+    if(userStatus === 'banned'){
+        throw new AppError(httpStatus.BAD_REQUEST, 'User is banned!');
+    }
+
+
+    // Verify token
+    const decoded = decodedToken(token, config.jwt_access_secret_token as string) as JwtPayload;
+    if(decoded?.userEmail !== resetData?.userEmail){
+        throw new AppError(httpStatus.FORBIDDEN, 'You are forbidden')
+    };
+
+
+    // bcrypt the new password
+    const resetPassword = await hashUserPassword(resetData?.password, config.bcrypt_salt_round as string);
+
+
+    // Now update user pass
+    await User.findOneAndUpdate({userEmail: resetData?.userEmail}, {password: resetPassword}, {new: true});
+
+}
+
 export const AuthServices = {
     userSignIn,
     changeUserPassword,
-    forgetUserPassword
+    forgetUserPassword,
+    resetUserPaassword
 }

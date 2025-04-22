@@ -36,8 +36,16 @@ const forgetPasswordValidationSchema = z.object({
   }),
 });
 
+const resetPasswordValidationSchema = z.object({
+  body: z.object({
+    userEmail: z.string(),
+    password: z.string(),
+  }),
+});
+
 export const AuthValidation = {
   userSignInValidationSchema,
   changlePasswordValidationSchema,
-  forgetPasswordValidationSchema
+  forgetPasswordValidationSchema,
+  resetPasswordValidationSchema
 };

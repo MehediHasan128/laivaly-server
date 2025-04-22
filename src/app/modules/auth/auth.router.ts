@@ -13,5 +13,7 @@ router.post('/user-signIn', validateRequest(AuthValidation.userSignInValidationS
 router.post('/change-password', Auth(userRole.buyer), validateRequest(AuthValidation.changlePasswordValidationSchema), AuthController.changePassword)
 // Forget user pass
 router.post('/forget-password', validateRequest(AuthValidation.forgetPasswordValidationSchema), AuthController.forgetPassword)
+// Reset user pass
+router.post('/reset-password', validateRequest(AuthValidation.resetPasswordValidationSchema), AuthController.resetPassword)
 
 export const AuthRouter = router;

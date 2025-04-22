@@ -12,6 +12,9 @@ export type TChangePassowd = {
 }
 
 
+export type TResetData = TAuthCredential;
+
+
 export type TUserToken = {
     userEmail: string;
     userId: Types.ObjectId;
