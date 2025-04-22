@@ -7,6 +7,9 @@ import { createToken } from '../../utils/createToken';
 import config from '../../config';
 import { JwtPayload } from 'jsonwebtoken';
 import hashUserPassword from '../../utils/hashUserPassword';
+import path from 'path';
+import fs from 'fs';
+import sendMail from '../../utils/sendMail';
 
 const userSignIn = async(payload: TAuthCredential) => {
 
@@ -125,7 +128,14 @@ const forgetUserPassword = async(userEmail: string) => {
     // Generate password reset link
     const passwordResetLink = `${config.reset_pass_ui_link}?email=${isUserExists?.userEmail}&token=${resetPasswordToken}`;
 
-    return passwordResetLink;
+    const resetEmailHTMLFile = path.join(process.cwd(), 'src/app/templates/pass_reset_email.html');
+    let htmlContent = fs.readFileSync(resetEmailHTMLFile, 'utf8');
+
+    const name = `${isUserExists?.userName.firstName} ${isUserExists?.userName.lastName}`
+
+    htmlContent = htmlContent.replace('[User\'s Name]', name).replace('{{RESET_LINK}}', passwordResetLink);
+
+    await sendMail(isUserExists?.userEmail, 'Password reset link', htmlContent);
 
 }
 
