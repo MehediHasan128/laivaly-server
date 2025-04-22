@@ -90,7 +90,42 @@ const changeUserPassword = async(userData: JwtPayload, payload: TChangePassowd) 
 
 }
 
-const forgetUserPassword = async() => {
+const forgetUserPassword = async(userEmail: string) => {
+    
+    // Check the user is exist or not
+    const isUserExists = await User.findOne({userEmail: userEmail});
+    if(!isUserExists){
+        throw new AppError(httpStatus.NOT_FOUND, 'No account found with this email address. Please enter the email you used to sign up.');
+    }
+
+    // Check the user is delete or not
+    const isUserDelete = isUserExists?.isDeleted;
+    if(isUserDelete){
+        throw new AppError(httpStatus.FORBIDDEN, 'User is alreday deleted!');
+    }
+
+    // Check the user is delete or not
+    const userStatus = isUserExists?.status;
+    if(userStatus === 'banned'){
+        throw new AppError(httpStatus.BAD_REQUEST, 'User is banned!');
+    }
+
+    // Create a json payload
+    const jwtPayload: TUserToken = {
+        userEmail: isUserExists?.userEmail,
+        userId: isUserExists?._id,
+        id: isUserExists?.id,
+        profileImage: isUserExists?.profileImage,
+        role: isUserExists?.role
+    };
+
+    // Create reset token for 10 minutes
+    const resetPasswordToken = createToken(jwtPayload, config.jwt_access_secret_token as string, '2m');
+    
+    // Generate password reset link
+    const passwordResetLink = `${config.reset_pass_ui_link}?email=${isUserExists?.userEmail}&token=${resetPasswordToken}`;
+
+    return passwordResetLink;
 
 }
 

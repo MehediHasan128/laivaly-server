@@ -40,7 +40,7 @@ const changePassword = catchAsync(async(req, res) => {
 
 const forgetPassword = catchAsync(async(req, res) => {
 
-    const data = await AuthServices.forgetUserPassword();
+    const data = await AuthServices.forgetUserPassword(req.body.userEmail);
 
     sendResponce(res, {
         success: true,
