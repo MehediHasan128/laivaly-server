@@ -53,14 +53,21 @@ const addBuyerProfilePictureIntoDB = async (
   try {
     session.startTransaction();
 
+    const imageFile = [
+      {
+        imagePath,
+        imageName,
+      },
+    ];
+
     // Upload image and get the url
-    const uploadImage = await uploadImageToCloudinary(imagePath, imageName);
+    const uploadImage = await uploadImageToCloudinary(imageFile);
 
     if (!uploadImage) {
       throw new AppError(httpStatus.BAD_REQUEST, 'Failed to upload photo!');
     }
 
-    const imageURL = uploadImage?.secure_url;
+    const imageURL = uploadImage[0]?.secure_url;
 
     // update image in user collection
     const updateUser = await User.findOneAndUpdate(
