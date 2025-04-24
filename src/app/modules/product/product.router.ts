@@ -17,5 +17,7 @@ router.post(
   validateRequest(ProductValidation.CreateProductValidationSchema),
   ProductController.addProduct,
 );
+// Get all product
+router.get('/', ProductController.getAllProduct);
 
 export const ProductRouter = router;

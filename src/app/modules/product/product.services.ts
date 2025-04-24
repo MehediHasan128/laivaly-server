@@ -27,6 +27,12 @@ const addProductIntoDB = async (file: any, payload: TProduct) => {
   return data;
 };
 
+const getAllProductFromDB = async() => {
+ const data = await Product.find();
+ return data
+}
+
 export const ProductServices = {
   addProductIntoDB,
+  getAllProductFromDB
 };
