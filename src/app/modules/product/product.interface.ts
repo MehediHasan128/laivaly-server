@@ -16,4 +16,5 @@ export type TProduct = {
     thumbnail: string;
     SKU: string;
     weight: string;
+    isDeleted: boolean;
 }

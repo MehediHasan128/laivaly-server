@@ -81,7 +81,11 @@ const ProductSchema = new Schema<TProduct>({
     type: String,
     required: [true, 'Weight is required'],
   },
-});
+  isDeleted: {
+    type: Boolean,
+    default: false
+  }
+}, {timestamps: true});
 
 
 
