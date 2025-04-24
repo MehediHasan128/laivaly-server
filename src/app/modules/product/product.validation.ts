@@ -38,10 +38,6 @@ const CreateProductValidationSchema = z.object({
     sizes: z
       .array(z.string().min(1))
       .min(1, { message: 'At least one size is required' }),
-    images: z
-      .array(z.string().url({ message: 'Each image must be a valid URL' }))
-      .min(1, { message: 'At least one image URL is required' }),
-    thumbnail: z.string().url({ message: 'Thumbnail must be a valid URL' }),
     SKU: z.string().min(1, { message: 'SKU is required' }),
     weight: z.string().min(1, { message: 'Weight is required' }),
   }),

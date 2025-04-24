@@ -5,7 +5,7 @@ import { ProductServices } from "./product.services";
 
 const addProduct = catchAsync(async(req, res) => {
 
-    const data = await ProductServices.addProductIntoDB(req.body);
+    const data = await ProductServices.addProductIntoDB(req.files, req.body);
 
     sendResponce(res, {
         success: true,
