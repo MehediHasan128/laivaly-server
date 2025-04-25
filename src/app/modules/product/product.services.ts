@@ -1,5 +1,7 @@
+import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../errors/AppError';
 import { uploadImageToCloudinary } from '../../utils/uploadImageToCloudinary';
+import { productSearchableField } from './product.constant';
 import { TProduct } from './product.interface';
 import { Product } from './product.model';
 import httpStatus from 'http-status';
@@ -27,9 +29,14 @@ const addProductIntoDB = async (file: any, payload: TProduct) => {
   return data;
 };
 
-const getAllProductFromDB = async() => {
- const data = await Product.find();
- return data
+const getAllProductFromDB = async(query: Record<string, unknown>) => {
+  
+  const productQuery = new QueryBuilder(Product.find({isDeleted: false}), query).search(productSearchableField).filter().sort().paginate();
+
+  const data = await productQuery.queryModel;
+
+  return data;
+
 }
 
 export const ProductServices = {
