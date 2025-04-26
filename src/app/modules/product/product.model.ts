@@ -1,6 +1,6 @@
 import { model, Schema } from 'mongoose';
 import { TProduct } from './product.interface';
-import { ProductCategory, ProductGroup, ProductSubCategory } from './product.constant';
+import { ProductAudience, ProductCategory, ProductGroup, ProductSubCategory } from './product.constant';
 
 const ProductSchema = new Schema<TProduct>({
   title: {
@@ -35,6 +35,14 @@ const ProductSchema = new Schema<TProduct>({
       message: 'Invalid sub-category',
     },
     required: [true, 'Product sub-category is required'],
+  },
+  targetAudience: {
+    type: String,
+    enum: {
+      values: ProductAudience,
+      message: 'Invalid audience'
+    },
+    required: [true, 'Product target audience is required'],
   },
   price: {
     type: Number,

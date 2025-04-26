@@ -1,5 +1,9 @@
 export const productSearchableField = ['title', 'SKU', 'group', 'category'];
 
+
+export type TProductAudience = "men" | "women" | "children";
+export const ProductAudience = ["men", "women", "children"];
+
 export type TProductGroup = 'clothing' | 'accessories' | 'footwear' | 'beauty & fragrance';
 export const ProductGroup = ['clothing', 'accessories', 'footwear', 'beauty & fragrance'];
 

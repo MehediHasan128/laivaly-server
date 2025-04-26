@@ -1,4 +1,4 @@
-import { TProductCategory, TProductGroup, TProductSubCategory } from "./product.constant";
+import { TProductAudience, TProductCategory, TProductGroup, TProductSubCategory } from "./product.constant";
 
 export type TProduct = {
     title: string;
@@ -6,6 +6,7 @@ export type TProduct = {
     group: TProductGroup;
     category: TProductCategory;
     subCategory: TProductSubCategory;
+    targetAudience: TProductAudience;
     price: number;
     discount: number;
     quantity: number;

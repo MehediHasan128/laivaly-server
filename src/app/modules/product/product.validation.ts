@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import {
+  ProductAudience,
   ProductCategory,
   ProductGroup,
   ProductSubCategory,
@@ -14,6 +15,7 @@ const CreateProductValidationSchema = z.object({
     group: z.enum([...ProductGroup] as [string, ...string[]]),
     category: z.enum([...ProductCategory] as [string, ...string[]]),
     subCategory: z.enum([...ProductSubCategory] as [string, ...string[]]),
+    targetAudience: z.enum([...ProductAudience] as [string, ...string[]]),
     price: z
       .number({
         required_error: 'Product price is required',
