@@ -1,6 +1,8 @@
 import QueryBuilder from '../../builder/QueryBuilder';
 import AppError from '../../errors/AppError';
 import { uploadImageToCloudinary } from '../../utils/uploadImageToCloudinary';
+import { TProductReviews } from '../productReviews/productReviews.interface';
+import { Review } from '../productReviews/productReviews.model';
 import { productSearchableField } from './product.constant';
 import { TProduct } from './product.interface';
 import { Product } from './product.model';
@@ -25,6 +27,14 @@ const addProductIntoDB = async (file: any, payload: TProduct) => {
   payload.images = uploadedFiles.map((file) => file.secure_url);
 
   const data = await Product.create(payload);
+
+  const reviewData: Partial<TProductReviews> = {};
+
+  reviewData.productId = data?._id;
+  reviewData.ratings = {fiveStar: 0, fourStar: 0, threeStar: 0, twoStar: 0, oneStar: 0};
+  reviewData.reviews = [{customerId: null, comment: null}];
+
+  await Review.create(reviewData);
 
   return data;
 };
