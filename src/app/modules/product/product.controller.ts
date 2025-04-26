@@ -45,9 +45,25 @@ const getSingleProduct = catchAsync(async(req, res) => {
 });
 
 
+const getSimilerProduct = catchAsync(async(req, res) => {
+
+    const {audience, subCategory, currentProductId} = req.query;
+    const data = await ProductServices.getSimilerProductFromDB(audience as string, subCategory as string, currentProductId as string);
+
+    sendResponce(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: 'Successfully retrive similer product!',
+        data: data
+    });
+
+});
+
+
 
 export const ProductController = {
     addProduct,
     getAllProduct,
-    getSingleProduct
+    getSingleProduct,
+    getSimilerProduct
 }

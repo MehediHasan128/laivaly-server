@@ -23,4 +23,7 @@ router.get('/:audiance', ProductController.getAllProduct);
 // Get single product
 router.get('/product/:productId', ProductController.getSingleProduct);
 
+// Get similer product
+router.get('/products/similer-product', ProductController.getSimilerProduct);
+
 export const ProductRouter = router;

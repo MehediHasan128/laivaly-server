@@ -93,8 +93,17 @@ const getSingleProductFromDB = async(productId: string) => {
 
 }
 
+const getSimilerProductFromDB = async(audience: string, subCategory: string, currentProductId: string) => {
+  
+  const data = await Product.find({isDeleted: false, targetAudience: audience, subCategory: subCategory, _id: {$ne: currentProductId}});
+  return data;
+
+}
+
+
 export const ProductServices = {
   addProductIntoDB,
   getAllProductFromDB,
-  getSingleProductFromDB
+  getSingleProductFromDB,
+  getSimilerProductFromDB
 };
