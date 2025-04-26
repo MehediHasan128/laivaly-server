@@ -31,19 +31,63 @@ const addProductIntoDB = async (file: any, payload: TProduct) => {
   const reviewData: Partial<TProductReviews> = {};
 
   reviewData.productId = data?._id;
-  reviewData.ratings = {fiveStar: 0, fourStar: 0, threeStar: 0, twoStar: 0, oneStar: 0};
-  reviewData.reviews = [{customerId: null, comment: null}];
+  reviewData.ratings = {
+    fiveStar: 0,
+    fourStar: 0,
+    threeStar: 0,
+    twoStar: 0,
+    oneStar: 0,
+  };
+  reviewData.reviews = [{ customerId: null, comment: null }];
 
   await Review.create(reviewData);
 
   return data;
 };
 
-const getAllProductFromDB = async(query: Record<string, unknown>) => {
+const getAllProductFromDB = async (query: Record<string, unknown>, audience: string) => {
   
-  const productQuery = new QueryBuilder(Product.find({isDeleted: false}), query).search(productSearchableField).filter().sort().paginate();
+  if(audience !== 'all'){
+    const productQuery = new QueryBuilder(
+      Product.find({ isDeleted: false, targetAudience: audience }),
+      query,
+    )
+      .search(productSearchableField)
+      .filter()
+      .sort()
+      .paginate();
+  
+    const targetedProduct = await productQuery.queryModel;
+  
+    return targetedProduct;
+  }
+  const productQuery = new QueryBuilder(
+    Product.find({ isDeleted: false }),
+    query,
+  )
+    .search(productSearchableField)
+    .filter()
+    .sort()
+    .paginate();
 
   const data = await productQuery.queryModel;
+
+  return data;
+};
+
+const getSingleProductFromDB = async(productId: string) => {
+  
+  // Check the product is exist or not
+  const data = await Product.findById(productId);
+  if(!data){
+    throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
+  }
+  
+  // Chech the product is delete or not
+  const isDeleted = data?.isDeleted;
+  if(isDeleted){
+    throw new AppError(httpStatus.BAD_REQUEST, 'Product is already deleted');
+  }
 
   return data;
 
@@ -51,5 +95,6 @@ const getAllProductFromDB = async(query: Record<string, unknown>) => {
 
 export const ProductServices = {
   addProductIntoDB,
-  getAllProductFromDB
+  getAllProductFromDB,
+  getSingleProductFromDB
 };

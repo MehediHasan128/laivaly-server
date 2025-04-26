@@ -18,6 +18,9 @@ router.post(
   ProductController.addProduct,
 );
 // Get all product
-router.get('/', ProductController.getAllProduct);
+router.get('/:audiance', ProductController.getAllProduct);
+
+// Get single product
+router.get('/product/:productId', ProductController.getSingleProduct);
 
 export const ProductRouter = router;
