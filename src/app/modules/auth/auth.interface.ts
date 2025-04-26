@@ -18,6 +18,7 @@ export type TResetData = TAuthCredential;
 export type TUserToken = {
     userEmail: string;
     userId: Types.ObjectId;
+    userName: object;
     id: string;
     profileImage: string;
     role: string;

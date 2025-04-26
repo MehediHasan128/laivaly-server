@@ -42,6 +42,7 @@ const userSignIn = async(payload: TAuthCredential) => {
     const jwtPayload: TUserToken = {
         userEmail: isUserExists?.userEmail,
         userId: isUserExists?._id,
+        userName: isUserExists?.userName,
         id: isUserExists?.id,
         profileImage: isUserExists?.profileImage,
         role: isUserExists?.role
@@ -49,9 +50,9 @@ const userSignIn = async(payload: TAuthCredential) => {
 
 
     // Create access token
-    const accessToken = createToken(jwtPayload, config.jwt_access_secret_token as string, Number(config.jwt_access_expire_in) as number);
+    const accessToken = createToken(jwtPayload, config.jwt_access_secret_token as string, Number(config.jwt_access_expire_in));
     // Create refresh token
-    const refreshToken = createToken(jwtPayload, config.jwt_refresh_secret_token as string, Number(config.jwt_refresh_expire_in) as number);
+    const refreshToken = createToken(jwtPayload, config.jwt_refresh_secret_token as string, Number(config.jwt_refresh_expire_in));
     
     return {
         accessToken,
@@ -118,6 +119,7 @@ const forgetUserPassword = async(userEmail: string) => {
     const jwtPayload: TUserToken = {
         userEmail: isUserExists?.userEmail,
         userId: isUserExists?._id,
+        userName: isUserExists?.userName,
         id: isUserExists?.id,
         profileImage: isUserExists?.profileImage,
         role: isUserExists?.role
