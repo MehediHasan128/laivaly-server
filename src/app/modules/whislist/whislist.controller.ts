@@ -31,8 +31,38 @@ const getUserWhislist = catchAsync(async(req, res) => {
 });
 
 
+const singleWhislistProduct = catchAsync(async(req, res) => {
+
+    const data = await WhislistServices.getSingleProductFromWhislist(req.query.userId as string, req.query.productId as string);
+
+    sendResponce(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: 'Successfully retive single product from whislist!',
+        data: data
+    });
+
+});
+
+
+const deleteWhislist = catchAsync(async(req, res) => {
+
+    const data = await WhislistServices.deleteWhislistFromDB(req.params.whislistId);
+
+    sendResponce(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: 'Successfully delete this product from whislist!',
+        data: data
+    });
+
+});
+
+
 
 export const WhislistController = {
     addWhislist,
-    getUserWhislist
+    getUserWhislist,
+    singleWhislistProduct,
+    deleteWhislist
 }
