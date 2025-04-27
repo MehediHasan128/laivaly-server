@@ -36,8 +36,28 @@ const addWhislistIntoDB = async(payload: TWhislist) => {
 
     return data;
 
+};
+
+const getAllWhislitBasedonUserFromDB = async(userId: string) => {
+   
+    const isUserExist = await User.findById(userId);
+    if(!isUserExist){
+        throw new AppError(httpStatus.NOT_FOUND, 'User not found')
+    };
+
+    // const check the user is delete or not
+    const isUserDelete = isUserExist?.isDeleted;
+    if(isUserDelete){
+        throw new AppError(httpStatus.BAD_REQUEST, 'User is already deleted')
+    };
+
+    const data = await Whislist.find({userId: userId}).populate({path: 'productId', select: 'thumbnail title price _id'});
+
+    return data;
+    
 }
 
 export const WhislistServices = {
-    addWhislistIntoDB
+    addWhislistIntoDB,
+    getAllWhislitBasedonUserFromDB
 }

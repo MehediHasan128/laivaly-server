@@ -17,7 +17,22 @@ const addWhislist = catchAsync(async(req, res) => {
 });
 
 
+const getUserWhislist = catchAsync(async(req, res) => {
+
+    const data = await WhislistServices.getAllWhislitBasedonUserFromDB(req.params.userId);
+
+    sendResponce(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: 'Successfully retrive all whislist!',
+        data: data
+    });
+
+});
+
+
 
 export const WhislistController = {
-    addWhislist
+    addWhislist,
+    getUserWhislist
 }
