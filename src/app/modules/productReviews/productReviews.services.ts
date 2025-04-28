@@ -58,7 +58,7 @@ const addReviewIntoDB = async(productId: string, payload: TReviews) => {
 
 const getAllReviewsFromDB = async(productId: string) => {
     
-    const data = await Review.findOne({productId});
+    const data = await Review.findOne({productId}).populate('reviews.customerId', 'userName profileImage -_id');
     return data;
 
 }
