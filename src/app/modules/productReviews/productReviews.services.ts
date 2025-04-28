@@ -53,9 +53,18 @@ const addReviewIntoDB = async(productId: string, payload: TReviews) => {
 
     return data;
 
+};
+
+
+const getAllReviewsFromDB = async(productId: string) => {
+    
+    const data = await Review.findOne({productId});
+    return data;
+
 }
 
 
 export const ReviewServices = {
-    addReviewIntoDB
+    addReviewIntoDB,
+    getAllReviewsFromDB
 }
