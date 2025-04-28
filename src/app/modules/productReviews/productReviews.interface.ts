@@ -10,11 +10,14 @@ export type TRating = {
 
 export type TReviews = {
     customerId: Types.ObjectId | null;
+    rating: number | null;
     comment: string | null;
 };
 
 export type TProductReviews = {
     productId: Types.ObjectId;
     ratings: TRating;
-    reviews: TReviews[];
-}
+    overAllRating: number;
+    reviews?: TReviews[];
+};
+

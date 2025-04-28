@@ -38,7 +38,6 @@ const addProductIntoDB = async (file: any, payload: TProduct) => {
     twoStar: 0,
     oneStar: 0,
   };
-  reviewData.reviews = [{ customerId: null, comment: null }];
 
   await Review.create(reviewData);
 
