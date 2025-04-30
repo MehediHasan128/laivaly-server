@@ -76,6 +76,12 @@ const addCartIntoDB = async (payload: TCart) => {
   }
 };
 
+const getAllCartProductFromDB = async(userId: string) => {
+  const data = await Cart.find({userId});
+  return data;
+}
+
 export const CartServices = {
   addCartIntoDB,
+  getAllCartProductFromDB
 };

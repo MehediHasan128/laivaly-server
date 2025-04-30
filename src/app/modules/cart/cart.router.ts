@@ -7,5 +7,7 @@ const router = express.Router();
 
 // Add cart into db
 router.post('/create-cart', validateRequest(CartValidation.CartValidationSchema), CartController.addCart);
+// get all product from cart
+router.get('/:userId', CartController.getAllProductFromCart);
 
 export const CartRouter = router;

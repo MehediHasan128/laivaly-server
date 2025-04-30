@@ -17,7 +17,22 @@ const addCart = catchAsync(async(req, res) => {
 });
 
 
+const getAllProductFromCart = catchAsync(async(req, res) => {
+
+    const data = await CartServices.getAllCartProductFromDB(req.params.userId);
+
+    sendResponce(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: 'Successfully retrive all product from cart',
+        data: data
+    });
+
+});
+
+
 
 export const CartController = {
     addCart,
+    getAllProductFromCart
 }
