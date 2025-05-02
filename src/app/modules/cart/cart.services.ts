@@ -77,7 +77,7 @@ const addCartIntoDB = async (payload: TCart) => {
 };
 
 const getAllCartProductFromDB = async(userId: string) => {
-  const data = await Cart.find({userId});
+  const data = await Cart.find({userId}).populate('items.productId');
   return data;
 }
 

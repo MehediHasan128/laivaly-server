@@ -34,7 +34,7 @@ const CreateProductValidationSchema = z.object({
     inStock: z
       .boolean({ required_error: 'Stock status is required' })
       .default(true),
-    color: z
+    colors: z
       .array(z.string().min(1))
       .min(1, { message: 'At least one color is required' }),
     sizes: z

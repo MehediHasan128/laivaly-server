@@ -11,7 +11,7 @@ export type TProduct = {
     discount: number;
     quantity: number;
     inStock: boolean;
-    color: string[];
+    colors: string[];
     sizes: string[];
     images: string[];
     thumbnail: string;

@@ -10,6 +10,7 @@ import httpStatus from 'http-status';
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const addProductIntoDB = async (file: any, payload: TProduct) => {
+
   // Check the product is exists or not
   const isExistsProduct = await Product.findOne({ SKU: payload.SKU });
   if (isExistsProduct) {

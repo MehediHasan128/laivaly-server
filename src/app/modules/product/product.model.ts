@@ -64,7 +64,7 @@ const ProductSchema = new Schema<TProduct>({
     required: [true, 'Stock status is required'],
     default: true
   },
-  color: {
+  colors: {
     type: [String],
     required: [true, 'At least one color is required'],
   },

@@ -219,4 +219,7 @@ export type TProductCategory =
     'strappy sandals',
     'loafers',
     'oxford shoes'
-  ]
+  ];
+
+export type TSizeType = 'clothing' | 'custom' | 'none';
+export const SizeType = ['clothing', 'custom', 'none'];
