@@ -31,8 +31,23 @@ const getAllProductFromCart = catchAsync(async(req, res) => {
 });
 
 
+const productAddOrRemove = catchAsync(async(req, res) => {
+
+    const data = await CartServices.productAddOrRemoveFromCart();
+
+    sendResponce(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: 'Successfully update product from cart',
+        data: data
+    });
+
+});
+
+
 
 export const CartController = {
     addCart,
-    getAllProductFromCart
+    getAllProductFromCart,
+    productAddOrRemove
 }

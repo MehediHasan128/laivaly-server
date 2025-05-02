@@ -9,5 +9,7 @@ const router = express.Router();
 router.post('/create-cart', validateRequest(CartValidation.CartValidationSchema), CartController.addCart);
 // get all product from cart
 router.get('/:userId', CartController.getAllProductFromCart);
+// get all product from cart
+router.patch('/update-cart-product', CartController.productAddOrRemove);
 
 export const CartRouter = router;

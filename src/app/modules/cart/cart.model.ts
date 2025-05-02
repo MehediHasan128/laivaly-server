@@ -20,9 +20,8 @@ const CartItemSchema = new Schema<TCartItem>(
       type: Number,
       required: [true, 'Quantity is required in cart item.'],
       min: [1, 'Quantity must be at least 1.'],
-    },
-  },
-  { _id: false },
+    }
+  }
 );
 
 const CartSchema = new Schema<TCart>({

@@ -15,7 +15,7 @@ const CartItemValidationSchema = z.object({
       required_error: 'Quantity is required in cart item.',
       invalid_type_error: 'Quantity must be a number.',
     })
-    .min(1, { message: 'Quantity must be at least 1.' }),
+    .min(1, { message: 'Quantity must be at least 1.' })
 });
 
 const CartValidationSchema = z.object({

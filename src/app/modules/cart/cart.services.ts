@@ -79,9 +79,14 @@ const addCartIntoDB = async (payload: TCart) => {
 const getAllCartProductFromDB = async(userId: string) => {
   const data = await Cart.find({userId}).populate('items.productId');
   return data;
+};
+
+const productAddOrRemoveFromCart = async() => {
+
 }
 
 export const CartServices = {
   addCartIntoDB,
-  getAllCartProductFromDB
+  getAllCartProductFromDB,
+  productAddOrRemoveFromCart
 };
