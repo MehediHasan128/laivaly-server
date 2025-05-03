@@ -81,7 +81,14 @@ const getAllCartProductFromDB = async(userId: string) => {
   return data;
 };
 
-const productAddOrRemoveFromCart = async() => {
+const productAddOrRemoveFromCart = async(payload: {_id: string; color: string; size: string; method: string}) => {
+
+  const product =  Cart.findOne({'items._id': payload?._id}, {items: {$elemMatch: {_id: payload?._id, color: payload?.color, size: payload?.size}}});
+
+  const result = await product.findOneAndUpdate({'items._id': payload?._id}, { $inc: { 'items.$.quantity': (payload?.method === 'add')? +1 : -1 } }, {new: true})
+
+  
+  return result
 
 }
 
@@ -90,3 +97,9 @@ export const CartServices = {
   getAllCartProductFromDB,
   productAddOrRemoveFromCart
 };
+
+
+
+// *
+// const data = {_id: 10, userId: 001, items: [{_id: 552, productId: 220, color: '#000000', size: 'M', quantity: 2}]}
+// * 

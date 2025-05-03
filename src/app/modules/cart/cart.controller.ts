@@ -33,7 +33,7 @@ const getAllProductFromCart = catchAsync(async(req, res) => {
 
 const productAddOrRemove = catchAsync(async(req, res) => {
 
-    const data = await CartServices.productAddOrRemoveFromCart();
+    const data = await CartServices.productAddOrRemoveFromCart(req.body);
 
     sendResponce(res, {
         success: true,
