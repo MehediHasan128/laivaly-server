@@ -22,8 +22,6 @@ export type TOrder = {
   paymentMethod: 'COD' | 'Credit Card' | 'Paypal' | 'Stripe' | 'bKash';
   orderDate: Date;
   totalAmount: number;
-  deliveryCharge: number;
-  discount: number;
   paymentStatus: 'paid' | 'unpaid';
   status: 'pending' | 'confirmed' | 'shipped' | 'delivered' | 'cancelled';
 };

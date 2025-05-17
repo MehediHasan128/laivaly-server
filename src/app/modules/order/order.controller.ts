@@ -14,6 +14,19 @@ const handleCreateCheckoutSession = catchAsync(async (req, res) => {
   });
 });
 
+
+const getAllOrder = catchAsync(async (req, res) => {
+    const data = await OrderServices.getAllOrdersFromDB();
+  
+    sendResponce(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: 'Retrive all order from database',
+      data: data,
+    });
+  });
+
 export const OrderController = {
   handleCreateCheckoutSession,
+  getAllOrder
 };

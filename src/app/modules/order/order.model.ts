@@ -79,16 +79,6 @@ const OrderSchema = new Schema<TOrder>({
     required: [true, 'Total amount is required'],
     min: [0, 'Total amount must be at least 0'],
   },
-  deliveryCharge: {
-    type: Number,
-    required: [true, 'Delivery charge is required'],
-    min: [0, 'Delivery charge must be at least 0'],
-  },
-  discount: {
-    type: Number,
-    default: 0,
-    min: [0, 'Discount cannot be negative'],
-  },
   paymentStatus: {
     type: String,
     enum: {

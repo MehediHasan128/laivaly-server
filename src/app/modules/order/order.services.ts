@@ -50,6 +50,12 @@ const createStripeCheckoutSession = async (orderData: TOrder) => {
   return session.url;
 }
 
+const getAllOrdersFromDB = async() => {
+    const data = await Order.find();
+    return data;
+}
+
 export const OrderServices = {
-    createStripeCheckoutSession
+    createStripeCheckoutSession,
+    getAllOrdersFromDB
 }
