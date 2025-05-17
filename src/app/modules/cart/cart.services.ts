@@ -38,8 +38,8 @@ const addCartIntoDB = async (payload: TCart) => {
         item.productId.equals(
           new mongoose.Types.ObjectId(payload?.items[0].productId),
         ) &&
-        (item.color === payload?.items[0].color &&
-          item.size === payload?.items[0].size),
+        item.color === payload?.items[0].color &&
+        item.size === payload?.items[0].size,
     );
     // If find the added product is already add to cart then only update the quantity
     if (addedProductsOnCart) {
@@ -76,30 +76,41 @@ const addCartIntoDB = async (payload: TCart) => {
   }
 };
 
-const getAllCartProductFromDB = async(userId: string) => {
-  const data = await Cart.find({userId}).populate('items.productId');
+const getAllCartProductFromDB = async (userId: string) => {
+  const data = await Cart.find({ userId }).populate('items.productId');
   return data;
 };
 
-const productAddOrRemoveFromCart = async(payload: {_id: string; color: string; size: string; method: string}) => {
+const productAddOrRemoveFromCart = async (payload: {
+  _id: string;
+  color: string;
+  size: string;
+  method: string;
+}) => {
+  const product = Cart.findOne(
+    { 'items._id': payload?._id },
+    {
+      items: {
+        $elemMatch: {
+          _id: payload?._id,
+          color: payload?.color,
+          size: payload?.size,
+        },
+      },
+    },
+  );
 
-  const product =  Cart.findOne({'items._id': payload?._id}, {items: {$elemMatch: {_id: payload?._id, color: payload?.color, size: payload?.size}}});
+  const data = await product.findOneAndUpdate(
+    { 'items._id': payload?._id },
+    { $inc: { 'items.$.quantity': payload?.method === 'add' ? +1 : -1 } },
+    { new: true },
+  );
 
-  const result = await product.findOneAndUpdate({'items._id': payload?._id}, { $inc: { 'items.$.quantity': (payload?.method === 'add')? +1 : -1 } }, {new: true})
-
-  
-  return result
-
-}
+  return data;
+};
 
 export const CartServices = {
   addCartIntoDB,
   getAllCartProductFromDB,
-  productAddOrRemoveFromCart
+  productAddOrRemoveFromCart,
 };
-
-
-
-// *
-// const data = {_id: 10, userId: 001, items: [{_id: 552, productId: 220, color: '#000000', size: 'M', quantity: 2}]}
-// * 

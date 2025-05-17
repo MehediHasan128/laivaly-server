@@ -18,7 +18,7 @@ router.post(
   ProductController.addProduct,
 );
 // Get all product
-router.get('/:audiance', ProductController.getAllProduct);
+router.get('/', ProductController.getAllProduct);
 
 // Get single product
 router.get('/product/:productId', ProductController.getSingleProduct);

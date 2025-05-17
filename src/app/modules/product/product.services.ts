@@ -45,22 +45,8 @@ const addProductIntoDB = async (file: any, payload: TProduct) => {
   return data;
 };
 
-const getAllProductFromDB = async (query: Record<string, unknown>, audience: string) => {
-  
-  if(audience !== 'all'){
-    const productQuery = new QueryBuilder(
-      Product.find({ isDeleted: false, targetAudience: audience }),
-      query,
-    )
-      .search(productSearchableField)
-      .filter()
-      .sort()
-      .paginate();
-  
-    const targetedProduct = await productQuery.queryModel;
-  
-    return targetedProduct;
-  }
+const getAllProductFromDB = async (query: Record<string, unknown>) => {
+
   const productQuery = new QueryBuilder(
     Product.find({ isDeleted: false }),
     query,
