@@ -35,8 +35,8 @@ const createStripeCheckoutSession = async (orderData: TOrder) => {
     payment_method_types: ['card'],
     line_items: lineItems,
     mode: 'payment',
-    success_url: 'http://localhost:3000/payment/success',
-    cancel_url: 'http://localhost:3000/payment/cancel',
+    success_url: 'http://localhost:5173/profile/my-orders',
+    cancel_url: 'http://localhost:5173/cart',
   });
 
   await Order.create({
