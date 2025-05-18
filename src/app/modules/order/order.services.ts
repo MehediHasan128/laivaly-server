@@ -43,6 +43,7 @@ const createStripeCheckoutSession = async (orderData: TOrder) => {
       userId: orderData.userId.toString(),
       products: JSON.stringify(orderData.products),
       shippingAddress: JSON.stringify(orderData.shippingAddress),
+      totalAmount: String(orderData.totalAmount)
     },
   });
 
@@ -76,7 +77,7 @@ const handleStripeWebhook = async (data: Buffer, signature: string) => {
       shippingAddress: JSON.parse(metadata?.shippingAddress || '{}'),
       paymentMethod: 'Stripe',
       orderDate: new Date(),
-      totalAmount: Number(session.amount_total) / 100,
+      totalAmount: Number(metadata!.totalAmount),
       paymentStatus: 'paid',
       status: 'confirmed',
     };
