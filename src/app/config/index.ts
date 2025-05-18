@@ -18,5 +18,6 @@ export default {
     jwt_refresh_expire_in: process.env.JWT_REFRESH_EXPIRE_IN,
     reset_pass_ui_link: process.env.RESET_PASSWORD_UI_LINK,
     smtp_secret_credential: process.env.SMTP_SECRET_CREDENTIAL,
-    stripe_secret_key: process.env.STRIPE_SECRETR_KEY
+    stripe_secret_key: process.env.STRIPE_SECRETR_KEY,
+    stripe_webhook_key: process.env.STRIPE_WEBHOOKS_KEY
 }

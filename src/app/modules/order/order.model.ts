@@ -52,6 +52,11 @@ const OrderShippingAddressSchema = new Schema<TOrderShippingAddress>({
 });
 
 const OrderSchema = new Schema<TOrder>({
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: [true, 'User ID is required'],
+  },
   products: {
     type: [OrderProductSchema],
     validate: {
@@ -97,6 +102,5 @@ const OrderSchema = new Schema<TOrder>({
     default: 'pending',
   },
 });
-
 
 export const Order = model<TOrder>('order', OrderSchema);

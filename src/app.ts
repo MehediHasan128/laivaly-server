@@ -5,8 +5,11 @@ import notFound from './app/middlwares/notFound';
 import express, { Application, NextFunction, Request, Response } from 'express';
 import globalErrorHandler from './app/middlwares/globalErrorHandler';
 import cookieParser from 'cookie-parser';
+import { OrderController } from './app/modules/order/order.controller';
 
 const app: Application = express();
+
+app.post('/api/v1/orders/webhook', express.raw({ type: 'application/json' }), OrderController.StripeWebhook)
 
 // Perser
 app.use(express.json());
