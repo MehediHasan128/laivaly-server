@@ -17,6 +17,20 @@ const addBuyerInfo = catchAsync(async(req, res) => {
 });
 
 
+const getBuyerInformation = catchAsync(async(req, res) => {
+
+    const data = await BuyerServices.getBuyerInformationFromDB(req.params.userId);
+
+    sendResponce(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: 'Successfully retrive buyer information',
+        data: data
+    });
+
+});
+
+
 const addBuyerProfile = catchAsync(async(req, res) => {
 
     const data = await BuyerServices.addBuyerProfilePictureIntoDB(req.params.buyerId, req.file);
@@ -48,5 +62,6 @@ const addShippingAddress = catchAsync(async(req, res) => {
 export const BuyerController = {
     addBuyerInfo,
     addShippingAddress,
-    addBuyerProfile
+    addBuyerProfile,
+    getBuyerInformation
 }

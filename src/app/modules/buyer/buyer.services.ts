@@ -25,6 +25,20 @@ const addBuyerInfoIntoDB = async (
   return data;
 };
 
+const getBuyerInformationFromDB = async(userId: string) => {
+  
+  // Check the user is exist or not
+  const isUserExist = await User.findById(userId);
+  if(!isUserExist){
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  };
+
+  const data = await Buyer.findOne({userId});
+
+  return data;
+
+}
+
 const addBuyerProfilePictureIntoDB = async (
   buyerId: string,
   imageFile: any,
@@ -118,4 +132,5 @@ export const BuyerServices = {
   addBuyerInfoIntoDB,
   addShippingAddressIntoDB,
   addBuyerProfilePictureIntoDB,
+  getBuyerInformationFromDB
 };

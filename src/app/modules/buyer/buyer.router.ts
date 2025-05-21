@@ -13,6 +13,9 @@ router.patch(
   BuyerController.addBuyerInfo,
 );
 
-router.patch('/update-buyer-image/:buyerId', upload.single('file'), BuyerController.addBuyerProfile)
+router.patch('/update-buyer-image/:buyerId', upload.single('file'), BuyerController.addBuyerProfile);
+
+// Get buyer information
+router.get('/:userId', BuyerController.getBuyerInformation)
 
 export const BuyerRouter = router;
