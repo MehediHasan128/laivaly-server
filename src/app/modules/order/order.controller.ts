@@ -5,7 +5,6 @@ import { OrderServices } from './order.services';
 import { Request, Response } from 'express';
 
 const handleCreateCheckoutSession = catchAsync(async (req, res) => {
- 
   const data = await OrderServices.createStripeCheckoutSession(req.body);
 
   sendResponce(res, {
@@ -16,36 +15,46 @@ const handleCreateCheckoutSession = catchAsync(async (req, res) => {
   });
 });
 
-
-const StripeWebhook = async(req: Request, res: Response) => {
+const StripeWebhook = async (req: Request, res: Response) => {
   const signature = req.headers['stripe-signature'] as string;
 
-  try{
+  try {
     await OrderServices.handleStripeWebhook(req.body, signature);
     res.status(200).json({
       statusCode: httpStatus.OK,
       success: true,
-      message: 'Payment successfull'
-    })
-  }catch(error){
+      message: 'Payment successfull',
+    });
+  } catch (error) {
     console.error('❌ Webhook error:', error);
   }
-}
-
+};
 
 const getAllOrder = catchAsync(async (req, res) => {
-    const data = await OrderServices.getAllOrdersFromDB();
-  
-    sendResponce(res, {
-      success: true,
-      statusCode: httpStatus.OK,
-      message: 'Retrive all order from database',
-      data: data,
-    });
+  const data = await OrderServices.getAllOrdersFromDB();
+
+  sendResponce(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Retrive all order from database',
+    data: data,
   });
+});
+
+const getUserOrders = catchAsync(async (req, res) => {
+  const data = await OrderServices.getUserOrdersFromDB(req.params.userId);
+
+  sendResponce(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Retrive all order from database',
+    data: data,
+  });
+});
 
 export const OrderController = {
   handleCreateCheckoutSession,
   StripeWebhook,
-  getAllOrder
+  getAllOrder,
+  getUserOrders,
 };

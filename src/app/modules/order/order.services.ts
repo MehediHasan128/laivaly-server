@@ -7,6 +7,7 @@ import httpStatus from 'http-status';
 import { Order } from './order.model';
 import config from '../../config';
 import Stripe from 'stripe';
+import { User } from '../users/user.model';
 
 const createStripeCheckoutSession = async (orderData: TOrder) => {
   const lineItems = await Promise.all(
@@ -93,8 +94,23 @@ const getAllOrdersFromDB = async () => {
   return data;
 };
 
+const getUserOrdersFromDB = async (userId: string) => {
+  
+  // Check the user is exist or not
+  const isUserExist = await User.findById(userId);
+  if(!isUserExist){
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
+  };
+
+  const data = await Order.find({userId});
+
+  return data;
+
+}
+
 export const OrderServices = {
   createStripeCheckoutSession,
   handleStripeWebhook,
   getAllOrdersFromDB,
+  getUserOrdersFromDB
 };
