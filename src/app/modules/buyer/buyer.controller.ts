@@ -47,12 +47,26 @@ const addBuyerProfile = catchAsync(async(req, res) => {
 
 const addShippingAddress = catchAsync(async(req, res) => {
 
-    const data = await BuyerServices.addShippingAddressIntoDB(req.params.buyerId, req.body);
+    const data = await BuyerServices.addShippingAddressIntoDB(req.params.userId, req.body);
 
     sendResponce(res, {
         success: true,
         statusCode: httpStatus.OK,
-        message: 'Thanks for completing your profile!',
+        message: 'Successfully add a new shipping address',
+        data: data
+    });
+
+});
+
+
+const updateShippingAddress = catchAsync(async(req, res) => {
+
+    const data = await BuyerServices.updateShippingAddressIntoDB(req.params.userId, req.body);
+
+    sendResponce(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: 'Your Shipping address successfully update',
         data: data
     });
 
@@ -63,5 +77,6 @@ export const BuyerController = {
     addBuyerInfo,
     addShippingAddress,
     addBuyerProfile,
-    getBuyerInformation
+    getBuyerInformation,
+    updateShippingAddress
 }

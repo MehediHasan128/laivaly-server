@@ -6,6 +6,7 @@ import { User } from '../users/user.model';
 import { TBuyer } from './buyer.interface';
 import { Buyer } from './buyer.model';
 import httpStatus from 'http-status';
+import { TShippingAddress } from '../../global/interface';
 
 const addBuyerInfoIntoDB = async (
   buyerId: string,
@@ -122,15 +123,42 @@ const addBuyerProfilePictureIntoDB = async (
 };
 
 const addShippingAddressIntoDB = async (
-  buyerId: string,
-  address: Pick<TBuyer, 'shippingAddress'>,
+  userId: string,
+  newShippingAddress: Pick<TBuyer, 'shippingAddress'>,
 ) => {
-  console.log(buyerId, address);
+  
+  // Check the user is exist or not
+  const isUserExists = await User.findById(userId);
+  if(!isUserExists){
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found!');
+  };
+
+  // Check the user is delete or not
+  const userDeleted = isUserExists.isDeleted;
+  if(userDeleted){
+    throw new AppError(httpStatus.FORBIDDEN, 'User is already deleted!');
+  };
+
+  // Check the buter is exist or not
+  const isBuyerExists = await Buyer.findOne({userId});
+  if(!isBuyerExists){
+    throw new AppError(httpStatus.NOT_FOUND, 'Buyer not found!');
+  };
+
+  const addShippingAddress = await Buyer.findOneAndUpdate({userId}, {$push: {shippingAddress: newShippingAddress}}, {new: true});
+
+  return addShippingAddress;
+
 };
+
+const updateShippingAddressIntoDB = async(userId: string, updatedShippingAddress: Partial<TShippingAddress>) => {
+  console.log(userId, updatedShippingAddress);
+}
 
 export const BuyerServices = {
   addBuyerInfoIntoDB,
   addShippingAddressIntoDB,
   addBuyerProfilePictureIntoDB,
-  getBuyerInformationFromDB
+  getBuyerInformationFromDB,
+  updateShippingAddressIntoDB
 };
