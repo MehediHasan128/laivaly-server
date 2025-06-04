@@ -19,6 +19,9 @@ router.patch('/update-buyer-image/:buyerId', upload.single('file'), BuyerControl
 // Add shipping address
 router.patch('/add-shipping-address/:userId', validateRequest(ShippingAddressValidation), BuyerController.addShippingAddress)
 
+// Add shipping address
+router.patch('/update-shipping-address/:userId', validateRequest(ShippingAddressValidation), BuyerController.addShippingAddress)
+
 // Get buyer information
 router.get('/:userId', BuyerController.getBuyerInformation)
 
