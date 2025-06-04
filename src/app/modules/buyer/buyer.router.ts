@@ -3,7 +3,7 @@ import { BuyerController } from './buyer.controller';
 import validateRequest from '../../middlwares/validationRequest';
 import { BuyerValidation } from './buyer.validation';
 import { upload } from '../../utils/uploadImageToCloudinary';
-import { ShippingAddressValidation } from '../../global/validation';
+import { ShippingAddressValidation, updateShippingAddressValidation } from '../../global/validation';
 
 const router = express.Router();
 
@@ -20,7 +20,7 @@ router.patch('/update-buyer-image/:buyerId', upload.single('file'), BuyerControl
 router.patch('/add-shipping-address/:userId', validateRequest(ShippingAddressValidation), BuyerController.addShippingAddress)
 
 // Add shipping address
-router.patch('/update-shipping-address/:userId', validateRequest(ShippingAddressValidation), BuyerController.addShippingAddress)
+router.patch('/update-shipping-address/:userId', validateRequest(updateShippingAddressValidation), BuyerController.updateShippingAddress)
 
 // Get buyer information
 router.get('/:userId', BuyerController.getBuyerInformation)

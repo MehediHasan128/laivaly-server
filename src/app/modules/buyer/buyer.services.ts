@@ -26,19 +26,17 @@ const addBuyerInfoIntoDB = async (
   return data;
 };
 
-const getBuyerInformationFromDB = async(userId: string) => {
-  
+const getBuyerInformationFromDB = async (userId: string) => {
   // Check the user is exist or not
   const isUserExist = await User.findById(userId);
-  if(!isUserExist){
+  if (!isUserExist) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
-  };
+  }
 
-  const data = await Buyer.findOne({userId});
+  const data = await Buyer.findOne({ userId });
 
   return data;
-
-}
+};
 
 const addBuyerProfilePictureIntoDB = async (
   buyerId: string,
@@ -126,39 +124,69 @@ const addShippingAddressIntoDB = async (
   userId: string,
   newShippingAddress: Pick<TBuyer, 'shippingAddress'>,
 ) => {
-  
   // Check the user is exist or not
   const isUserExists = await User.findById(userId);
-  if(!isUserExists){
+  if (!isUserExists) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found!');
-  };
+  }
 
   // Check the user is delete or not
   const userDeleted = isUserExists.isDeleted;
-  if(userDeleted){
+  if (userDeleted) {
     throw new AppError(httpStatus.FORBIDDEN, 'User is already deleted!');
-  };
+  }
 
   // Check the buter is exist or not
-  const isBuyerExists = await Buyer.findOne({userId});
-  if(!isBuyerExists){
+  const isBuyerExists = await Buyer.findOne({ userId });
+  if (!isBuyerExists) {
     throw new AppError(httpStatus.NOT_FOUND, 'Buyer not found!');
-  };
+  }
 
-  const addShippingAddress = await Buyer.findOneAndUpdate({userId}, {$push: {shippingAddress: newShippingAddress}}, {new: true});
+  const addShippingAddress = await Buyer.findOneAndUpdate(
+    { userId },
+    { $push: { shippingAddress: newShippingAddress } },
+    { new: true },
+  );
 
   return addShippingAddress;
-
 };
 
-const updateShippingAddressIntoDB = async(userId: string, updatedShippingAddress: Partial<TShippingAddress>) => {
-  console.log(userId, updatedShippingAddress);
-}
+const updateShippingAddressIntoDB = async (
+  userId: string,
+  addressId: string,
+  updatedShippingAddress: Partial<TShippingAddress>,
+) => {
+  // Check the user is exist or not
+  const isUserExists = await User.findById(userId);
+  if (!isUserExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found!');
+  }
+
+  // Check the user is delete or not
+  const userDeleted = isUserExists.isDeleted;
+  if (userDeleted) {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is already deleted!');
+  }
+
+  // Check the buter is exist or not
+  const isBuyerExists = await Buyer.findOne({ userId });
+  if (!isBuyerExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Buyer not found!');
+  }
+
+  const updateObject: Record<string, any> = {};
+  for (const key of Object.keys(updatedShippingAddress) as (keyof TShippingAddress)[]) {
+    updateObject[`shippingAddress.$[elem].${key}`] = updatedShippingAddress[key];
+  };
+
+  const shippingAddressUpdated = await Buyer.findOneAndUpdate({userId}, {$set: updateObject}, {arrayFilters: [{'elem._id': addressId}], new: true});
+  return shippingAddressUpdated;
+};
 
 export const BuyerServices = {
   addBuyerInfoIntoDB,
   addShippingAddressIntoDB,
   addBuyerProfilePictureIntoDB,
   getBuyerInformationFromDB,
-  updateShippingAddressIntoDB
+  updateShippingAddressIntoDB,
 };

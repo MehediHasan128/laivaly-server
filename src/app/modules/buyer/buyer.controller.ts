@@ -61,7 +61,7 @@ const addShippingAddress = catchAsync(async(req, res) => {
 
 const updateShippingAddress = catchAsync(async(req, res) => {
 
-    const data = await BuyerServices.updateShippingAddressIntoDB(req.params.userId, req.body);
+    const data = await BuyerServices.updateShippingAddressIntoDB(req.params.userId, req.query.addressId as string, req.body);
 
     sendResponce(res, {
         success: true,
