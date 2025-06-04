@@ -19,38 +19,28 @@ export const UserNameValidationSchema = z.object({
 });
 
 export const ShippingAddressValidation = z.object({
-  street: z
-    .string({
-      required_error: 'Street is required',
-      invalid_type_error: 'Street must be a string',
-    })
-    .min(1, { message: 'Street cannot be empty' }),
+  addressCategory: z.string(),
+  recipientsName: z
+    .string()
+    .min(1, { message: "Recipient's name is required." })
+    .trim(),
 
-  city: z
-    .string({
-      required_error: 'City is required',
-      invalid_type_error: 'City must be a string',
-    })
-    .min(1, { message: 'City cannot be empty' }),
+  phoneNumber: z
+    .string()
+    .min(7, { message: 'Phone number must be at least 7 digits.' })
+    .max(15, { message: 'Phone number must not exceed 15 digits.' })
+    .regex(/^\+?\d{7,15}$/, {
+      message:
+        'Phone number is invalid. It should contain only digits and may start with a +.',
+    }),
 
-  state: z
-    .string({
-      required_error: 'State is required',
-      invalid_type_error: 'State must be a string',
-    })
-    .min(1, { message: 'State cannot be empty' }),
+  address: z.string().min(1, { message: 'Address is required.' }).trim(),
 
-  postalCode: z
-    .string({
-      required_error: 'Postalcode is required',
-      invalid_type_error: 'Postalcode must be a string',
-    })
-    .min(1, { message: 'Postalcode cannot be empty' }),
+  city: z.string().min(1, { message: 'City is required.' }).trim(),
 
-  country: z
-    .string({
-      required_error: 'Country is required',
-      invalid_type_error: 'Country must be a string',
-    })
-    .min(1, { message: 'Country cannot be empty' }),
+  postalCode: z.string().min(1, { message: 'Postal code is required.' }).trim(),
+
+  state: z.string().min(1, { message: 'State is required.' }).trim(),
+
+  country: z.string().min(1, { message: 'Country is required.' }).trim(),
 });

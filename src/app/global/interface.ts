@@ -4,9 +4,12 @@ export type TUserName = {
 }
 
 export type TShippingAddress = {
-    street: string;
+    addressCategory: string;
+    recipientsName: string;
+    phoneNumber: string;
+    address: string;
     city: string;
-    state: string;
     postalCode: string;
+    state: string;
     country: string;
 };
