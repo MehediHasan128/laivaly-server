@@ -73,10 +73,25 @@ const updateShippingAddress = catchAsync(async(req, res) => {
 });
 
 
+const deleteShippingAddress = catchAsync(async(req, res) => {
+
+    const data = await BuyerServices.deleteShippingAddressFromDB(req.params.userId, req.query.addressId as string);
+
+    sendResponce(res, {
+        success: true,
+        statusCode: httpStatus.OK,
+        message: 'Your Shipping address successfully delete',
+        data: data
+    });
+
+});
+
+
 export const BuyerController = {
     addBuyerInfo,
     addShippingAddress,
     addBuyerProfile,
     getBuyerInformation,
-    updateShippingAddress
+    updateShippingAddress,
+    deleteShippingAddress
 }

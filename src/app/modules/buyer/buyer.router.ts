@@ -22,6 +22,9 @@ router.patch('/add-shipping-address/:userId', validateRequest(ShippingAddressVal
 // Add shipping address
 router.patch('/update-shipping-address/:userId', validateRequest(updateShippingAddressValidation), BuyerController.updateShippingAddress)
 
+// Delete shipping address
+router.delete('/delete-shipping-address/:userId', BuyerController.deleteShippingAddress)
+
 // Get buyer information
 router.get('/:userId', BuyerController.getBuyerInformation)
 

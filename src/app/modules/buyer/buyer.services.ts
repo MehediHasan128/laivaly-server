@@ -168,19 +168,53 @@ const updateShippingAddressIntoDB = async (
     throw new AppError(httpStatus.FORBIDDEN, 'User is already deleted!');
   }
 
-  // Check the buter is exist or not
+  // Check the buyer is exist or not
   const isBuyerExists = await Buyer.findOne({ userId });
   if (!isBuyerExists) {
     throw new AppError(httpStatus.NOT_FOUND, 'Buyer not found!');
   }
 
   const updateObject: Record<string, any> = {};
-  for (const key of Object.keys(updatedShippingAddress) as (keyof TShippingAddress)[]) {
-    updateObject[`shippingAddress.$[elem].${key}`] = updatedShippingAddress[key];
-  };
+  for (const key of Object.keys(
+    updatedShippingAddress,
+  ) as (keyof TShippingAddress)[]) {
+    updateObject[`shippingAddress.$[elem].${key}`] =
+      updatedShippingAddress[key];
+  }
 
-  const shippingAddressUpdated = await Buyer.findOneAndUpdate({userId}, {$set: updateObject}, {arrayFilters: [{'elem._id': addressId}], new: true});
+  const shippingAddressUpdated = await Buyer.findOneAndUpdate(
+    { userId },
+    { $set: updateObject },
+    { arrayFilters: [{ 'elem._id': addressId }], new: true },
+  );
   return shippingAddressUpdated;
+};
+
+const deleteShippingAddressFromDB = async (
+  userId: string,
+  addressId: string,
+) => {
+  // Check the user is exist or not
+  const isUserExists = await User.findById(userId);
+  if (!isUserExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found!');
+  }
+
+  // Check the user is delete or not
+  const userDeleted = isUserExists.isDeleted;
+  if (userDeleted) {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is already deleted!');
+  }
+
+  // Check the buyer is exist or not
+  const isBuyerExists = await Buyer.findOne({ userId });
+  if (!isBuyerExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Buyer not found!');
+  }
+
+  const result = await Buyer.findOneAndUpdate({userId}, {$pull: {shippingAddress: {_id: addressId}}}, {new: true});
+
+  return result;
 };
 
 export const BuyerServices = {
@@ -189,4 +223,5 @@ export const BuyerServices = {
   addBuyerProfilePictureIntoDB,
   getBuyerInformationFromDB,
   updateShippingAddressIntoDB,
+  deleteShippingAddressFromDB,
 };
