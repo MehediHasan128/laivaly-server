@@ -8,13 +8,9 @@ import { ShippingAddressValidation, updateShippingAddressValidation } from '../.
 const router = express.Router();
 
 // update buyer information
-router.patch(
-  '/update-buyer-info/:buyerId',
-  validateRequest(BuyerValidation.updateBuyerValidationSchema),
-  BuyerController.addBuyerInfo,
-);
+router.patch('/add-buyer-info/:userId', BuyerController.addBuyerInfo);
 
-router.patch('/update-buyer-image/:buyerId', upload.single('file'), BuyerController.addBuyerProfile);
+router.patch('/update-buyer-profile/:userId', upload.single('file'), BuyerController.addBuyerProfile);
 
 // Add shipping address
 router.patch('/add-shipping-address/:userId', validateRequest(ShippingAddressValidation), BuyerController.addShippingAddress)

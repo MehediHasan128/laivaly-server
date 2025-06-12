@@ -5,7 +5,7 @@ import { BuyerServices } from "./buyer.services";
 
 const addBuyerInfo = catchAsync(async(req, res) => {
 
-    const data = await BuyerServices.addBuyerInfoIntoDB(req.params.buyerId, req.body);
+    const data = await BuyerServices.addBuyerInfoIntoDB(req.params.userId, req.body);
 
     sendResponce(res, {
         success: true,
@@ -33,7 +33,7 @@ const getBuyerInformation = catchAsync(async(req, res) => {
 
 const addBuyerProfile = catchAsync(async(req, res) => {
 
-    const data = await BuyerServices.addBuyerProfilePictureIntoDB(req.params.buyerId, req.file);
+    const data = await BuyerServices.addBuyerProfilePictureIntoDB(req.params.userId, req.file);
 
     sendResponce(res, {
         success: true,

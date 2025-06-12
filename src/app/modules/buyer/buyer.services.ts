@@ -8,22 +8,23 @@ import { Buyer } from './buyer.model';
 import httpStatus from 'http-status';
 import { TShippingAddress } from '../../global/interface';
 
-const addBuyerInfoIntoDB = async (
-  buyerId: string,
-  payload: Partial<TBuyer>,
-) => {
-  // Check the buyer is exist or not
-  const isexistsBuyer = await Buyer.findOne({ id: buyerId });
-
-  if (!isexistsBuyer) {
-    throw new AppError(httpStatus.NOT_FOUND, 'Buyer not found');
+const addBuyerInfoIntoDB = async (userId: string, payload: Partial<TBuyer>) => {
+  // check the user is exist or not
+  const isUserExist = await User.findById(userId);
+  if (!isUserExist) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found');
   }
 
-  const data = await Buyer.findOneAndUpdate({ id: buyerId }, payload, {
-    new: true,
-  });
+  // Check the user is user is delete or not
+  const isUserDelete = isUserExist?.isDeleted;
 
-  return data;
+  if (isUserDelete) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'User is already deleted!');
+  }
+
+  const res = await Buyer.findOneAndUpdate({ userId }, payload, { new: true });
+
+  return res;
 };
 
 const getBuyerInformationFromDB = async (userId: string) => {
@@ -38,29 +39,24 @@ const getBuyerInformationFromDB = async (userId: string) => {
   return data;
 };
 
-const addBuyerProfilePictureIntoDB = async (
-  buyerId: string,
-  imageFile: any,
-) => {
-  // Const check the user is exists or not
-  const isUserExists = await User.findOne({ id: buyerId });
-
+const addBuyerProfilePictureIntoDB = async (userId: string, imageFile: any) => {
+  // Check the user is exist or not
+  const isUserExists = await User.findById(userId);
   if (!isUserExists) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found!');
   }
 
-  // Check the user is user is delete or not
+  // Check the user is delete or not
   const isUserDelete = isUserExists?.isDeleted;
-
   if (isUserDelete) {
     throw new AppError(httpStatus.BAD_REQUEST, 'User is already deleted!');
   }
 
-  // get image name and path
-  const imagePath = imageFile.path;
+  // Get the image name and path
   const imageName = isUserExists?.id;
+  const imagePath = imageFile.path;
 
-  // Update buyer profile image
+  // Add or update buyer profile image with transaction and rollback
   const session = await startSession();
 
   try {
@@ -77,16 +73,16 @@ const addBuyerProfilePictureIntoDB = async (
     const uploadImage = await uploadImageToCloudinary(imageFile);
 
     if (!uploadImage) {
-      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to upload photo!');
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to upload image!');
     }
 
     const imageURL = uploadImage[0]?.secure_url;
 
     // update image in user collection
-    const updateUser = await User.findOneAndUpdate(
-      { id: buyerId },
+    const updateUser = await User.findByIdAndUpdate(
+      userId,
       { profileImage: imageURL },
-      { new: true, session },
+      { session },
     );
 
     if (!updateUser) {
@@ -96,9 +92,9 @@ const addBuyerProfilePictureIntoDB = async (
       );
     }
 
-    // Update image in buyer collection
+    // update image in buyer collection
     const updateBuyer = await Buyer.findOneAndUpdate(
-      { id: buyerId },
+      { userId: userId },
       { profileImage: imageURL },
       { new: true, session },
     );
@@ -109,6 +105,7 @@ const addBuyerProfilePictureIntoDB = async (
         'Failed to upload photo in buyer collection!',
       );
     }
+
     await session.commitTransaction();
     await session.endSession();
 
@@ -212,7 +209,11 @@ const deleteShippingAddressFromDB = async (
     throw new AppError(httpStatus.NOT_FOUND, 'Buyer not found!');
   }
 
-  const result = await Buyer.findOneAndUpdate({userId}, {$pull: {shippingAddress: {_id: addressId}}}, {new: true});
+  const result = await Buyer.findOneAndUpdate(
+    { userId },
+    { $pull: { shippingAddress: { _id: addressId } } },
+    { new: true },
+  );
 
   return result;
 };
