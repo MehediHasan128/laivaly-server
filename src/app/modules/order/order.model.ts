@@ -2,8 +2,8 @@ import { model, Schema } from 'mongoose';
 import {
   TOrder,
   TOrderProducts,
-  TOrderShippingAddress,
 } from './order.interface';
+import { ShippingAddressSchema } from '../../global/model';
 
 const OrderProductSchema = new Schema<TOrderProducts>({
   productId: {
@@ -28,29 +28,6 @@ const OrderProductSchema = new Schema<TOrderProducts>({
   },
 });
 
-const OrderShippingAddressSchema = new Schema<TOrderShippingAddress>({
-  street: {
-    type: String,
-    required: [true, 'Street is required'],
-  },
-  city: {
-    type: String,
-    required: [true, 'City is required'],
-  },
-  state: {
-    type: String,
-    required: [true, 'State is required'],
-  },
-  zip: {
-    type: String,
-    required: [true, 'ZIP code is required'],
-  },
-  country: {
-    type: String,
-    required: [true, 'Country is required'],
-  },
-});
-
 const OrderSchema = new Schema<TOrder>({
   userId: {
     type: Schema.Types.ObjectId,
@@ -65,7 +42,7 @@ const OrderSchema = new Schema<TOrder>({
     },
     required: [true, 'Products are required'],
   },
-  shippingAddress: OrderShippingAddressSchema,
+  shippingAddress: ShippingAddressSchema,
   paymentMethod: {
     type: String,
     enum: {

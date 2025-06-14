@@ -8,10 +8,26 @@ import { Order } from './order.model';
 import config from '../../config';
 import Stripe from 'stripe';
 import { User } from '../users/user.model';
+import { Buyer } from '../buyer/buyer.model';
 
 const createStripeCheckoutSession = async (orderData: TOrder) => {
+
+  const buyerAddress = await Buyer.findOne({userId: orderData.userId}, { shippingAddress: { $elemMatch: { _id: orderData.shippingAddress } } });
+  const shippingAddress = buyerAddress!.shippingAddress?.[0];
+
+  const data: Partial<TOrder> = {};
+
+  data.userId = orderData.userId;
+  data.products = orderData.products;
+  data.shippingAddress = shippingAddress
+  data.paymentMethod = orderData.paymentMethod;
+  data.orderDate = orderData.orderDate;
+  data.paymentStatus = orderData.paymentStatus;
+  data.status = orderData.status;
+  data.totalAmount = orderData.totalAmount;
+
   const lineItems = await Promise.all(
-    orderData.products.map(async (item) => {
+    data.products.map(async (item) => {
       const product = await Product.findById(item.productId);
       if (!product) {
         throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
@@ -39,7 +55,7 @@ const createStripeCheckoutSession = async (orderData: TOrder) => {
     line_items: lineItems,
     mode: 'payment',
     success_url: 'http://localhost:5173/profile/my-orders',
-    cancel_url: 'http://localhost:5173/cart',
+    cancel_url: 'http://localhost:5173/cart/checkout',
     metadata: {
       userId: orderData.userId.toString(),
       products: JSON.stringify(orderData.products),

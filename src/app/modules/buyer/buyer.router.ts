@@ -1,7 +1,6 @@
 import express from 'express';
 import { BuyerController } from './buyer.controller';
 import validateRequest from '../../middlwares/validationRequest';
-import { BuyerValidation } from './buyer.validation';
 import { upload } from '../../utils/uploadImageToCloudinary';
 import { ShippingAddressValidation, updateShippingAddressValidation } from '../../global/validation';
 
