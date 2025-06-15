@@ -11,15 +11,17 @@ import { User } from '../users/user.model';
 import { Buyer } from '../buyer/buyer.model';
 
 const createStripeCheckoutSession = async (orderData: TOrder) => {
-
-  const buyerAddress = await Buyer.findOne({userId: orderData.userId}, { shippingAddress: { $elemMatch: { _id: orderData.shippingAddress } } });
+  const buyerAddress = await Buyer.findOne(
+    { userId: orderData.userId },
+    { shippingAddress: { $elemMatch: { _id: orderData.shippingAddress } } },
+  );
   const shippingAddress = buyerAddress!.shippingAddress?.[0];
 
   const data: Partial<TOrder> = {};
 
   data.userId = orderData.userId;
   data.products = orderData.products;
-  data.shippingAddress = shippingAddress
+  data.shippingAddress = shippingAddress;
   data.paymentMethod = orderData.paymentMethod;
   data.orderDate = orderData.orderDate;
   data.paymentStatus = orderData.paymentStatus;
@@ -60,7 +62,7 @@ const createStripeCheckoutSession = async (orderData: TOrder) => {
       userId: orderData.userId.toString(),
       products: JSON.stringify(orderData.products),
       shippingAddress: JSON.stringify(orderData.shippingAddress),
-      totalAmount: String(orderData.totalAmount)
+      totalAmount: String(orderData.totalAmount),
     },
   });
 
@@ -103,6 +105,31 @@ const handleStripeWebhook = async (data: Buffer, signature: string) => {
   }
 };
 
+const createOrderOnCashOnDelivery = async (orderData: TOrder) => {
+  const buyerAddress = await Buyer.findOne(
+    { userId: orderData.userId },
+    { shippingAddress: { $elemMatch: { _id: orderData.shippingAddress } } },
+  );
+  const shippingAddress = buyerAddress!.shippingAddress?.[0];
+
+  const data: Partial<TOrder> = {};
+
+  data.userId = orderData.userId;
+  data.products = orderData.products;
+  data.shippingAddress = shippingAddress;
+  data.paymentMethod = orderData.paymentMethod;
+  data.orderDate = orderData.orderDate;
+  data.paymentStatus = orderData.paymentStatus;
+  data.status = orderData.status;
+  data.totalAmount = orderData.totalAmount;
+
+  console.log(data);
+
+  const res = await Order.create(data);
+
+  return res;
+};
+
 const getAllOrdersFromDB = async () => {
   const data = await Order.find()
     .populate({ path: 'userId', select: '_id userName profileImage' })
@@ -111,22 +138,21 @@ const getAllOrdersFromDB = async () => {
 };
 
 const getUserOrdersFromDB = async (userId: string) => {
-  
   // Check the user is exist or not
   const isUserExist = await User.findById(userId);
-  if(!isUserExist){
+  if (!isUserExist) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found');
-  };
+  }
 
-  const data = await Order.find({userId});
+  const data = await Order.find({ userId });
 
   return data;
-
-}
+};
 
 export const OrderServices = {
   createStripeCheckoutSession,
   handleStripeWebhook,
   getAllOrdersFromDB,
-  getUserOrdersFromDB
+  getUserOrdersFromDB,
+  createOrderOnCashOnDelivery,
 };

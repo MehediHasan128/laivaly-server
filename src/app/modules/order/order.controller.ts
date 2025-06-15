@@ -30,6 +30,17 @@ const StripeWebhook = async (req: Request, res: Response) => {
   }
 };
 
+const handleCreateCashOnDelivery = catchAsync(async (req, res) => {
+  const data = await OrderServices.createOrderOnCashOnDelivery(req.body);
+
+  sendResponce(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Successfully placed your order',
+    data: data,
+  });
+});
+
 const getAllOrder = catchAsync(async (req, res) => {
   const data = await OrderServices.getAllOrdersFromDB();
 
@@ -57,4 +68,5 @@ export const OrderController = {
   StripeWebhook,
   getAllOrder,
   getUserOrders,
+  handleCreateCashOnDelivery,
 };
