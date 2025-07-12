@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 import app from './app';
 import config from './app/config';
 import { Server } from 'http';
+import seedAdminOnDatabase from './app/admin';
 
 
 let server: Server;
@@ -9,6 +10,9 @@ let server: Server;
 async function main() {
   try {
     await mongoose.connect(config.database_url as string);
+
+    // Create admin
+    seedAdminOnDatabase();
 
     server = app.listen(config.port, () => {
       console.log(`The laivaly server is running on port ${config.port}`);
