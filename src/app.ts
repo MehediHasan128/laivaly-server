@@ -2,6 +2,7 @@
 import cors from 'cors';
 import express, { Application, NextFunction, Request, Response } from 'express';
 import { globalErrorHandler } from './app/middlewares/globalErrorHandler';
+import { notFound } from './app/middlewares/notFound';
 
 const app: Application = express();
 
@@ -14,6 +15,8 @@ app.get('/', (req, res) => {
 });
 
 // middlewares
-app.use(globalErrorHandler as (err: any, req: Request, res: Response, next: NextFunction) => void)
+app.use(globalErrorHandler as (err: any, req: Request, res: Response, next: NextFunction) => void);
+// Invalid Api
+app.use(notFound as (req: Request, res: Response) => void);
 
 export default app;
