@@ -19,3 +19,53 @@ export const userNameValidationSchema = z.object({
     .max(50, { message: 'Last name must be at most 50 characters' })
     .trim(),
 });
+
+export const shippingAddressValidationSchema = z.object({
+  addressCategory: z
+    .string({
+      required_error: 'Address category is required',
+    })
+    .min(1, 'Address category cannot be empty'),
+
+  recipientsName: z
+    .string({
+      required_error: "Recipient's name is required",
+    })
+    .min(2, "Recipient's name must be at least 2 characters"),
+
+  phoneNumber: z
+    .string({
+      required_error: 'Phone number is required',
+    })
+    .regex(/^\+?[0-9]{10,15}$/, 'Phone number must be valid'),
+
+  address: z
+    .string({
+      required_error: 'Address is required',
+    })
+    .min(1, 'Address cannot be empty'),
+
+  city: z
+    .string({
+      required_error: 'City is required',
+    })
+    .min(1, 'City cannot be empty'),
+
+  postalCode: z
+    .string({
+      required_error: 'Postal code is required',
+    })
+    .regex(/^\d{4,10}$/, 'Postal code must be 4 to 10 digits'),
+
+  state: z
+    .string({
+      required_error: 'State is required',
+    })
+    .min(1, 'State cannot be empty'),
+
+  country: z
+    .string({
+      required_error: 'Country is required',
+    })
+    .min(1, 'Country cannot be empty'),
+});
