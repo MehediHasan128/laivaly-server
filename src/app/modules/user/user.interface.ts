@@ -1,5 +1,7 @@
+import { TUserName } from "../../global/interface";
+
 export interface TUser {
-    userName: string;
+    userName: TUserName;
     userEmail: string;
     userProfileURL: string;
     password: string;

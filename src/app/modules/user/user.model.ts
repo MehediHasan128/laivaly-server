@@ -1,0 +1,54 @@
+import { model, Schema } from 'mongoose';
+import { TUser } from './user.interface';
+import { userNameSchema } from '../../global/model';
+
+const userSchema = new Schema<TUser>({
+  userName: {
+    type: userNameSchema,
+    required: [true, 'User name is required'],
+  },
+  userEmail: {
+    type: String,
+    required: [true, 'User email is required'],
+    unique: true,
+    lowercase: true,
+    trim: true,
+    match: [/\S+@\S+\.\S+/, 'Please enter a valid email address'],
+  },
+  userProfileURL: {
+    type: String,
+    required: [true, 'User profile URL is required'],
+    match: [/^https?:\/\/.+/, 'User profile URL must be a valid URL'],
+  },
+  password: {
+    type: String,
+    required: [true, 'Password is required'],
+    minlength: [8, 'Password must be at least 8 characters long'],
+    validate: {
+      validator: function (pass: string) {
+        return /[A-Z]/.test(pass) && /[!@#$%^&*(),.?":{}|<>]/.test(pass);
+      },
+      message:
+        'Password must contain at least one uppercase letter and one special character',
+    },
+  },
+  role: {
+    type: String,
+    enum: {
+      values: ['admin', 'staff', 'customer'],
+      message: 'Role must be either admin, staff, or customer',
+    },
+    required: [true, 'User role is required'],
+  },
+  status: {
+    type: String,
+    enum: {
+      values: ['active', 'pending', 'banned'],
+      message: 'Status must be either active, pending, or banned',
+    },
+    default: 'pending',
+  },
+});
+
+
+export const User = model<TUser>('Users', userSchema);
