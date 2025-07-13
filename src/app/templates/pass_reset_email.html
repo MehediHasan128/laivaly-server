@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Password Reset - Laivaly</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        background: #f9f5f2;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: #333;
+        background-color: #e0e0e0;
+      }
+      .container {
+        max-width: 600px;
+        margin: 50px auto;
+        background: #ffffff;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+      }
+      .header {
+        background: #31473a;
+        color: #fff;
+        padding: 24px;
+        text-align: center;
+      }
+      .header h1 {
+        margin: 0;
+        font-size: 28px;
+        letter-spacing: 1px;
+      }
+      .content {
+        padding: 32px;
+        text-align: center;
+      }
+      .content h1 {
+        margin-top: 0;
+        color: #222;
+        font-size: 24px;
+      }
+      .content h4 {
+        color: #555;
+        margin: 16px 0 32px;
+        font-weight: 500;
+      }
+      .content h5 {
+        color: #555;
+        margin: 16px 0 32px;
+        font-weight: 500;
+      }
+      .btn {
+        background: #31473a;
+        color: #fff !important;
+        text-decoration: none;
+        padding: 14px 28px;
+        margin: 20px 0px;
+        font-weight: bold;
+        border-radius: 8px;
+        display: inline-block;
+        transition: background 0.3s ease;
+        cursor: pointer;
+      }
+      .btn:hover {
+        background: #07331a;
+      }
+      .footer {
+        padding: 24px;
+        font-size: 13px;
+        text-align: center;
+        color: #999;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <h1>Laivaly</h1>
+      </div>
+      <div class="content">
+        <h1>Hi [User's Name]</h1>
+        <h4>
+          We received a request to reset your password. Click the button below
+          to set a new password for your Laivaly account.
+        </h4>
+        <a href="{{RESET_LINK}}" target="_blank" class="btn">Reset Password</a>
+        <h5>If you didn't request this, you can safely ignore this email.</h5>
+      </div>
+      <div class="footer">&copy; 2025 Laivaly. All rights reserved.</div>
+    </div>
+  </body>
+</html>

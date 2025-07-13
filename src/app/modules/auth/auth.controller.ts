@@ -22,6 +22,18 @@ const loginUser = catchAsync(async (req, res) => {
   });
 });
 
+const forgetPassword = catchAsync(async (req, res) => {
+  const data = await AuthServices.forgetUserPassword(req.body.userEmail);
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Password reset link is generated succesfully!',
+    data: data,
+  });
+});
+
 export const AuthController = {
   loginUser,
+  forgetPassword
 };

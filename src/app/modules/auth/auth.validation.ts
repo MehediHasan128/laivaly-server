@@ -9,7 +9,16 @@ const userLoginValidationSchema = z.object({
 
 });
 
+const forgetUserPasswordValidationSchema = z.object({
+
+    body: z.object({
+        userEmail: z.string({required_error: 'User email is required'}),
+    })
+
+});
+
 
 export const AuthValidation = {
-    userLoginValidationSchema
+    userLoginValidationSchema,
+    forgetUserPasswordValidationSchema
 }

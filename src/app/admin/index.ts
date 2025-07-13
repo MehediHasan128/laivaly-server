@@ -8,7 +8,7 @@ const admin = {
         lastName: 'Hasan'
     },
     userProfileURL: 'https://res.cloudinary.com/dn6pn2fld/image/upload/v1752350656/1_pc6d2z.jpg',
-    userEmail: 'laivaly.bd@gmail.com',
+    userEmail: config.admin_email,
     password: config.admin_pass,
     role: 'admin',
     status: 'active'
