@@ -49,7 +49,7 @@ const userLogin = async(payload: TUserLogin) => {
     
     return {
         accessToken,
-        refreshToken
+        refreshToken,
     }
 
 };
