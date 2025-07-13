@@ -6,6 +6,12 @@ export const globalErrorHandler = (err: any, req: Request, res: Response, next: 
 
     const statusCode = 500;
     const message = 'Something went wrong!';
+    const errorSource = [
+        {
+            path: '',
+            message: 'Something went wrong'
+        }
+    ]
 
     return res.status(statusCode).json({
         success: false,
