@@ -4,7 +4,7 @@ export interface TUser {
     id: string;
     userName: TUserName;
     userEmail: string;
-    userProfileURL: string;
+    userProfileURL: string | null;
     password: string;
     role: 'admin' | 'staff' | 'customer';
     status: 'active' | 'pending' | 'banned';

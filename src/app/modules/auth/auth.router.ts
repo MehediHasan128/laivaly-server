@@ -9,5 +9,7 @@ const router = express.Router();
 router.post('/login', validationRequest(AuthValidation.userLoginValidationSchema), AuthController.loginUser);
 // Forget user password
 router.post('/forget-password', validationRequest(AuthValidation.forgetUserPasswordValidationSchema), AuthController.forgetPassword);
+// Reset user password
+router.post('/reset-password', validationRequest(AuthValidation.forgetUserPasswordValidationSchema), AuthController.resetPassword);
 
 export const AuthRoutes = router;

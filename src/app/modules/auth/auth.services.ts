@@ -1,6 +1,6 @@
 import AppError from "../../errors/AppError";
 import { User } from "../user/user.model";
-import { TUserLogin } from "./auth.interface";
+import { TResetData, TUserLogin } from "./auth.interface";
 import httpStatus from 'http-status';
 import bcrypt from 'bcrypt';
 import config from "../../config";
@@ -107,10 +107,16 @@ const forgetUserPassword = async(userEmail: string) => {
     // Send email with password reset link
     await sendMail(isUserExist?.userEmail, 'Password reset link', htmlContent);
 
-}
+};
 
+const resetUserPassword = async(payload: TResetData, resetToken: string) => {
+
+    console.log(payload, resetToken);
+
+};
 
 export const AuthServices = {
     userLogin,
-    forgetUserPassword
+    forgetUserPassword,
+    resetUserPassword
 }
