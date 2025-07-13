@@ -27,13 +27,10 @@ const customerSchema = new Schema<TCustomer>(
     },
     dateOfBirth: {
       type: Date,
-      required: [true, 'Date of birth is required'],
       default: null,
     },
     phoneNumber: {
       type: String,
-      required: [true, 'Phone number is required'],
-      match: [/^\+?[0-9]{10,15}$/, 'Phone number must be valid'],
       default: null,
     },
     gender: {
@@ -43,7 +40,7 @@ const customerSchema = new Schema<TCustomer>(
     },
     shippingAddress: {
       type: [shippingAddressSchema],
-      default: null,
+      default: [],
     },
     isDeleted: {
       type: Boolean,

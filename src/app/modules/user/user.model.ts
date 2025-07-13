@@ -24,8 +24,6 @@ const userSchema = new Schema<TUser>(
     },
     userProfileURL: {
       type: String,
-      required: [true, 'User profile URL is required'],
-      match: [/^https?:\/\/.+/, 'User profile URL must be a valid URL'],
       default: null
     },
     password: {

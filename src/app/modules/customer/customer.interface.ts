@@ -9,6 +9,6 @@ export interface TCustomer {
     dateOfBirth: Date | null;
     phoneNumber: string | null;
     gender: 'male' | 'female' | null;
-    shippingAddress: TShippingAddress[] | null;
+    shippingAddress: TShippingAddress[] | [];
     isDeleted: boolean;
 }

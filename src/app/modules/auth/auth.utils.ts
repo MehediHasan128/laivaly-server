@@ -2,10 +2,10 @@ import { TUserName } from '../../global/interface';
 import jwt from 'jsonwebtoken';
 
 export interface TJwtPayload {
-  userId: string;
+  id: string;
   userName: TUserName;
   userEmail: string;
-  userProfileURL: string;
+  userProfileURL: string | null;
   userRole: string;
 }
 
