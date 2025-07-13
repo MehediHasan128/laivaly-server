@@ -1,10 +1,10 @@
-export interface TErrorSource {
+export interface TErrorSources {
     path: string | number;
     message: string;
-}
+};
 
 export interface TGenericErrorResponce {
     statusCode: number;
     message: string;
-    errorSource: TErrorSource[];
+    errorSources: TErrorSources[];
 }
