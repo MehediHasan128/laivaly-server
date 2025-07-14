@@ -9,6 +9,7 @@ import path from 'path';
 import fs from 'fs';
 import sendEmail from '../../utils/sendEmail';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import { redis } from '../../lib/redis';
 
 const userLogin = async (payload: TUserLogin) => {
   // Check the user is exist or not
@@ -169,8 +170,50 @@ const resetUserPassword = async (payload: TResetData, resetToken: string) => {
   );
 };
 
+const verifyEmail = async (payload: { userEmail: string; otp: string }) => {
+  // Check the user is exist or not
+  const isUserExist = await User.findOne({ userEmail: payload.userEmail });
+  if (!isUserExist) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found !!');
+  }
+
+  // Check the user is delete or not
+  const isUserDeleted = isUserExist.isDelete;
+  if (isUserDeleted) {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is already delete !!');
+  }
+
+  // Check the user is banned
+  const isUserbanned = isUserExist.status;
+  if (isUserbanned === 'banned') {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is already banned !!');
+  }
+
+  //  Get OTP from Redis
+  const storedOTP = await redis.get(`otp-${payload?.userEmail}`);
+  if (storedOTP === null) {
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      'Your OTP has expired. Please request a new one.',
+    );
+  }
+  if (storedOTP !== payload?.otp) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      'The OTP you entered is incorrect. Please try again.',
+    );
+  }
+
+  // If otp is correct the upadte the customer status
+  await User.findOneAndUpdate(
+    { userEmail: payload?.userEmail },
+    { status: 'active' },
+  );
+};
+
 export const AuthServices = {
   userLogin,
   forgetUserPassword,
   resetUserPassword,
+  verifyEmail,
 };

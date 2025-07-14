@@ -78,7 +78,6 @@ const createCustomerIntoDB = async (payload: TCustomer, password: string) => {
   await sendOTP(payload?.userEmail);
 };
 
-
 export const UserServices = {
-  createCustomerIntoDB,
+  createCustomerIntoDB
 };

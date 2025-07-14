@@ -44,8 +44,20 @@ const resetPassword = catchAsync(async (req, res) => {
   });
 });
 
+const profileVerify = catchAsync(async (req, res) => {
+  const data = await AuthServices.verifyEmail(req.body);
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Your profile is verified!',
+    data: data,
+  });
+});
+
 export const AuthController = {
   loginUser,
   forgetPassword,
   resetPassword,
+  profileVerify
 };

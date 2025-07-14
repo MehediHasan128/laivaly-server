@@ -12,7 +12,7 @@ export const sendOTP = async (userEmail: string) => {
   // Get otp ui html file
   const otpUiHTMLFile = path.join(
     process.cwd(),
-    'src/app/templates/pass_reset_email.html',
+    'src/app/templates/OTP.html',
   );
 
   // Get the html content
