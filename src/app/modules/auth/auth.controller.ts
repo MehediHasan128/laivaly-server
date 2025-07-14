@@ -61,11 +61,22 @@ const changePassword = catchAsync(async (req, res) => {
 const emailVarification = catchAsync(async (req, res) => {
   const data = await AuthServices.verifyEmail(req.params.userEmail, req.body.otp);
 
+  const { accessToken, refreshToken } = data;
+
+  //   Set refresh token in cookie
+  res.cookie('refreshToken', refreshToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+  });
+
   sendResponce(res, {
     statusCode: 200,
     success: true,
     message: 'Your profile is verified!',
-    data: data,
+    data: {
+      accessToken
+    },
   });
 });
 
