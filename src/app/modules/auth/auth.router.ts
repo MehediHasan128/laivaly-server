@@ -29,7 +29,7 @@ router.post(
 router.patch(
   '/change-password',
   auth(USER_ROLE.customer),
-//   validationRequest(AuthValidation.changePasswordValidationSchema),
+  validationRequest(AuthValidation.changePasswordValidationSchema),
   AuthController.changePassword,
 );
 // Verify profile

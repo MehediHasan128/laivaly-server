@@ -171,8 +171,37 @@ const resetUserPassword = async (payload: TResetData, resetToken: string) => {
   );
 };
 
-const changeUserPassword = async () => {
-  console.log(5);
+const changeUserPassword = async (userData: JwtPayload, payload: {oldPassword: string; newPassword: string}) => {
+  
+  // Check the user is exist or not
+  const isUserExist = await User.findOne({ userEmail: userData?.userEmail });
+  if (!isUserExist) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found !!');
+  }
+
+  // Check the user is delete or not
+  const isUserDeleted = isUserExist.isDelete;
+  if (isUserDeleted) {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is already delete !!');
+  }
+
+  // Check the user is banned
+  const isUserbanned = isUserExist.status;
+  if (isUserbanned === 'banned') {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is already banned !!');
+  }
+
+  // Check the old password is correct
+  const isPasswordMatch = await bcrypt.compare(payload?.oldPassword, isUserExist?.password);
+  if(!isPasswordMatch){
+    throw new AppError(httpStatus.BAD_REQUEST, 'Incorrect password !!');
+  };
+
+  // Hash new password
+  const newHashPassword = await bcrypt.hash(payload?.newPassword, Number(config.bcrypt_salt_rounds));
+
+  await User.findOneAndUpdate({userEmail: userData?.userEmail}, {password: newHashPassword})
+
 }
 
 const verifyEmail = async (userEmail: string, otp: string) => {
