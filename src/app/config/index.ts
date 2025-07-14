@@ -16,4 +16,7 @@ export default {
   reset_password_ui_link: process.env.RESET_PASSWORD_UI_LINK,
   admin_email: process.env.ADMIN_EMAIL,
   smtp_secret_credential: process.env.SMTP_SECRET_CREDENTIAL,
+  redis_host: process.env.REDIS_HOST,
+  redis_port: process.env.REDIS_PORT,
+  redis_password: process.env.REDIS_PASSWORD,
 };
