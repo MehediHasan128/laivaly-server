@@ -205,10 +205,15 @@ const verifyEmail = async (payload: { userEmail: string; otp: string }) => {
   }
 
   // If otp is correct the upadte the customer status
-  await User.findOneAndUpdate(
+  const isUserStatusUpdate = await User.findOneAndUpdate(
     { userEmail: payload?.userEmail },
     { status: 'active' },
+    {new: true}
   );
+
+  if(isUserStatusUpdate){
+    await redis.del(`otp-${payload?.userEmail}`);
+  }
 };
 
 export const AuthServices = {
