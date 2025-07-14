@@ -6,13 +6,35 @@ import { AuthValidation } from './auth.validation';
 const router = express.Router();
 
 // User login api
-router.post('/login', validationRequest(AuthValidation.userLoginValidationSchema), AuthController.loginUser);
+router.post(
+  '/login',
+  validationRequest(AuthValidation.userLoginValidationSchema),
+  AuthController.loginUser,
+);
 // Forget user password
-router.post('/forget-password', validationRequest(AuthValidation.forgetUserPasswordValidationSchema), AuthController.forgetPassword);
+router.post(
+  '/forget-password',
+  validationRequest(AuthValidation.forgetUserPasswordValidationSchema),
+  AuthController.forgetPassword,
+);
 // Reset user password
-router.post('/reset-password', validationRequest(AuthValidation.forgetUserPasswordValidationSchema), AuthController.resetPassword);
+router.post(
+  '/reset-password',
+  validationRequest(AuthValidation.forgetUserPasswordValidationSchema),
+  AuthController.resetPassword,
+);
+// Change user password
+router.patch(
+  '/change-password',
+//   validationRequest(AuthValidation.changePasswordValidationSchema),
+  AuthController.changePassword,
+);
 // Verify profile
-router.patch('/email-verify/:userEmail', validationRequest(AuthValidation.otpVerificationValidationSchema), AuthController.emailVarification);
+router.patch(
+  '/email-verify/:userEmail',
+  validationRequest(AuthValidation.otpVerificationValidationSchema),
+  AuthController.emailVarification,
+);
 // Resend otp verification email
 router.post('/resend-otp/:userEmail', AuthController.resendOTPEmail);
 

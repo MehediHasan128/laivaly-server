@@ -44,6 +44,20 @@ const resetPassword = catchAsync(async (req, res) => {
   });
 });
 
+const changePassword = catchAsync(async (req, res) => {
+
+  console.log(req);
+
+  const data = await AuthServices.changeUserPassword();
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Your password update succesfully!',
+    data: data,
+  });
+});
+
 const emailVarification = catchAsync(async (req, res) => {
   const data = await AuthServices.verifyEmail(req.params.userEmail, req.body.otp);
 
@@ -70,6 +84,7 @@ export const AuthController = {
   loginUser,
   forgetPassword,
   resetPassword,
+  changePassword,
   emailVarification,
   resendOTPEmail
 };

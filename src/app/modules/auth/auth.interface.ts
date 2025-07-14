@@ -4,3 +4,4 @@ export interface TUserLogin {
 };
 
 export type TResetData = TUserLogin; 
+export type TPasswordChange = TUserLogin;

@@ -171,6 +171,10 @@ const resetUserPassword = async (payload: TResetData, resetToken: string) => {
   );
 };
 
+const changeUserPassword = async () => {
+  console.log(5);
+}
+
 const verifyEmail = async (userEmail: string, otp: string) => {
   // Check the user is exist or not
   const isUserExist = await User.findOne({ userEmail: userEmail });
@@ -245,6 +249,7 @@ export const AuthServices = {
   userLogin,
   forgetUserPassword,
   resetUserPassword,
+  changeUserPassword,
   verifyEmail,
   resendOTPEmailVaerification
 };
