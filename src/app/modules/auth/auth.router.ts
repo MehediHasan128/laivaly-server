@@ -2,6 +2,8 @@ import express from 'express';
 import { AuthController } from './auth.controller';
 import { validationRequest } from '../../middlewares/zodValidationRequest';
 import { AuthValidation } from './auth.validation';
+import auth from '../../middlewares/auth';
+import { USER_ROLE } from '../user/user.contant';
 
 const router = express.Router();
 
@@ -26,6 +28,7 @@ router.post(
 // Change user password
 router.patch(
   '/change-password',
+  auth(USER_ROLE.customer),
 //   validationRequest(AuthValidation.changePasswordValidationSchema),
   AuthController.changePassword,
 );
