@@ -40,5 +40,11 @@ router.patch(
 );
 // Resend otp verification email
 router.post('/resend-otp/:userEmail', AuthController.resendOTPEmail);
+// Refresh access token
+router.post(
+  '/refresh-token',
+  // validationRequest(AuthValidation.refreshTokenValidationScham),
+  AuthController.refreshAccessToken
+);
 
 export const AuthRoutes = router;

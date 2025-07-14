@@ -89,11 +89,24 @@ const resendOTPEmail = catchAsync(async (req, res) => {
   });
 });
 
+const refreshAccessToken = catchAsync(async (req, res) => {
+
+  const data = await AuthServices.refreshAccessToken(req.cookies.refreshToken);
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Access token is retrieved succesfully!',
+    data: data,
+  });
+});
+
 export const AuthController = {
   loginUser,
   forgetPassword,
   resetPassword,
   changePassword,
   emailVarification,
-  resendOTPEmail
+  resendOTPEmail,
+  refreshAccessToken
 };

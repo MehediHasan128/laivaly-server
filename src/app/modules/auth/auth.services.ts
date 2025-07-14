@@ -202,7 +202,7 @@ const changeUserPassword = async (userData: JwtPayload, payload: {oldPassword: s
 
   await User.findOneAndUpdate({userEmail: userData?.userEmail}, {password: newHashPassword})
 
-}
+};
 
 const verifyEmail = async (userEmail: string, otp: string) => {
   // Check the user is exist or not
@@ -300,6 +300,53 @@ const resendOTPEmailVaerification = async (userEmail: string) => {
 
   await sendOTP(userEmail);
 
+};
+
+const refreshAccessToken = async(token: string) => {
+
+  // Check the token is valid
+  const decodedToken = jwt.verify(token, config.jwt_refresh_secret as string) as JwtPayload;
+  
+  const {userEmail} = decodedToken;
+
+  // Check the user is exist or not
+  const isUserExist = await User.findOne({ userEmail: userEmail });
+  if (!isUserExist) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found !!');
+  }
+
+  // Check the user is delete or not
+  const isUserDeleted = isUserExist.isDelete;
+  if (isUserDeleted) {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is already delete !!');
+  }
+
+  // Check the user is banned
+  const isUserbanned = isUserExist.status;
+  if (isUserbanned === 'banned') {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is already banned !!');
+  }
+
+  // create token
+  const jwtPayload = {
+    id: isUserExist?.id,
+    userName: isUserExist?.userName,
+    userEmail: isUserExist?.userEmail,
+    userProfileURL: isUserExist?.userProfileURL,
+    userRole: isUserExist?.role,
+  };
+
+  // Create access token
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expires_in as string,
+  );
+
+  return {
+    accessToken
+  }
+
 }
 
 export const AuthServices = {
@@ -308,5 +355,6 @@ export const AuthServices = {
   resetUserPassword,
   changeUserPassword,
   verifyEmail,
-  resendOTPEmailVaerification
+  resendOTPEmailVaerification,
+  refreshAccessToken
 };
