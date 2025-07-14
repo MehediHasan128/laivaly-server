@@ -8,6 +8,8 @@ import { generateCustomerAndStaffId } from './user.utils';
 import httpStatus from 'http-status';
 import { Customer } from '../customer/customer.model';
 import { sendOTP } from '../../utils/sendOTP';
+import { USER_ROLE } from './user.contant';
+import { JwtPayload } from 'jsonwebtoken';
 
 const createCustomerIntoDB = async (payload: TCustomer, password: string) => {
   // Check the user is already exist
@@ -76,6 +78,22 @@ const createCustomerIntoDB = async (payload: TCustomer, password: string) => {
   }
 };
 
+const getMe = async(user: JwtPayload) => {
+
+  let data = null;
+
+  if(user?.userRole === USER_ROLE.admin){
+    data = await User.findOne({userEmail: user?.userEmail}).select('-password');
+  };
+  if(user?.userRole === USER_ROLE.customer){
+    data = await Customer.findOne({userEmail: user?.userEmail}).populate({path: 'userId', select: '-password'});
+  };
+
+  return data;
+
+}
+
 export const UserServices = {
-  createCustomerIntoDB
+  createCustomerIntoDB,
+  getMe
 };
