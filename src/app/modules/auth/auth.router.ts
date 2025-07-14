@@ -12,6 +12,8 @@ router.post('/forget-password', validationRequest(AuthValidation.forgetUserPassw
 // Reset user password
 router.post('/reset-password', validationRequest(AuthValidation.forgetUserPasswordValidationSchema), AuthController.resetPassword);
 // Verify profile
-router.patch('/email-verify', AuthController.profileVerify);
+router.patch('/email-verify/:userEmail', validationRequest(AuthValidation.otpVerificationValidationSchema), AuthController.emailVarification);
+// Resend otp verification email
+router.post('/resend-otp/:userEmail', AuthController.resendOTPEmail);
 
 export const AuthRoutes = router;

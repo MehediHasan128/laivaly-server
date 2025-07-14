@@ -44,8 +44,8 @@ const resetPassword = catchAsync(async (req, res) => {
   });
 });
 
-const profileVerify = catchAsync(async (req, res) => {
-  const data = await AuthServices.verifyEmail(req.body);
+const emailVarification = catchAsync(async (req, res) => {
+  const data = await AuthServices.verifyEmail(req.params.userEmail, req.body.otp);
 
   sendResponce(res, {
     statusCode: 200,
@@ -55,9 +55,21 @@ const profileVerify = catchAsync(async (req, res) => {
   });
 });
 
+const resendOTPEmail = catchAsync(async (req, res) => {
+  const data = await AuthServices.resendOTPEmailVaerification(req.params.userEmail);
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: 'A new OTP has been sent to your email. Please check your inbox or spam folder.',
+    data: data,
+  });
+});
+
 export const AuthController = {
   loginUser,
   forgetPassword,
   resetPassword,
-  profileVerify
+  emailVarification,
+  resendOTPEmail
 };

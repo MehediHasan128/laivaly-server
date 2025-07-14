@@ -32,8 +32,15 @@ const resetUserPasswordValidationSchema = z.object({
   }),
 });
 
+const otpVerificationValidationSchema = z.object({
+  body: z.object({
+    otp: z.string({ required_error: 'OTP is required' }),
+  }),
+});
+
 export const AuthValidation = {
   userLoginValidationSchema,
   forgetUserPasswordValidationSchema,
   resetUserPasswordValidationSchema,
+  otpVerificationValidationSchema
 };

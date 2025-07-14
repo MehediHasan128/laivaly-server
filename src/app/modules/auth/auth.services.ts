@@ -10,6 +10,7 @@ import fs from 'fs';
 import sendEmail from '../../utils/sendEmail';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 import { redis } from '../../lib/redis';
+import { sendOTP } from '../../utils/sendOTP';
 
 const userLogin = async (payload: TUserLogin) => {
   // Check the user is exist or not
@@ -170,9 +171,9 @@ const resetUserPassword = async (payload: TResetData, resetToken: string) => {
   );
 };
 
-const verifyEmail = async (payload: { userEmail: string; otp: string }) => {
+const verifyEmail = async (userEmail: string, otp: string) => {
   // Check the user is exist or not
-  const isUserExist = await User.findOne({ userEmail: payload.userEmail });
+  const isUserExist = await User.findOne({ userEmail: userEmail });
   if (!isUserExist) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found !!');
   }
@@ -190,14 +191,14 @@ const verifyEmail = async (payload: { userEmail: string; otp: string }) => {
   }
 
   //  Get OTP from Redis
-  const storedOTP = await redis.get(`otp-${payload?.userEmail}`);
+  const storedOTP = await redis.get(`otp-${userEmail}`);
   if (storedOTP === null) {
     throw new AppError(
       httpStatus.NOT_FOUND,
       'Your OTP has expired. Please request a new one.',
     );
   }
-  if (storedOTP !== payload?.otp) {
+  if (storedOTP !== otp) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
       'The OTP you entered is incorrect. Please try again.',
@@ -206,19 +207,44 @@ const verifyEmail = async (payload: { userEmail: string; otp: string }) => {
 
   // If otp is correct the upadte the customer status
   const isUserStatusUpdate = await User.findOneAndUpdate(
-    { userEmail: payload?.userEmail },
+    { userEmail: userEmail },
     { status: 'active' },
     {new: true}
   );
 
   if(isUserStatusUpdate){
-    await redis.del(`otp-${payload?.userEmail}`);
+    await redis.del(`otp-${userEmail}`);
   }
 };
+
+const resendOTPEmailVaerification = async (userEmail: string) => {
+
+  // Check the user is exist or not
+  const isUserExist = await User.findOne({ userEmail: userEmail });
+  if (!isUserExist) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found !!');
+  }
+
+  // Check the user is delete or not
+  const isUserDeleted = isUserExist.isDelete;
+  if (isUserDeleted) {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is already delete !!');
+  }
+
+  // Check the user is banned
+  const isUserbanned = isUserExist.status;
+  if (isUserbanned === 'banned') {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is already banned !!');
+  }
+
+  await sendOTP(userEmail);
+
+}
 
 export const AuthServices = {
   userLogin,
   forgetUserPassword,
   resetUserPassword,
   verifyEmail,
+  resendOTPEmailVaerification
 };
