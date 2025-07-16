@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import {
+  shippingAddressValidationSchema,
   userNameUpdateValidationSchema,
   userNameValidationSchema,
 } from '../../global/validation';
@@ -41,7 +42,14 @@ const updateCustomerProfileValidationSchema = z.object({
   }),
 });
 
-export const customerValidation = {
+const addShippingAddressValidationScham = z.object({
+  body: z.object({
+    shippingAddress: shippingAddressValidationSchema,
+  }),
+});
+
+export const CustomerValidation = {
   createCustomerValidationSchema,
   updateCustomerProfileValidationSchema,
+  addShippingAddressValidationScham
 };
