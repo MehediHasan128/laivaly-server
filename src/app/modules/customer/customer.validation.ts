@@ -1,5 +1,8 @@
 import { z } from 'zod';
-import { userNameValidationSchema } from '../../global/validation';
+import {
+  userNameUpdateValidationSchema,
+  userNameValidationSchema,
+} from '../../global/validation';
 
 const createCustomerValidationSchema = z.object({
   body: z.object({
@@ -18,11 +21,27 @@ const createCustomerValidationSchema = z.object({
       ),
     customer: z.object({
       userName: userNameValidationSchema,
-      userEmail: z.string().email('Please enter a valid email address'),
+      userEmail: z
+        .string({
+          required_error: 'User email is required',
+        })
+        .trim()
+        .toLowerCase()
+        .email('Please enter a valid email address'),
     }),
+  }),
+});
+
+const updateCustomerProfileValidationSchema = z.object({
+  body: z.object({
+    userName: userNameUpdateValidationSchema.optional(),
+    dateOfBirth: z.string().optional(),
+    phoneNumber: z.string().optional(),
+    gender: z.enum(['male', 'female']).nullable().optional(),
   }),
 });
 
 export const customerValidation = {
   createCustomerValidationSchema,
+  updateCustomerProfileValidationSchema,
 };
