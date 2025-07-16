@@ -21,5 +21,12 @@ router.patch(
   validationRequest(CustomerValidation.addShippingAddressValidationScham),
   CustomerController.addShippingAddress,
 );
+// Update shipping address
+router.patch(
+  '/update-shipping-address/:customerID',
+  auth(USER_ROLE.customer),
+  validationRequest(CustomerValidation.updateShippingAddressValidationScham),
+  CustomerController.updatedShippingAddress,
+);
 
 export const CustomerRoutes = router;

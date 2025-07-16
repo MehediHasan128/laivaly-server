@@ -24,7 +24,19 @@ const addShippingAddress = catchAsync(async (req, res) => {
   });
 });
 
+const updatedShippingAddress = catchAsync(async (req, res) => {
+  const data = await CustomerServices.updateShippingAddressIntoDB(req.params.customerID, req.query.addressId as string, req.body.shippingAddress);
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Successfully update your shipping address!',
+    data: data,
+  });
+});
+
 export const CustomerController = {
   updateCustomerProfile,
-  addShippingAddress
+  addShippingAddress,
+  updatedShippingAddress
 };
