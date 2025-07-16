@@ -5,6 +5,7 @@ import { ZodError } from 'zod';
 import handleZodError from '../errors/handleZodError';
 import { TErrorSources } from '../types/error';
 import AppError from '../errors/AppError';
+import { handleValidationError } from '../errors/handleValidationError';
 
 export const globalErrorHandler = (
   err: any,
@@ -35,6 +36,11 @@ export const globalErrorHandler = (
         message: err?.message,
       }
     ];
+  } else if(err?.name === 'ValidationError'){
+    const simplifiedError = handleValidationError(err);
+    statusCode = simplifiedError.statusCode;
+    message = simplifiedError.message;
+    errorSources = simplifiedError.errorSources;
   }
 
   return res.status(statusCode).json({
