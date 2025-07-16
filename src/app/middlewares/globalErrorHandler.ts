@@ -6,6 +6,7 @@ import handleZodError from '../errors/handleZodError';
 import { TErrorSources } from '../types/error';
 import AppError from '../errors/AppError';
 import { handleValidationError } from '../errors/handleValidationError';
+import { handleCastError } from '../errors/handleCastError';
 
 export const globalErrorHandler = (
   err: any,
@@ -34,10 +35,15 @@ export const globalErrorHandler = (
     errorSources = [
       {
         message: err?.message,
-      }
+      },
     ];
-  } else if(err?.name === 'ValidationError'){
+  } else if (err?.name === 'ValidationError') {
     const simplifiedError = handleValidationError(err);
+    statusCode = simplifiedError.statusCode;
+    message = simplifiedError.message;
+    errorSources = simplifiedError.errorSources;
+  } else if (err?.name === 'CastError') {
+    const simplifiedError = handleCastError(err);
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
     errorSources = simplifiedError.errorSources;
@@ -47,6 +53,6 @@ export const globalErrorHandler = (
     success: false,
     message,
     mainError: err,
-    errorSources
+    errorSources,
   });
 };
