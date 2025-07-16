@@ -35,8 +35,20 @@ const updatedShippingAddress = catchAsync(async (req, res) => {
   });
 });
 
+const deleteShippingAddress = catchAsync(async (req, res) => {
+  const data = await CustomerServices.deleteShippingAddressFromDB(req.params.customerID, req.query.addressId as string);
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Successfully delete your shipping address!',
+    data: data,
+  });
+});
+
 export const CustomerController = {
   updateCustomerProfile,
   addShippingAddress,
-  updatedShippingAddress
+  updatedShippingAddress,
+  deleteShippingAddress
 };

@@ -28,5 +28,11 @@ router.patch(
   validationRequest(CustomerValidation.updateShippingAddressValidationScham),
   CustomerController.updatedShippingAddress,
 );
+// Update shipping address
+router.delete(
+  '/delete-shipping-address/:customerID',
+  auth(USER_ROLE.customer),
+  CustomerController.deleteShippingAddress,
+);
 
 export const CustomerRoutes = router;
