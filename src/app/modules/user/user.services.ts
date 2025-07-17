@@ -11,6 +11,8 @@ import { sendOTP } from '../../utils/sendOTP';
 import { USER_ROLE } from './user.contant';
 import { JwtPayload } from 'jsonwebtoken';
 import { uploadSingleImageToCloudinary } from '../../utils/sendImageToCloudinary';
+import config from '../../config';
+import { createToken, TJwtPayload } from '../auth/auth.utils';
 
 const createCustomerIntoDB = async (payload: TCustomer, password: string) => {
   // Check the user is already exist
@@ -79,40 +81,42 @@ const createCustomerIntoDB = async (payload: TCustomer, password: string) => {
   }
 };
 
-const getMe = async(user: JwtPayload) => {
-
+const getMe = async (user: JwtPayload) => {
   let data = null;
 
-  if(user?.userRole === USER_ROLE.admin){
-    data = await User.findOne({userEmail: user?.userEmail}).select('-password');
-  };
-  if(user?.userRole === USER_ROLE.customer){
-    data = await Customer.findOne({userEmail: user?.userEmail}).populate({path: 'userId', select: '-password'});
-  };
+  if (user?.userRole === USER_ROLE.admin) {
+    data = await User.findOne({ userEmail: user?.userEmail }).select(
+      '-password',
+    );
+  }
+  if (user?.userRole === USER_ROLE.customer) {
+    data = await Customer.findOne({ userEmail: user?.userEmail }).populate({
+      path: 'userId',
+      select: '-password',
+    });
+  }
 
   return data;
-
 };
 
-const addUserProfilePicture = async(userId: string, imageFile: any) => {
-
+const addUserProfilePicture = async (userId: string, imageFile: any) => {
   // Check the user is exists
   const isUserExists = await User.findById(userId);
-  if(!isUserExists){
+  if (!isUserExists) {
     throw new AppError(httpStatus.NOT_FOUND, 'User is not found !');
-  };
+  }
 
   // Check the user is delete
   const isUserDelete = isUserExists?.isDelete;
-  if(isUserDelete){
+  if (isUserDelete) {
     throw new AppError(httpStatus.FORBIDDEN, 'User is already delete !');
-  };
+  }
 
   // Check the user is banned
   const isUserBanned = isUserExists?.status;
-  if(isUserBanned === 'banned'){
+  if (isUserBanned === 'banned') {
     throw new AppError(httpStatus.FORBIDDEN, 'User is banned !');
-  };
+  }
 
   // Get file path and name
   const fileName = isUserExists?.id;
@@ -120,15 +124,37 @@ const addUserProfilePicture = async(userId: string, imageFile: any) => {
 
   // Upload image
   const uploadRes = await uploadSingleImageToCloudinary(filePath, fileName);
-  
-  // place image url in user profile url
-  const data = await User.findByIdAndUpdate(userId, {userProfileURL: uploadRes?.secure_url}, {new: true}).select('-password');
-  return data;
 
-}
+  // place image url in user profile url
+  const updatedUserData = await User.findByIdAndUpdate(
+    userId,
+    { userProfileURL: uploadRes?.secure_url },
+    { new: true },
+  ).select('-password');
+
+  // create token
+  const jwtPayload = {
+    id: updatedUserData?.id,
+    userName: updatedUserData?.userName,
+    userEmail: updatedUserData?.userEmail,
+    userProfileURL: updatedUserData?.userProfileURL,
+    userRole: updatedUserData?.role,
+  } as TJwtPayload;
+
+  // Create access token
+  const accessToken = createToken(
+    jwtPayload,
+    config.jwt_access_secret as string,
+    config.jwt_access_expires_in as string,
+  );
+
+  return {
+    accessToken
+  }
+};
 
 export const UserServices = {
   createCustomerIntoDB,
   getMe,
-  addUserProfilePicture
+  addUserProfilePicture,
 };
