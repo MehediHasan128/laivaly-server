@@ -28,7 +28,20 @@ const getMe = catchAsync(async (req, res) => {
   });
 });
 
+const addProfilePicture = catchAsync(async (req, res) => {
+
+  const data = await UserServices.addUserProfilePicture(req.params.userId, req.file);
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Succesfully add your profile picture !',
+    data: data,
+  });
+});
+
 export const UserController = {
     createCustomer,
-    getMe
+    getMe,
+    addProfilePicture
 }

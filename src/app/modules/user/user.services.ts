@@ -10,6 +10,7 @@ import { Customer } from '../customer/customer.model';
 import { sendOTP } from '../../utils/sendOTP';
 import { USER_ROLE } from './user.contant';
 import { JwtPayload } from 'jsonwebtoken';
+import { uploadSingleImageToCloudinary } from '../../utils/sendImageToCloudinary';
 
 const createCustomerIntoDB = async (payload: TCustomer, password: string) => {
   // Check the user is already exist
@@ -91,9 +92,43 @@ const getMe = async(user: JwtPayload) => {
 
   return data;
 
+};
+
+const addUserProfilePicture = async(userId: string, imageFile: any) => {
+
+  // Check the user is exists
+  const isUserExists = await User.findById(userId);
+  if(!isUserExists){
+    throw new AppError(httpStatus.NOT_FOUND, 'User is not found !');
+  };
+
+  // Check the user is delete
+  const isUserDelete = isUserExists?.isDelete;
+  if(isUserDelete){
+    throw new AppError(httpStatus.FORBIDDEN, 'User is already delete !');
+  };
+
+  // Check the user is banned
+  const isUserBanned = isUserExists?.status;
+  if(isUserBanned === 'banned'){
+    throw new AppError(httpStatus.FORBIDDEN, 'User is banned !');
+  };
+
+  // Get file path and name
+  const fileName = isUserExists?.id;
+  const filePath = imageFile?.path;
+
+  // Upload image
+  const uploadRes = await uploadSingleImageToCloudinary(filePath, fileName);
+  
+  // place image url in user profile url
+  const data = await User.findByIdAndUpdate(userId, {userProfileURL: uploadRes?.secure_url}, {new: true}).select('-password');
+  return data;
+
 }
 
 export const UserServices = {
   createCustomerIntoDB,
-  getMe
+  getMe,
+  addUserProfilePicture
 };
