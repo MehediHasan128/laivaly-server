@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import {
   ProductCategory,
+  ProductFor,
   ProductGroup,
   ProductSubCategory,
   TargetedAudiance,
@@ -40,6 +41,10 @@ const createProductValidationSchema = z.object({
       required_error: 'Product sub-category is required',
       invalid_type_error: 'Invalid sub-category',
     }),
+    productFor: z.enum([...ProductFor] as [string, ...string[]], {
+      required_error: 'Product for is required',
+      invalid_type_error: 'Invalid value',
+    }),
     targetedAudiance: z.enum([...TargetedAudiance] as [string, ...string[]], {
       required_error: 'Product target audience is required',
       invalid_type_error: 'Invalid audience',
@@ -67,6 +72,7 @@ const createProductValidationSchema = z.object({
       )
       .min(1, 'Product must have at least one image'),
     productWeight: z.string().optional(),
+    isDeleted: z.boolean().default(false),
   }),
 });
 

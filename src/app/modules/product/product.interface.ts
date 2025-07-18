@@ -1,4 +1,4 @@
-import { TProductCategory, TProductGroup, TProductSubCategory, TTargetedAudiance } from "./product.constant";
+import { TProductCategory, TProductFor, TProductGroup, TProductSubCategory, TTargetedAudiance } from "./product.constant";
 
 export interface TVariant {
     size?: string;
@@ -8,11 +8,13 @@ export interface TVariant {
 };
 
 export interface TProduct {
+    productId: string;
     title: string;
     description: string;
     group: TProductGroup;
     category: TProductCategory;
     subCategory: TProductSubCategory;
+    productFor: TProductFor;
     targetedAudiance: TTargetedAudiance;
     price: number;
     discountPrice: number;
@@ -20,4 +22,5 @@ export interface TProduct {
     productThumbnail: string;
     productImages: string[];
     productWeight?: string;
+    isDeleted: boolean;
 };

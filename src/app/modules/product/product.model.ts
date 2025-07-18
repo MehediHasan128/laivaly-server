@@ -2,6 +2,7 @@ import { model, Schema } from 'mongoose';
 import { TProduct, TVariant } from './product.interface';
 import {
   ProductCategory,
+  ProductFor,
   ProductGroup,
   ProductSubCategory,
   TargetedAudiance,
@@ -32,6 +33,11 @@ const variantSchema = new Schema<TVariant>({
 });
 
 const productSchema = new Schema<TProduct>({
+  productId: {
+    type: String,
+    required: [true, 'Product id is required'],
+    trim: true,
+  },
   title: {
     type: String,
     required: [true, 'Product title is required'],
@@ -64,6 +70,14 @@ const productSchema = new Schema<TProduct>({
       message: 'Invalid sub-category',
     },
     required: [true, 'Product sub-category is required'],
+  },
+  productFor: {
+    type: String,
+    enum: {
+      values: ProductFor,
+      message: 'Invalid value',
+    },
+    required: [true, 'Product for is required'],
   },
   targetedAudiance: {
     type: String,
@@ -104,6 +118,10 @@ const productSchema = new Schema<TProduct>({
     type: String,
     required: false,
   },
+  isDeleted: {
+    type: Boolean,
+    default: false
+  }
 }, {
   timestamps: true
 });

@@ -3,7 +3,7 @@ import { sendResponce } from '../../utils/sendResponce';
 import { ProductServices } from './product.services';
 
 const addProduct = catchAsync(async (req, res) => {
-  const data = await ProductServices.addProductIntoDB()
+  const data = await ProductServices.addProductIntoDB(req.body)
 
   sendResponce(res, {
     statusCode: 200,

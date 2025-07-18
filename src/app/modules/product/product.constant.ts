@@ -1,5 +1,23 @@
-export type TTargetedAudiance = 'men' | 'women' | 'children';
-export const TargetedAudiance = ['men', 'women', 'children'];
+export type TTargetedAudiance =
+  | 'baby'
+  | 'toddler'
+  | 'child'
+  | 'teen'
+  | 'adult'
+  | 'senior'
+  | 'all';
+export const TargetedAudiance = [
+  'baby',
+  'toddler',
+  'child',
+  'teen',
+  'adult',
+  'senior',
+  'all',
+];
+
+export type TProductFor = 'men' | 'women' | 'children';
+export const ProductFor = ['men', 'women', 'children'];
 
 export type TProductGroup =
   | 'cloth'
