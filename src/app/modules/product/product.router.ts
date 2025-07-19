@@ -3,6 +3,8 @@ import { validationRequest } from '../../middlewares/zodValidationRequest';
 import { ProductValidation } from './product.validation';
 import { ProductController } from './product.controller';
 import { upload } from '../../utils/sendImageToCloudinary';
+import auth from '../../middlewares/auth';
+import { USER_ROLE } from '../user/user.contant';
 
 const router = express.Router();
 
@@ -14,6 +16,7 @@ router.post(
     req.body = JSON.parse(req.body.data);
     next();
   },
+  auth(USER_ROLE.admin),
   validationRequest(ProductValidation.createProductValidationSchema),
   ProductController.addProduct,
 );
