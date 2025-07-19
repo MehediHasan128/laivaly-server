@@ -9,7 +9,6 @@ import {
 
 const variantValidationSchema = z.object({
   size: z.string().optional(),
-  color: z.string().optional(),
   stock: z
     .number({
       required_error: 'Stock is required',
@@ -61,16 +60,7 @@ const createProductValidationSchema = z.object({
       .min(0, 'Discount price must be non-negative')
       .default(0),
     variants: z.array(variantValidationSchema).optional(),
-    productThumbnail: z.string({
-      required_error: 'Product thumbnail is required',
-    }),
-    productImages: z
-      .array(
-        z.string({
-          required_error: 'Product image is required',
-        }),
-      )
-      .min(1, 'Product must have at least one image'),
+    color: z.array(z.string()).optional(),
     productWeight: z.string().optional(),
     isDeleted: z.boolean().default(false),
   }),

@@ -28,13 +28,13 @@ export const uploadSingleImageToCloudinary = async (
   return res;
 };
 
-export const uploadMultipleImage = async(files: {filePath: string; fileName: string}[]) => {
+export const uploadMultipleImage = async(files: {path: string; filename: string}[]) => {
 
   const imageURL: string[] = [];
 
-  const uploadImages = files.map((file) => cloudinary.uploader.upload(file.filePath, {public_id: file.fileName}).then((res) => {
+  const uploadImages = files.map((file) => cloudinary.uploader.upload(file.path, {public_id: file.filename}).then((res) => {
     imageURL.push(res.secure_url);
-    fs.unlink(file.filePath, (err) => {
+    fs.unlink(file.path, (err) => {
       if(err){
         console.log(err);
       }

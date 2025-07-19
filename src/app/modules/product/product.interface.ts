@@ -4,7 +4,6 @@ export interface TVariant {
     size?: string;
     stock: number;
     SKU: string;
-    color?: string;
 };
 
 export interface TProduct {
@@ -19,6 +18,7 @@ export interface TProduct {
     price: number;
     discountPrice: number;
     variants?: TVariant[];
+    color?: string[];
     productThumbnail: string;
     productImages: string[];
     productWeight?: string;
