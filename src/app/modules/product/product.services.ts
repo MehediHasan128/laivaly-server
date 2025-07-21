@@ -40,6 +40,27 @@ const addProductIntoDB = async (files: any, payload: TProduct) => {
   return data;
 };
 
+const getAllProductFromDB = async (query: Record<string, unknown>) => {
+  
+  const productSearchableField = ['productId', 'title'];
+
+  let searchTerm = '';
+
+  if(query?.searchTerm){
+    searchTerm = query?.searchTerm as string;
+  };
+
+  const searchQuery = Product.find({
+    $or: productSearchableField.map((field) => ({
+      [field]: {$regex: searchTerm, $options: 'i'}
+    }))
+  });
+
+  return searchQuery;
+  
+};
+
 export const ProductServices = {
   addProductIntoDB,
+  getAllProductFromDB,
 };

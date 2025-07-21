@@ -1,10 +1,10 @@
 import express, { NextFunction, Request, Response } from 'express';
 import { validationRequest } from '../../middlewares/zodValidationRequest';
-import { ProductValidation } from './product.validation';
 import { ProductController } from './product.controller';
 import { upload } from '../../utils/sendImageToCloudinary';
 import auth from '../../middlewares/auth';
 import { USER_ROLE } from '../user/user.contant';
+import { ProductValidation } from './product.validation';
 
 const router = express.Router();
 
@@ -20,5 +20,6 @@ router.post(
   validationRequest(ProductValidation.createProductValidationSchema),
   ProductController.addProduct,
 );
+router.get('/', ProductController.getAllProduct);
 
 export const ProductRouter = router;
