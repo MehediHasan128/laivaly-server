@@ -24,5 +24,11 @@ router.post(
 router.get('/', ProductController.getAllProduct);
 // Get single product from db
 router.get('/:productId', ProductController.getsingleProduct);
+// Delete single product from db
+router.delete(
+  '/:productId',
+  auth(USER_ROLE.admin),
+  ProductController.deleteProduct,
+);
 
 export const ProductRouter = router;

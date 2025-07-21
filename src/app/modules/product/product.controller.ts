@@ -36,8 +36,20 @@ const getsingleProduct = catchAsync(async (req, res) => {
   });
 });
 
+const deleteProduct = catchAsync(async (req, res) => {
+  const data = await ProductServices.deleteSingleProductIntoDB(req.params.productId)
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Product has been moved to trash',
+    data: data
+  });
+});
+
 export const ProductController = {
   addProduct,
   getAllProduct,
-  getsingleProduct
+  getsingleProduct,
+  deleteProduct
 };
