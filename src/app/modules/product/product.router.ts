@@ -20,6 +20,9 @@ router.post(
   validationRequest(ProductValidation.createProductValidationSchema),
   ProductController.addProduct,
 );
+// Get all product from db
 router.get('/', ProductController.getAllProduct);
+// Get single product from db
+router.get('/:productId', ProductController.getsingleProduct);
 
 export const ProductRouter = router;

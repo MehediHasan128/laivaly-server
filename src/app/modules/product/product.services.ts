@@ -58,7 +58,25 @@ const getAllProductFromDB = async (query: Record<string, unknown>) => {
   };
 };
 
+const getSingleProductFromDB = async(productId: string) => {
+
+  // Check the is is given or not
+  if(!productId){
+    throw new AppError(httpStatus.BAD_REQUEST, 'Product ID is required!')
+  }
+  
+  // Check the product is exist or not
+  const isProductExists = await Product.findOne({productId});
+  if(!isProductExists){
+    throw new AppError(httpStatus.NOT_FOUND, 'Product not found!')
+  }
+
+  return isProductExists;
+
+}
+
 export const ProductServices = {
   addProductIntoDB,
   getAllProductFromDB,
+  getSingleProductFromDB
 };
