@@ -5,6 +5,7 @@ import { TProduct } from './product.interface';
 import { createProductID } from './product.utils';
 import { Product } from './product.model';
 import { uploadMultipleImage } from '../../utils/sendImageToCloudinary';
+import QueryBuilder from '../../builder/QueryBuilder';
 
 const addProductIntoDB = async (files: any, payload: TProduct) => {
   // Get auto generate product id
@@ -41,23 +42,20 @@ const addProductIntoDB = async (files: any, payload: TProduct) => {
 };
 
 const getAllProductFromDB = async (query: Record<string, unknown>) => {
-  
-  const productSearchableField = ['productId', 'title'];
 
-  let searchTerm = '';
+  const productQuery = new QueryBuilder(Product.find(), query)
+    .search(['productId', 'title'])
+    .filter()
+    .sort()
+    .paginate();
 
-  if(query?.searchTerm){
-    searchTerm = query?.searchTerm as string;
+  const meta = await productQuery.countTotal();
+  const data = await productQuery.queryModel;
+
+  return {
+    meta,
+    data,
   };
-
-  const searchQuery = Product.find({
-    $or: productSearchableField.map((field) => ({
-      [field]: {$regex: searchTerm, $options: 'i'}
-    }))
-  });
-
-  return searchQuery;
-  
 };
 
 export const ProductServices = {
