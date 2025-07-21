@@ -16,7 +16,7 @@ export interface TProduct {
     productFor: TProductFor;
     targetedAudiance: TTargetedAudiance;
     price: number;
-    discountPrice: number;
+    discount: number;
     variants?: TVariant[];
     color?: string[];
     productThumbnail: string;

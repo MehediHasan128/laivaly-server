@@ -88,7 +88,7 @@ const productSchema = new Schema<TProduct>(
       required: [true, 'Price is required'],
       min: [0, 'Price must be non-negative'],
     },
-    discountPrice: {
+    discount: {
       type: Number,
       required: [true, 'Discount price is required'],
       min: [0, 'Discount price must be non-negative'],
