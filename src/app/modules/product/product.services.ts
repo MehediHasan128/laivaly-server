@@ -66,6 +66,36 @@ const updateProductIntoDB = async (
   return data
 };
 
+const productStockEntryIntoDB = async(productId: string, productSKU: string, quantity: string) => {
+
+  // Check the is is given or not
+  if (!productId) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Product ID is required!');
+  };
+
+  // Check the product is exist or not
+  const isProductExists = await Product.findOne({ productId });
+  if (!isProductExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Product not found!');
+  };
+
+  // Check the product is already delete
+  const isProductDelete = isProductExists?.isDeleted;
+  if (isProductDelete) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Product is already delete!');
+  };
+  
+  const productVerient = isProductExists?.variants?.find((ver) => ver?.SKU === productSKU);
+  if (!productVerient) {
+    throw new AppError(httpStatus.NOT_FOUND, 'The specified product variant could not be found. Please check the SKU and try again!');
+  };
+
+  productVerient.stock += Number(quantity);
+
+  await isProductExists.save();
+
+}
+
 const getAllProductFromDB = async (query: Record<string, unknown>) => {
   const productQuery = new QueryBuilder(Product.find(), query)
     .search(['productId', 'title'])
@@ -121,6 +151,7 @@ const deleteSingleProductIntoDB = async (productId: string) => {
 export const ProductServices = {
   addProductIntoDB,
   updateProductIntoDB,
+  productStockEntryIntoDB,
   getAllProductFromDB,
   getSingleProductFromDB,
   deleteSingleProductIntoDB,

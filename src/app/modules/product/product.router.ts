@@ -23,8 +23,14 @@ router.post(
 // Update product
 router.patch(
   '/update-product/:productId',
+  auth(USER_ROLE.admin),
   validationRequest(ProductValidation.updateProductValidationSchema),
   ProductController.updateProduct,
+);
+// Update product
+router.patch(
+  '/update-product-stock/:productId',
+  ProductController.productStockEntry,
 );
 // Get all product from db
 router.get('/', ProductController.getAllProduct);

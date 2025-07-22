@@ -14,12 +14,29 @@ const addProduct = catchAsync(async (req, res) => {
 });
 
 const updateProduct = catchAsync(async (req, res) => {
-  const data = await ProductServices.updateProductIntoDB(req.params.productId, req.body);
+  const data = await ProductServices.updateProductIntoDB(
+    req.params.productId,
+    req.body,
+  );
 
   sendResponce(res, {
     statusCode: 200,
     success: true,
     message: 'Product update successfully!',
+    data: data,
+  });
+});
+
+const productStockEntry = catchAsync(async (req, res) => {
+
+ const {productSKU, quantity} = req.query;
+
+  const data = await ProductServices.productStockEntryIntoDB(req.params.productId, productSKU as string, quantity as string);
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Product stock update successfully!',
     data: data,
   });
 });
@@ -65,6 +82,7 @@ const deleteProduct = catchAsync(async (req, res) => {
 export const ProductController = {
   addProduct,
   updateProduct,
+  productStockEntry,
   getAllProduct,
   getsingleProduct,
   deleteProduct,
