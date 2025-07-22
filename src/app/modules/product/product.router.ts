@@ -27,9 +27,10 @@ router.patch(
   validationRequest(ProductValidation.updateProductValidationSchema),
   ProductController.updateProduct,
 );
-// Update product
+// Product stock entry
 router.patch(
   '/update-product-stock/:productId',
+  auth(USER_ROLE.admin),
   ProductController.productStockEntry,
 );
 // Get all product from db
