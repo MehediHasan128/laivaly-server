@@ -20,6 +20,12 @@ router.post(
   validationRequest(ProductValidation.createProductValidationSchema),
   ProductController.addProduct,
 );
+// Update product
+router.patch(
+  '/update-product/:productId',
+  validationRequest(ProductValidation.updateProductValidationSchema),
+  ProductController.updateProduct,
+);
 // Get all product from db
 router.get('/', ProductController.getAllProduct);
 // Get single product from db

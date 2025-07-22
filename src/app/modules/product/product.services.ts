@@ -41,8 +41,32 @@ const addProductIntoDB = async (files: any, payload: TProduct) => {
   return data;
 };
 
-const getAllProductFromDB = async (query: Record<string, unknown>) => {
+const updateProductIntoDB = async (
+  productId: string,
+  payload: Partial<TProduct>,
+) => {
+  // Check the is is given or not
+  if (!productId) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Product ID is required!');
+  }
 
+  // Check the product is exist or not
+  const isProductExists = await Product.findOne({ productId });
+  if (!isProductExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Product not found!');
+  }
+
+  // Check the product is already delete
+  const isProductDelete = isProductExists?.isDeleted;
+  if (isProductDelete) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Product is already delete!');
+  }
+
+  const data = await Product.findOneAndUpdate({ productId }, payload, {new: true});
+  return data
+};
+
+const getAllProductFromDB = async (query: Record<string, unknown>) => {
   const productQuery = new QueryBuilder(Product.find(), query)
     .search(['productId', 'title'])
     .filter()
@@ -58,49 +82,46 @@ const getAllProductFromDB = async (query: Record<string, unknown>) => {
   };
 };
 
-const getSingleProductFromDB = async(productId: string) => {
-
+const getSingleProductFromDB = async (productId: string) => {
   // Check the is is given or not
-  if(!productId){
-    throw new AppError(httpStatus.BAD_REQUEST, 'Product ID is required!')
+  if (!productId) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Product ID is required!');
   }
-  
+
   // Check the product is exist or not
-  const isProductExists = await Product.findOne({productId});
-  if(!isProductExists){
-    throw new AppError(httpStatus.NOT_FOUND, 'Product not found!')
+  const isProductExists = await Product.findOne({ productId });
+  if (!isProductExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Product not found!');
   }
 
   return isProductExists;
-
 };
 
-const deleteSingleProductIntoDB = async(productId: string) => {
-
+const deleteSingleProductIntoDB = async (productId: string) => {
   // Check the is is given or not
-  if(!productId){
-    throw new AppError(httpStatus.BAD_REQUEST, 'Product ID is required!')
+  if (!productId) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Product ID is required!');
   }
-  
+
   // Check the product is exist or not
-  const isProductExists = await Product.findOne({productId});
-  if(!isProductExists){
-    throw new AppError(httpStatus.NOT_FOUND, 'Product not found!')
+  const isProductExists = await Product.findOne({ productId });
+  if (!isProductExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Product not found!');
   }
 
   // Check the product is already delete
   const isProductDelete = isProductExists?.isDeleted;
-  if(isProductDelete){
-    throw new AppError(httpStatus.BAD_REQUEST, 'Product is already delete!')
+  if (isProductDelete) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Product is already delete!');
   }
 
-  await Product.findOneAndUpdate({productId}, {isDeleted: true});
-
-}
+  await Product.findOneAndUpdate({ productId }, { isDeleted: true });
+};
 
 export const ProductServices = {
   addProductIntoDB,
+  updateProductIntoDB,
   getAllProductFromDB,
   getSingleProductFromDB,
-  deleteSingleProductIntoDB
+  deleteSingleProductIntoDB,
 };
