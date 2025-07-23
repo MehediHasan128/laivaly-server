@@ -6,6 +6,16 @@ import { USER_ROLE } from '../user/user.contant';
 const router = express.Router();
 
 // Add product into wishlist
-router.post('/add-product/:userId', auth(USER_ROLE.customer), WishlistController.addProductInWishlist)
+router.patch(
+  '/add-product/:userId',
+  auth(USER_ROLE.customer),
+  WishlistController.addProductInWishlist,
+);
+// Remove product from wishlist
+router.patch(
+  '/remove-product/:userId',
+//   auth(USER_ROLE.customer),
+  WishlistController.removeProductFromWishlist,
+);
 
 export const WishlistRouter = router;

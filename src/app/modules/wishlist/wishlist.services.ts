@@ -53,6 +53,57 @@ const addProductIntoWishlist = async (userId: string, productId: string) => {
   );
 };
 
+const removeProductFromWishlist = async (userId: string, productId: string) => {
+  // Check the user is exist
+  const isUserExist = await User.findById(userId).select('-password');
+  if (!isUserExist) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User is not found!');
+  }
+
+  // Check the user is delete
+  const isUserDelete = isUserExist?.isDelete;
+  if (isUserDelete) {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is already delete!');
+  }
+
+  // Check the user is banned
+  const isUserBanned = isUserExist?.status;
+  if (isUserBanned === 'banned') {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is banned!');
+  }
+
+  // Now check the product is exist
+  const isProductExist = await Product.findById(productId);
+  if (!isProductExist) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Product is not found!');
+  }
+
+  // Check the product is delete
+  const isProductDelete = isProductExist?.isDeleted;
+  if (isProductDelete) {
+    throw new AppError(httpStatus.FORBIDDEN, 'Product is already delete!');
+  }
+
+  // Now check the added product is already exist
+  const isProductAdded = await Wishlist.findOne({
+    userId,
+    productId: productId,
+  });
+  if (!isProductAdded) {
+    throw new AppError(
+      httpStatus.CONFLICT,
+      'This product is not exist in your wishlist',
+    );
+  };
+
+  // Now remove product from wishlist
+  await Wishlist.findOneAndUpdate(
+    { userId },
+    { $pull: { productId: productId } },
+  );
+};
+
 export const WishlistServices = {
   addProductIntoWishlist,
+  removeProductFromWishlist,
 };
