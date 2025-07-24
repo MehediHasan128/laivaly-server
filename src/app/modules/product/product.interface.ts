@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import { TProductCategory, TProductFor, TProductGroup, TProductSubCategory, TTargetedAudiance } from "./product.constant";
 
 export interface TVariant {
@@ -22,5 +23,6 @@ export interface TProduct {
     productThumbnail: string;
     productImages: string[];
     productWeight?: string;
+    productReviews: Types.ObjectId;
     isDeleted: boolean;
 };

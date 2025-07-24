@@ -6,6 +6,8 @@ import { createProductID } from './product.utils';
 import { Product } from './product.model';
 import { uploadMultipleImage } from '../../utils/sendImageToCloudinary';
 import QueryBuilder from '../../builder/QueryBuilder';
+import mongoose from 'mongoose';
+import { Review } from '../review/review.model';
 
 const addProductIntoDB = async (files: any, payload: TProduct) => {
   // Get auto generate product id
@@ -23,22 +25,51 @@ const addProductIntoDB = async (files: any, payload: TProduct) => {
     throw new AppError(httpStatus.CONFLICT, 'This product is already created!');
   }
 
-  // now set the product id
-  payload.productId = autoGenerateProductId;
+  // // Create product in database
+  // const data = await Product.create(payload);
 
-  //Now upload the product image
-  const uploadImages = await uploadMultipleImage(files);
+  // return data;
 
-  // Set product thumbnails
-  payload.productThumbnail = uploadImages[0];
+  // Use transaction rollback
+  const session = await mongoose.startSession();
 
-  // Set product images
-  payload.productImages = uploadImages;
+  try {
+    // Start transaction
+    session.startTransaction();
 
-  // Create product in database
-  const data = await Product.create(payload);
+    // now set the product id
+    payload.productId = autoGenerateProductId;
 
-  return data;
+    //Now upload the product image
+    const uploadImages = await uploadMultipleImage(files);
+
+    // Set product thumbnails
+    payload.productThumbnail = uploadImages[0];
+
+    //Set product images
+    payload.productImages = uploadImages;
+
+    const review = await Review.create([{ reviews: [] }], { session });
+    if (!review) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create review.');
+    }
+
+    // set product review id
+    payload.productReviews = review[0]._id;
+
+    // Create product in database
+    const data = await Product.create([payload], { session });
+
+    if (!data) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create product.');
+    }
+    await session.commitTransaction();
+    await session.endSession();
+  } catch (err: any) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new Error(err);
+  }
 };
 
 const updateProductIntoDB = async (
@@ -62,42 +93,51 @@ const updateProductIntoDB = async (
     throw new AppError(httpStatus.BAD_REQUEST, 'Product is already delete!');
   }
 
-  const data = await Product.findOneAndUpdate({ productId }, payload, {new: true});
-  return data
+  const data = await Product.findOneAndUpdate({ productId }, payload, {
+    new: true,
+  });
+  return data;
 };
 
-const productStockEntryIntoDB = async(productId: string, productSKU: string, quantity: string) => {
-
+const productStockEntryIntoDB = async (
+  productId: string,
+  productSKU: string,
+  quantity: string,
+) => {
   // Check the is is given or not
   if (!productId) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Product ID is required!');
-  };
+  }
 
   // Check the product is exist or not
   const isProductExists = await Product.findOne({ productId });
   if (!isProductExists) {
     throw new AppError(httpStatus.NOT_FOUND, 'Product not found!');
-  };
+  }
 
   // Check the product is already delete
   const isProductDelete = isProductExists?.isDeleted;
   if (isProductDelete) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Product is already delete!');
-  };
-  
-  const productVerient = isProductExists?.variants?.find((ver) => ver?.SKU === productSKU);
+  }
+
+  const productVerient = isProductExists?.variants?.find(
+    (ver) => ver?.SKU === productSKU,
+  );
   if (!productVerient) {
-    throw new AppError(httpStatus.NOT_FOUND, 'The specified product variant could not be found. Please check the SKU and try again!');
-  };
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      'The specified product variant could not be found. Please check the SKU and try again!',
+    );
+  }
 
   productVerient.stock += Number(quantity);
 
   await isProductExists.save();
-
-}
+};
 
 const getAllProductFromDB = async (query: Record<string, unknown>) => {
-  const productQuery = new QueryBuilder(Product.find(), query)
+  const productQuery = new QueryBuilder(Product.find().populate('productReviews'), query)
     .search(['productId', 'title'])
     .filter()
     .sort()

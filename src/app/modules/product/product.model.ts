@@ -118,6 +118,10 @@ const productSchema = new Schema<TProduct>(
       type: String,
       required: false,
     },
+    productReviews: {
+      type: Schema.Types.ObjectId,
+      ref: 'review'
+    },
     isDeleted: {
       type: Boolean,
       default: false,
