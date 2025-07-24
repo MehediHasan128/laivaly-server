@@ -11,5 +11,7 @@ const router = express.Router();
 router.patch('/add-product/:userId', auth(USER_ROLE.customer), validationRequest(CartValidation.createCartValidationSChema), CartController.addProductIntoCart);
 // Get all product from cart
 router.get('/:userId', auth(USER_ROLE.customer), CartController.getALlProductFromCart);
+// Get all product from cart
+router.delete('/remove-product/:userId', auth(USER_ROLE.customer), CartController.deleteProductFromCart);
 
 export const CartRoutes = router;
