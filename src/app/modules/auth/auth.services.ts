@@ -12,6 +12,7 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import { redis } from '../../lib/redis';
 import { sendOTP } from '../../utils/sendOTP';
 import { Wishlist } from '../wishlist/wishlist.model';
+import { Cart } from '../cart/cart.model';
 
 const userLogin = async (payload: TUserLogin) => {
   // Check the user is exist or not
@@ -253,9 +254,14 @@ const verifyEmail = async (userEmail: string, otp: string) => {
   const wishlistData = {
     userId: isUserExist?._id,
     productId: []
+  };
+  const cartData = {
+    userId: isUserExist?._id,
+    items: []
   }
 
-  await Wishlist.create(wishlistData)
+  await Wishlist.create(wishlistData);
+  await Cart.create(cartData);
 
   // create token
   const jwtPayload = {

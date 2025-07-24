@@ -36,7 +36,10 @@ const cartSchema = new Schema<TCart>({
     required: [true, 'User ID is required!'],
     ref: 'User',
   },
-  items: cartItemSchema
+  items: {
+    type: [cartItemSchema],
+    default: []
+  }
 });
 
 export const Cart = model<TCart>('cart', cartSchema);

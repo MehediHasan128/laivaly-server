@@ -16,8 +16,7 @@ const wishlistSchema = new Schema<TProductWishlist>(
         ref: 'product',
       },
     ],
-  },
-  { timestamps: true },
+  }
 );
 
 export const Wishlist = model<TProductWishlist>('wishlist', wishlistSchema);
