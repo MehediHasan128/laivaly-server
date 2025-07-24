@@ -13,6 +13,18 @@ const addProductIntoCart = catchAsync(async (req, res) => {
   });
 });
 
+const getALlProductFromCart = catchAsync(async (req, res) => {
+  const data = await CartServices.getALlProductFromCart(req.params.userId);
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Cart items retrieved successfully.',
+    data: data,
+  });
+});
+
 export const CartController = {
-  addProductIntoCart
+  addProductIntoCart,
+  getALlProductFromCart
 };

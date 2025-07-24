@@ -20,8 +20,16 @@ const addProductIntoCart = async(userId: string, payload: TCartItem) =>{
 
     const data = await Cart.findOneAndUpdate({userId}, {$push: {items: payload}}, {new: true});
     return data
+};
+
+const getALlProductFromCart = async(userId: string) => {
+
+   const data = await Cart.findOne({userId}).select('-_id items').populate('items.productId');
+   return data;
+
 }
 
 export const CartServices = {
-    addProductIntoCart
+    addProductIntoCart,
+    getALlProductFromCart
 }
