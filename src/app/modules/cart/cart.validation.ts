@@ -23,9 +23,6 @@ const cartItemValidationSchema = z.object({
 
 const createCartValidationSChema = z.object({
   body: z.object({
-    userId: z.string().refine((val) => mongoose.Types.ObjectId.isValid(val), {
-      message: 'Invalid user ID.',
-    }),
     items: z.array(cartItemValidationSchema).default([])
   }),
 });

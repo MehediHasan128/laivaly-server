@@ -11,7 +11,7 @@ const router = express.Router();
 // Add review
 router.patch(
   '/add-review/:reviewId',
-    auth(USER_ROLE.customer),
+  auth(USER_ROLE.customer),
   upload.array('file'),
   (req: Request, res: Response, next: NextFunction) => {
     req.body = JSON.parse(req.body.data);
@@ -21,4 +21,4 @@ router.patch(
   ReviewController.addReview,
 );
 
-export const ReviewRouter = router;
+export const ReviewRoutes = router;

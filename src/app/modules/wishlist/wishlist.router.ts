@@ -14,8 +14,8 @@ router.patch(
 // Remove product from wishlist
 router.patch(
   '/remove-product/:userId',
-//   auth(USER_ROLE.customer),
+  //   auth(USER_ROLE.customer),
   WishlistController.removeProductFromWishlist,
 );
 
-export const WishlistRouter = router;
+export const WishlistRoutes = router;
