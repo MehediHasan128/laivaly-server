@@ -16,12 +16,13 @@ const reviewSchema = new Schema<reviewContent>({
     type: String,
     trim: true,
   },
-  picture: {
+  pictures: {
     type: [String],
     validate: {
       validator: (arr: string[]) => arr.every((url) => typeof url === 'string'),
       message: 'All picture URLs must be strings',
     },
+    default: []
   },
 });
 

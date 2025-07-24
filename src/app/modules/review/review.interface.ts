@@ -4,7 +4,7 @@ export interface Review {
     userId: Types.ObjectId;
     rating?: number;
     comment?: string;
-    picture?: string[];
+    pictures?: string[] | [];
 }
 
 export interface TReviews {

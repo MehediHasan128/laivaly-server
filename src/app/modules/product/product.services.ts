@@ -25,11 +25,6 @@ const addProductIntoDB = async (files: any, payload: TProduct) => {
     throw new AppError(httpStatus.CONFLICT, 'This product is already created!');
   }
 
-  // // Create product in database
-  // const data = await Product.create(payload);
-
-  // return data;
-
   // Use transaction rollback
   const session = await mongoose.startSession();
 
