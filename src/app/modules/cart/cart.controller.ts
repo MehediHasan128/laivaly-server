@@ -35,8 +35,20 @@ const deleteProductFromCart = catchAsync(async (req, res) => {
   });
 });
 
+const updateProductQuantity = catchAsync(async (req, res) => {
+  const data = await CartServices.updateProductQuantity(req.params.userId, req.query.productId as string, req.query.SKU as string, req.query.action as string);
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: 'The item has been removed from your cart.',
+    data: data,
+  });
+});
+
 export const CartController = {
   addProductIntoCart,
   getALlProductFromCart,
-  deleteProductFromCart
+  deleteProductFromCart,
+  updateProductQuantity
 };
