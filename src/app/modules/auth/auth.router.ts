@@ -7,7 +7,7 @@ import { USER_ROLE } from '../user/user.contant';
 
 const router = express.Router();
 
-// User login api
+// User login
 router.post(
   '/login',
   validationRequest(AuthValidation.userLoginValidationSchema),

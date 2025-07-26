@@ -28,7 +28,7 @@ router.patch(
   validationRequest(CustomerValidation.updateShippingAddressValidationScham),
   CustomerController.updatedShippingAddress,
 );
-// Update shipping address
+// Delete shipping address
 router.delete(
   '/delete-shipping-address/:customerID',
   auth(USER_ROLE.customer),

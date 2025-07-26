@@ -20,13 +20,12 @@ router.get(
   auth(USER_ROLE.customer),
   CartController.getALlProductFromCart,
 );
-// Get all product from cart
+// Remove product from cart
 router.delete(
   '/remove-product/:userId',
   auth(USER_ROLE.customer),
   CartController.deleteProductFromCart,
 );
-
 // Update product quantity
 router.patch(
   '/update-product-quantity/:userId',
