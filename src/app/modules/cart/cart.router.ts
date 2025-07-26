@@ -8,10 +8,23 @@ import { CartValidation } from './cart.validation';
 const router = express.Router();
 
 // Add product into cart
-router.patch('/add-product/:userId', auth(USER_ROLE.customer), validationRequest(CartValidation.createCartValidationSChema), CartController.addProductIntoCart);
+router.patch(
+  '/add-product/:userId',
+//   auth(USER_ROLE.customer),
+  validationRequest(CartValidation.createCartValidationSChema),
+  CartController.addProductIntoCart,
+);
 // Get all product from cart
-router.get('/:userId', auth(USER_ROLE.customer), CartController.getALlProductFromCart);
+router.get(
+  '/:userId',
+  auth(USER_ROLE.customer),
+  CartController.getALlProductFromCart,
+);
 // Get all product from cart
-router.delete('/remove-product/:userId', auth(USER_ROLE.customer), CartController.deleteProductFromCart);
+router.delete(
+  '/remove-product/:userId',
+  auth(USER_ROLE.customer),
+  CartController.deleteProductFromCart,
+);
 
 export const CartRoutes = router;

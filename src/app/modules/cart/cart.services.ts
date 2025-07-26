@@ -9,18 +9,29 @@ const addProductIntoCart = async (userId: string, payload: TCartItem) => {
   const isProductExists = await Product.findById(payload?.productId);
   if (!isProductExists) {
     throw new AppError(httpStatus.NOT_FOUND, 'Product not found!');
-  }
+  };
 
   // Check the product is delete
   const isProductDelete = isProductExists?.isDeleted;
   if (isProductDelete) {
     throw new AppError(httpStatus.FORBIDDEN, 'Product is already delete!');
-  }
+  };
 
-  //   Check the the product is already added
+  //   Check the product is already added
   const isProductAldreadyAdded = await Cart.findOne({userId, 'items.selectedVariant.SKU': payload?.selectedVariant?.SKU});
   if (isProductAldreadyAdded) {
     throw new AppError(httpStatus.FORBIDDEN, 'This product is already added!');
+  };
+
+  // Check product stock
+  const productVeriant = isProductExists?.variants?.find((item) => (item.SKU === payload?.selectedVariant?.SKU || item.size === payload?.selectedVariant?.size));
+  if(productVeriant?.stock === 0){
+    throw new AppError(httpStatus.FORBIDDEN, 'This product is out of stock!');
+  };
+ 
+  // Check the requested quantity is exceeds available stock.
+  if(productVeriant!.stock < payload?.quantity){
+    throw new AppError(httpStatus.FORBIDDEN, `Only ${productVeriant?.stock} item's available in stock for the selected variant.`);
   }
 
   const data = await Cart.findOneAndUpdate(
