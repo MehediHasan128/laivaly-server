@@ -15,6 +15,7 @@ import config from '../../config';
 import { createToken, TJwtPayload } from '../auth/auth.utils';
 import { TStaff } from '../staff/staff.interface';
 import { Staff } from '../staff/staff.model';
+import { sendStaffEmailPassword } from '../staff/staff.utils';
 
 const createCustomerIntoDB = async (payload: TCustomer, password: string) => {
   // Check the user is already exist
@@ -146,6 +147,8 @@ const createStaffIntoDB = async(payload: TStaff) => {
 
     await session.commitTransaction();
     await session.endSession();
+
+    sendStaffEmailPassword(`${payload.userName.firstName} ${payload.userName.lastName}`, payload?.userEmail, staffPass);
 
     return newStaff;
   } catch (err: any) {
