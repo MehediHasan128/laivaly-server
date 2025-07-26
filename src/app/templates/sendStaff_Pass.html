@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en" style="margin: 0; padding: 0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff Account Created</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: #f4f4f8;
+      }
+      .container {
+        max-width: 700px;
+        margin: 40px auto;
+        background: #fff;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      }
+      .content{
+        padding: 20px 30px;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        background-color: bisque;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        padding: 10px 0px;
+      }
+      .logo img {
+        height: 40px;
+      }
+      .logo h1 {
+        size: 24px;
+      }
+      main {
+        padding: 30px 0px;
+      }
+      h2 {
+        font-size: 20px;
+        margin-bottom: 12px;
+        color: #333;
+      }
+      p {
+        color: #666;
+        font-size: 15px;
+        line-height: 1.6;
+        margin-bottom: 24px;
+      }
+      .credentials {
+        background-color: #f0f4f8;
+        padding: 15px;
+        border-radius: 8px;
+        margin-top: 15px;
+        font-family: monospace;
+      }
+      .footer {
+        font-size: 13px;
+        color: #999;
+        margin-top: 30px;
+        border-top: 1px solid #eee;
+        padding-top: 20px;
+      }
+      .footer-icons {
+        margin: 12px 0;
+      }
+      .footer-icons svg {
+        height: 20px;
+        margin: 0 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="logo">
+        <!-- Replace with your brand logo -->
+        <img src="../../app/logo/logo.png" alt="Your Brand" />
+        <h1>Laivaly</h1>
+      </div>
+      <main>
+        <div class="content">
+          <h2>Welcome to Laivaly!</h2>
+          <p>Dear <strong>{{staffName}}</strong>,</p>
+          <p>
+            Your staff account has been created successfully by the admin. You
+            can now log in to your staff portal using the following credentials:
+          </p>
+
+          <div class="credentials">
+            <p><strong>Email:</strong> {{staffEmail}}</p>
+            <p><strong>Password:</strong> {{temporaryPassword}}</p>
+          </div>
+
+          <p>Thank you for joining the Laivaly team!</p>
+        </div>
+        <div class="footer">
+          <div class="footer-icons">
+            <!-- Replace these with your actual social icon URLs -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512">
+              <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+              <path
+                d="M80 299.3V512H196V299.3h86.5l18-97.8H196V166.9c0-51.7 20.3-71.5 72.7-71.5c16.3 0 29.4 .4 37 1.2V7.9C291.4 4 256.4 0 236.2 0C129.3 0 80 50.5 80 159.4v42.1H14v97.8H80z"
+              />
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512">
+              <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+              <path
+                d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"
+              />
+            </svg>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+              <!--!Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free Copyright 2025 Fonticons, Inc.-->
+              <path
+                d="M64 112c-8.8 0-16 7.2-16 16l0 22.1L220.5 291.7c20.7 17 50.4 17 71.1 0L464 150.1l0-22.1c0-8.8-7.2-16-16-16L64 112zM48 212.2L48 384c0 8.8 7.2 16 16 16l384 0c8.8 0 16-7.2 16-16l0-171.8L322 328.8c-38.4 31.5-93.7 31.5-132 0L48 212.2zM0 128C0 92.7 28.7 64 64 64l384 0c35.3 0 64 28.7 64 64l0 256c0 35.3-28.7 64-64 64L64 448c-35.3 0-64-28.7-64-64L0 128z"
+              />
+            </svg>
+          </div>
+          <div>© 2025 Laivaly. All rights reserved.</div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
+<!--  -->

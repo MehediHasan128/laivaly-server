@@ -5,6 +5,7 @@ import { CustomerValidation } from '../customer/customer.validation';
 import auth from '../../middlewares/auth';
 import { USER_ROLE } from './user.contant';
 import { upload } from '../../utils/sendImageToCloudinary';
+import { StaffValidation } from '../staff/staff.validation';
 
 const router = express.Router();
 
@@ -13,6 +14,12 @@ router.post(
   '/create-customer',
   validationRequest(CustomerValidation.createCustomerValidationSchema),
   UserController.createCustomer,
+);
+// Create staff account
+router.post(
+  '/create-staff',
+  validationRequest(StaffValidation.createStaffValidationSchema),
+  UserController.createStaff,
 );
 // Get user profile
 router.get(

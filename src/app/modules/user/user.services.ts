@@ -13,6 +13,8 @@ import { JwtPayload } from 'jsonwebtoken';
 import { uploadSingleImageToCloudinary } from '../../utils/sendImageToCloudinary';
 import config from '../../config';
 import { createToken, TJwtPayload } from '../auth/auth.utils';
+import { TStaff } from '../staff/staff.interface';
+import { Staff } from '../staff/staff.model';
 
 const createCustomerIntoDB = async (payload: TCustomer, password: string) => {
   // Check the user is already exist
@@ -80,6 +82,78 @@ const createCustomerIntoDB = async (payload: TCustomer, password: string) => {
     throw new Error(err);
   }
 };
+
+const createStaffIntoDB = async(payload: TStaff) => {
+
+  // Check the user is already exist
+  const isUserExists = await User.findOne({ userEmail: payload.userEmail });
+  if (isUserExists) {
+    throw new AppError(
+      httpStatus.CONFLICT,
+      'An account with this email already exists.',
+    );
+  };
+
+  // Create a empty object
+  const userData: Partial<TUser> = {};
+
+  // Set user name
+  userData.userName = payload.userName;
+
+  // set user email
+  userData.userEmail = payload.userEmail;
+
+  // Set user role
+  userData.role = 'staff';
+
+  // Set user status
+  userData.status = 'active';
+
+  // User transaction rollback method to create customer
+  const session = await mongoose.startSession();
+
+  try {
+    // Start Transaction
+    session.startTransaction();
+
+    const staffId = generateCustomerAndStaffId('C');
+
+    // Set staff unique id
+    userData.id = staffId;
+
+    // Create staff password and set password
+    const staffPassPreFix = staffId.slice(0, 3);
+    const staffPassPostFix = staffId.slice(11);
+    const staffPass = `${staffPassPreFix}@${staffPassPostFix}`;
+
+    userData.password = staffPass;
+
+    // Create user
+    const newUser = await User.create([userData], { session });
+    if (!newUser) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create user.');
+    }
+
+    // set userId in customer collection
+    payload.staffId = newUser[0].id;
+    payload.userId = newUser[0]._id;
+
+    // Create customer
+    const newStaff = await Staff.create([payload], { session });
+    if (!newStaff) {
+      throw new AppError(httpStatus.BAD_REQUEST, 'Failed to create staff.');
+    }
+
+    await session.commitTransaction();
+    await session.endSession();
+
+    return newStaff;
+  } catch (err: any) {
+    await session.abortTransaction();
+    await session.endSession();
+    throw new Error(err);
+  }
+}
 
 const getMe = async (user: JwtPayload) => {
   let data = null;
@@ -155,6 +229,7 @@ const addUserProfilePicture = async (userId: string, imageFile: any) => {
 
 export const UserServices = {
   createCustomerIntoDB,
+  createStaffIntoDB,
   getMe,
   addUserProfilePicture,
 };
