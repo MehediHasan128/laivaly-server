@@ -26,19 +26,7 @@ const createOrderValidationSchema = z.object({
     paymentMethod: z.enum(['stripe', 'sslcommerz', 'cod'], {
       required_error: 'Payment method is required.',
       invalid_type_error: 'Invalid payment method.',
-    }),
-    itemsPrice: z.number({ required_error: 'Items price is required.' }),
-    shippingCharge: z.number({
-      required_error: 'Shipping charge is required.',
-    }),
-    totalPrice: z.number({ required_error: 'Total price is required.' }),
-    orderStatus: z.enum(
-      ['processing', 'shipped', 'delivered', 'cancelled', 'returned'],
-      {
-        required_error: 'Order status is required.',
-        invalid_type_error: 'Invalid order status.',
-      },
-    ),
+    })
   }),
 });
 
