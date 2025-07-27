@@ -8,6 +8,5 @@ export interface TStaff {
     userEmail: string;
     dateOfBirth: Date | null;
     phoneNumber: string | null;
-    stafCategory: 'men' | 'women' | 'children';
     isDeleted: boolean;
 }

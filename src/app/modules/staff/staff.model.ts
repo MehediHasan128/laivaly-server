@@ -33,11 +33,6 @@ const createStaffSchema = new Schema<TStaff>(
       type: String,
       default: null,
     },
-    stafCategory: {
-      type: String,
-      enum: ['men', 'women', 'children'],
-      required: true,
-    },
     isDeleted: {
       type: Boolean,
       default: false,

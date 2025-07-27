@@ -74,7 +74,8 @@ export type TProductSubCategory =
   | 'slim fit t-shirts'
   | 'polo t-shirts'
   | 'long sleeve t-shirts'
-
+  | 'short sleeve t-shirts'
+  
   // shirts
   | 'casual shirts'
   | 'formal shirts'
@@ -174,6 +175,7 @@ export const ProductSubCategory = [
   'slim fit t-shirts',
   'polo t-shirts',
   'long sleeve t-shirts',
+  'short sleeve t-shirts',
   'casual shirts',
   'formal shirts',
   'denim shirts',

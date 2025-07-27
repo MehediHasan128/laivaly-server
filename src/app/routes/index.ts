@@ -7,6 +7,7 @@ import { WishlistRoutes } from '../modules/wishlist/wishlist.router';
 import { ReviewRoutes } from '../modules/review/review.router';
 import { CartRoutes } from '../modules/cart/cart.router';
 import { StaffRoutes } from '../modules/staff/staff.router';
+import { OrdersRoutes } from '../modules/order/order.router';
 
 const router = Router();
 
@@ -42,6 +43,10 @@ const moduleRroutes = [
   {
     path: '/cart',
     router: CartRoutes,
+  },
+  {
+    path: '/order',
+    router: OrdersRoutes,
   },
 ];
 
