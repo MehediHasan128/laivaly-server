@@ -82,11 +82,40 @@ const createOrderWithCODIntoDB = async (payload: TOrder) => {
   return orderData;
 };
 
-const createOrderWithSSLCommerzIntoDB = async() => {
+const createOrderWithSSLCommerzIntoDB = async () => {};
 
-}
+const getAllOrderfromDB = async () => {
+  const data = await Order.find();
+  return data;
+};
+
+const getOrdersByUserIdFromDB = async (userId: string) => {
+  // Check the user is exist
+  const isUserExist = await User.findById(userId);
+  if (!isUserExist) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found!');
+  }
+
+  // Check the user is delete
+  const isUserDelete = isUserExist?.isDelete;
+  if (isUserDelete) {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is already delete!');
+  }
+
+  // Check the user is banned
+  const isUserBanned = isUserExist?.status;
+  if (isUserBanned === 'banned') {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is banned!');
+  }
+
+  // Find the orders using user id
+  const data = await Order.find({ userId });
+  return data;
+};
 
 export const OrderServices = {
   createOrderWithCODIntoDB,
-  createOrderWithSSLCommerzIntoDB
+  createOrderWithSSLCommerzIntoDB,
+  getAllOrderfromDB,
+  getOrdersByUserIdFromDB,
 };

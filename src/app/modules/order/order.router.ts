@@ -21,5 +21,13 @@ router.post(
   // validationRequest(OrderValidation.createOrderValidationSchema),
   OrderController.createOrderOnSSLCommerz,
 );
+// Get all orders
+router.get('/', auth(USER_ROLE.admin), OrderController.getAllOrders);
+// Get orders by using userId
+router.get(
+  '/:userId',
+  // auth(USER_ROLE.customer),
+  OrderController.getOrdersByUserId,
+);
 
 export const OrdersRoutes = router;

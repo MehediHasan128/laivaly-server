@@ -24,7 +24,31 @@ const createOrderOnSSLCommerz = catchAsync(async (req, res) => {
   });
 });
 
+const getAllOrders = catchAsync(async (req, res) => {
+  const data = await OrderServices.getAllOrderfromDB();
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: 'All order retrive successfully.',
+    data: data,
+  });
+});
+
+const getOrdersByUserId = catchAsync(async (req, res) => {
+  const data = await OrderServices.getOrdersByUserIdFromDB(req.params.userId);
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Your orders retrive successfully.',
+    data: data,
+  });
+});
+
 export const OrderController = {
   createOrderOnCOD,
-  createOrderOnSSLCommerz
+  createOrderOnSSLCommerz,
+  getAllOrders,
+  getOrdersByUserId
 };
