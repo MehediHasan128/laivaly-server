@@ -14,5 +14,12 @@ router.post(
   validationRequest(OrderValidation.createOrderValidationSchema),
   OrderController.createOrderOnCOD,
 );
+// Order with SSLCommerz
+router.post(
+  '/sslcommerz',
+  // auth(USER_ROLE.customer),
+  // validationRequest(OrderValidation.createOrderValidationSchema),
+  OrderController.createOrderOnSSLCommerz,
+);
 
 export const OrdersRoutes = router;

@@ -82,6 +82,11 @@ const createOrderWithCODIntoDB = async (payload: TOrder) => {
   return orderData;
 };
 
+const createOrderWithSSLCommerzIntoDB = async() => {
+
+}
+
 export const OrderServices = {
   createOrderWithCODIntoDB,
+  createOrderWithSSLCommerzIntoDB
 };

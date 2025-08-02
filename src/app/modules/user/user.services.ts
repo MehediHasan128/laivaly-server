@@ -117,7 +117,7 @@ const createStaffIntoDB = async(payload: TStaff) => {
     // Start Transaction
     session.startTransaction();
 
-    const staffId = generateCustomerAndStaffId('C');
+    const staffId = generateCustomerAndStaffId('S');
 
     // Set staff unique id
     userData.id = staffId;
