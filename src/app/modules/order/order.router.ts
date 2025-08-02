@@ -35,5 +35,11 @@ router.get(
   // auth(USER_ROLE.staff),
   OrderController.getOrdersForStaff,
 );
+// Update order status
+router.patch(
+  '/update-order-status/:orderId',
+  // auth(USER_ROLE.staff),
+  OrderController.updateOrderStatus,
+);
 
 export const OrdersRoutes = router;

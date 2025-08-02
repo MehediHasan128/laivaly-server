@@ -57,10 +57,22 @@ const getOrdersForStaff = catchAsync(async (req, res) => {
   });
 });
 
+const updateOrderStatus = catchAsync(async (req, res) => {
+  const data = await OrderServices.updateOrderStatusIntoDB(req.params.orderId, req.body);
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Order has been shipped.',
+    data: data,
+  });
+});
+
 export const OrderController = {
   createOrderOnCOD,
   createOrderOnSSLCommerz,
   getAllOrders,
   getOrdersByUserId,
-  getOrdersForStaff
+  getOrdersForStaff,
+  updateOrderStatus
 };

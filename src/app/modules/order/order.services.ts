@@ -115,39 +115,76 @@ const getOrdersByUserIdFromDB = async (userId: string) => {
 };
 
 const getOrdersForStaffFromDB = async (userId: string) => {
-  
   // Check the staff is exist
   const isStaffExist = await User.findById(userId);
   if (!isStaffExist) {
     throw new AppError(httpStatus.NOT_FOUND, 'Staff account not found!');
-  };
+  }
 
   // Check the staff is exist
   const isStaffDelete = isStaffExist?.isDelete;
   if (isStaffDelete) {
-    throw new AppError(httpStatus.FORBIDDEN, 'Staff account is already delete!');
-  };
+    throw new AppError(
+      httpStatus.FORBIDDEN,
+      'Staff account is already delete!',
+    );
+  }
 
   // Check the staff is exist
   const isStaffBanned = isStaffExist?.status;
   if (isStaffBanned === 'banned') {
     throw new AppError(httpStatus.FORBIDDEN, 'Staff account is banned!');
-  };
+  }
 
   // Const staff address
-  const getStaffAddress = await Staff.findOne({userId}).select('-_id presentAddress');
+  const getStaffAddress = await Staff.findOne({ userId }).select(
+    '-_id presentAddress',
+  );
   const staffCountry = getStaffAddress?.presentAddress?.country;
 
   // find orders
   const data = await Order.find({ 'shippingAddress.country': staffCountry });
   return data;
+};
 
-}
+const updateOrderStatusIntoDB = async (
+  orderId: string,
+  {
+    status,
+  }: {
+    status: 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'returned';
+  },
+) => {
+  // Check the order is exist on database
+  const isOrderExist = await Order.findById(orderId);
+  if (!isOrderExist) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Order not found!');
+  }
+
+  if (isOrderExist) {
+    isOrderExist.orderStatus = status;
+    await isOrderExist.save();
+  }
+
+  const orderItems = isOrderExist?.orderItems;
+
+  for (const item of orderItems) {
+    const product = await Product.findById(item?.productId);
+
+    const productVeriants = product?.variants;
+    const veriant = productVeriants?.find((v) => v.SKU === item.SKU);
+
+    veriant!.stock = veriant!.stock - item.quantity;
+
+    await product?.save();
+  }
+};
 
 export const OrderServices = {
   createOrderWithCODIntoDB,
   createOrderWithSSLCommerzIntoDB,
   getAllOrderfromDB,
   getOrdersByUserIdFromDB,
-  getOrdersForStaffFromDB
+  getOrdersForStaffFromDB,
+  updateOrderStatusIntoDB,
 };
