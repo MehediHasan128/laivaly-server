@@ -29,5 +29,11 @@ router.get(
   // auth(USER_ROLE.customer),
   OrderController.getOrdersByUserId,
 );
+// Get orders by using userId
+router.get(
+  '/customer-order/:userId',
+  // auth(USER_ROLE.staff),
+  OrderController.getOrdersForStaff,
+);
 
 export const OrdersRoutes = router;

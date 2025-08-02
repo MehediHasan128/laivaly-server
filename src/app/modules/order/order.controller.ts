@@ -46,9 +46,21 @@ const getOrdersByUserId = catchAsync(async (req, res) => {
   });
 });
 
+const getOrdersForStaff = catchAsync(async (req, res) => {
+  const data = await OrderServices.getOrdersForStaffFromDB(req.params.userId);
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Your orders retrive successfully.',
+    data: data,
+  });
+});
+
 export const OrderController = {
   createOrderOnCOD,
   createOrderOnSSLCommerz,
   getAllOrders,
-  getOrdersByUserId
+  getOrdersByUserId,
+  getOrdersForStaff
 };
