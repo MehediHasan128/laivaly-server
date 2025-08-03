@@ -34,7 +34,10 @@ const forgetPassword = catchAsync(async (req, res) => {
 });
 
 const resetPassword = catchAsync(async (req, res) => {
-  const data = await AuthServices.resetUserPassword(req.body, req.headers.authorization as string);
+  const data = await AuthServices.resetUserPassword(
+    req.body,
+    req.headers.authorization as string,
+  );
 
   sendResponce(res, {
     statusCode: 200,
@@ -45,7 +48,6 @@ const resetPassword = catchAsync(async (req, res) => {
 });
 
 const changePassword = catchAsync(async (req, res) => {
-
   const data = await AuthServices.changeUserPassword(req.user, req.body);
 
   sendResponce(res, {
@@ -57,11 +59,14 @@ const changePassword = catchAsync(async (req, res) => {
 });
 
 const emailVarification = catchAsync(async (req, res) => {
-  const data = await AuthServices.verifyEmail(req.params.userEmail, req.body.otp);
+  const data = await AuthServices.verifyEmail(
+    req.params.userEmail,
+    req.body.otp,
+  );
 
   const { accessToken, refreshToken } = data;
 
-  //   Set refresh token in cookie
+  //  Set refresh token in cookie
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
     secure: true,
@@ -73,24 +78,26 @@ const emailVarification = catchAsync(async (req, res) => {
     success: true,
     message: 'Your profile is verified!',
     data: {
-      accessToken
+      accessToken,
     },
   });
 });
 
 const resendOTPEmail = catchAsync(async (req, res) => {
-  const data = await AuthServices.resendOTPEmailVaerification(req.params.userEmail);
+  const data = await AuthServices.resendOTPEmailVaerification(
+    req.params.userEmail,
+  );
 
   sendResponce(res, {
     statusCode: 200,
     success: true,
-    message: 'A new OTP has been sent to your email. Please check your inbox or spam folder.',
+    message:
+      'A new OTP has been sent to your email. Please check your inbox or spam folder.',
     data: data,
   });
 });
 
 const refreshAccessToken = catchAsync(async (req, res) => {
-
   const data = await AuthServices.refreshAccessToken(req.cookies.refreshToken);
 
   sendResponce(res, {
@@ -108,5 +115,5 @@ export const AuthController = {
   changePassword,
   emailVarification,
   resendOTPEmail,
-  refreshAccessToken
+  refreshAccessToken,
 };

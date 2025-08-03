@@ -173,8 +173,10 @@ const resetUserPassword = async (payload: TResetData, resetToken: string) => {
   );
 };
 
-const changeUserPassword = async (userData: JwtPayload, payload: {oldPassword: string; newPassword: string}) => {
-  
+const changeUserPassword = async (
+  userData: JwtPayload,
+  payload: { oldPassword: string; newPassword: string },
+) => {
   // Check the user is exist or not
   const isUserExist = await User.findOne({ userEmail: userData?.userEmail });
   if (!isUserExist) {
@@ -194,21 +196,31 @@ const changeUserPassword = async (userData: JwtPayload, payload: {oldPassword: s
   }
 
   // Check the old password is correct
-  const isPasswordMatch = await bcrypt.compare(payload?.oldPassword, isUserExist?.password);
-  if(!isPasswordMatch){
+  const isPasswordMatch = await bcrypt.compare(
+    payload?.oldPassword,
+    isUserExist?.password,
+  );
+  if (!isPasswordMatch) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Incorrect password !!');
-  };
+  }
 
   // Hash new password
-  const newHashPassword = await bcrypt.hash(payload?.newPassword, Number(config.bcrypt_salt_rounds));
+  const newHashPassword = await bcrypt.hash(
+    payload?.newPassword,
+    Number(config.bcrypt_salt_rounds),
+  );
 
-  await User.findOneAndUpdate({userEmail: userData?.userEmail}, {password: newHashPassword})
-
+  await User.findOneAndUpdate(
+    { userEmail: userData?.userEmail },
+    { password: newHashPassword },
+  );
 };
 
 const verifyEmail = async (userEmail: string, otp: string) => {
   // Check the user is exist or not
-  const isUserExist = await User.findOne({ userEmail: userEmail });
+  const isUserExist = await User.findOne({ userEmail: userEmail }).select(
+    '-password',
+  );
   if (!isUserExist) {
     throw new AppError(httpStatus.NOT_FOUND, 'User not found !!');
   }
@@ -244,25 +256,24 @@ const verifyEmail = async (userEmail: string, otp: string) => {
   const isUserStatusUpdate = await User.findOneAndUpdate(
     { userEmail: userEmail },
     { status: 'active' },
-    {new: true}
+    { new: true },
   );
 
-  if(isUserStatusUpdate){
+  if (isUserStatusUpdate) {
     await redis.del(`otp-${userEmail}`);
-  };
+  }
 
   const wishlistData = {
     userId: isUserExist?._id,
-    productId: []
+    productId: [],
   };
   const cartData = {
     userId: isUserExist?._id,
-    items: []
-  }
+    items: [],
+  };
 
   await Wishlist.create(wishlistData);
   await Cart.create(cartData);
-
   // create token
   const jwtPayload = {
     id: isUserExist?.id,
@@ -288,12 +299,11 @@ const verifyEmail = async (userEmail: string, otp: string) => {
 
   return {
     accessToken,
-    refreshToken
-  }
+    refreshToken,
+  };
 };
 
 const resendOTPEmailVaerification = async (userEmail: string) => {
-
   // Check the user is exist or not
   const isUserExist = await User.findOne({ userEmail: userEmail });
   if (!isUserExist) {
@@ -313,15 +323,16 @@ const resendOTPEmailVaerification = async (userEmail: string) => {
   }
 
   await sendOTP(userEmail);
-
 };
 
-const refreshAccessToken = async(token: string) => {
-
+const refreshAccessToken = async (token: string) => {
   // Check the token is valid
-  const decodedToken = jwt.verify(token, config.jwt_refresh_secret as string) as JwtPayload;
-  
-  const {userEmail} = decodedToken;
+  const decodedToken = jwt.verify(
+    token,
+    config.jwt_refresh_secret as string,
+  ) as JwtPayload;
+
+  const { userEmail } = decodedToken;
 
   // Check the user is exist or not
   const isUserExist = await User.findOne({ userEmail: userEmail });
@@ -358,10 +369,9 @@ const refreshAccessToken = async(token: string) => {
   );
 
   return {
-    accessToken
-  }
-
-}
+    accessToken,
+  };
+};
 
 export const AuthServices = {
   userLogin,
@@ -370,5 +380,5 @@ export const AuthServices = {
   changeUserPassword,
   verifyEmail,
   resendOTPEmailVaerification,
-  refreshAccessToken
+  refreshAccessToken,
 };

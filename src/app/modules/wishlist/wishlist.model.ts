@@ -12,7 +12,6 @@ const wishlistSchema = new Schema<TProductWishlist>(
     productId: [
       {
         type: Schema.Types.ObjectId,
-        unique: true,
         ref: 'product',
       },
     ],

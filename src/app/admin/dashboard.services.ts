@@ -1,37 +1,31 @@
-import { Order } from "../modules/order/order.model";
-import { Product } from "../modules/product/product.model";
-import { User } from "../modules/user/user.model"
+import { Order } from '../modules/order/order.model';
+import { Product } from '../modules/product/product.model';
+import { User } from '../modules/user/user.model';
+import { calculateTotalSellsAndRevenue } from './dashboard.utils';
 
-const getAllInformationFromDB = async() => {
-    
-    // Count the total user
-    const users = await User.countDocuments({role: {$ne: 'admin'}});
-    // Count the total customer
-    const customers = await User.countDocuments({role: {$eq: 'customer'}});
-    // Count the total staff
-    const staffs = await User.countDocuments({role: {$eq: 'staff'}});
-    // Count the total product
-    const products = await Product.countDocuments();
+const getAllInformationFromDB = async () => {
+  // Count the total user
+  const users = await User.countDocuments({ role: { $ne: 'admin' } });
+  // Count the total customer
+  const customers = await User.countDocuments({ role: { $eq: 'customer' } });
+  // Count the total staff
+  const staffs = await User.countDocuments({ role: { $eq: 'staff' } });
+  // Count the total product
+  const products = await Product.countDocuments();
 
+  // Now get the total sells and revenue
+  const { totalSells, totalRevenue } = await calculateTotalSellsAndRevenue();
 
-    // Now calculate the total sells
-    const paidOrders = await Order.find({paymentStatus: 'paid'}).select('-_id orderItems itemsPrice');
-    
-    for(const item of paidOrders){
-        console.log(item);
-    }
-
-    return {
-        users,
-        customers,
-        staffs,
-        products,
-        paidOrders
-    }
-
-}
-
+  return {
+    users,
+    customers,
+    staffs,
+    products,
+    totalSells,
+    totalRevenue,
+  };
+};
 
 export const AdminDashboardServices = {
-    getAllInformationFromDB
-}
+  getAllInformationFromDB,
+};
