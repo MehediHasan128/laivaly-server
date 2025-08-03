@@ -1,7 +1,6 @@
-import { Order } from '../modules/order/order.model';
 import { Product } from '../modules/product/product.model';
 import { User } from '../modules/user/user.model';
-import { calculateTotalSellsAndRevenue } from './dashboard.utils';
+import { calculateTotalSellsAndRevenue, getDateRangeForFilter } from './dashboard.utils';
 
 const getAllInformationFromDB = async () => {
   // Count the total user
@@ -13,14 +12,22 @@ const getAllInformationFromDB = async () => {
   // Count the total product
   const products = await Product.countDocuments();
 
-  // Now get the total sells and revenue
-  const { totalSells, totalRevenue } = await calculateTotalSellsAndRevenue();
-
   return {
     users,
     customers,
     staffs,
     products,
+  };
+};
+
+const getTotalSellsAndRevenueFromDB = async (rangeType: string, startDate: string) => {
+  // Now get the date range
+  const dateRange = await getDateRangeForFilter({rangeType, startDate});
+
+  // Now get the total sells and revenue
+  const { totalSells, totalRevenue } = await calculateTotalSellsAndRevenue(dateRange);
+
+  return {
     totalSells,
     totalRevenue,
   };
@@ -28,4 +35,5 @@ const getAllInformationFromDB = async () => {
 
 export const AdminDashboardServices = {
   getAllInformationFromDB,
+  getTotalSellsAndRevenueFromDB,
 };

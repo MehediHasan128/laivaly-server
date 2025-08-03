@@ -13,6 +13,22 @@ const getAllInformation = catchAsync(async (req, res) => {
   });
 });
 
+
+const getTotalSellsAndRevenue = catchAsync(async (req, res) => {
+
+  const {rangeType, startDate} = req.query;
+
+  const data = await AdminDashboardServices.getTotalSellsAndRevenueFromDB(rangeType as string, startDate as string);
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Successfully retrive the total sells and revenue.',
+    data: data,
+  });
+});
+
 export const AdminDashboardController = {
-  getAllInformation
+  getAllInformation,
+  getTotalSellsAndRevenue
 };
