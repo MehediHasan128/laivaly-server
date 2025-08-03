@@ -18,6 +18,7 @@ export interface TProduct {
     targetedAudiance: TTargetedAudiance;
     price: number;
     discount: number;
+    perUnitCost: number;
     variants?: TVariant[];
     color?: string[];
     productThumbnail: string;

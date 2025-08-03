@@ -59,6 +59,11 @@ const createProductValidationSchema = z.object({
       })
       .min(0, 'Discount price must be non-negative')
       .default(0),
+    perUnitCost: z
+      .number({
+        required_error: 'Product unit cost is required',
+      })
+      .min(0, 'Unit cost must be non-negative'),
     variants: z.array(variantValidationSchema).optional(),
     color: z.array(z.string()).optional(),
     productWeight: z.string().optional(),
@@ -68,43 +73,60 @@ const createProductValidationSchema = z.object({
 
 const updateProductValidationSchema = z.object({
   body: z.object({
-    title: z.string({
-      required_error: 'Product title is required',
-    }).optional(),
-    description: z.string({
-      required_error: 'Product description is required',
-    }).optional(),
-    group: z.enum([...ProductGroup] as [string, ...string[]], {
-      required_error: 'Product group is required',
-      invalid_type_error: 'Group must be either Men, Women, or Kids',
-    }).optional(),
-    category: z.enum([...ProductCategory] as [string, ...string[]], {
-      required_error: 'Product category is required',
-      invalid_type_error: 'Category must be Clothing, Footwear, or Accessories',
-    }).optional(),
-    subCategory: z.enum([...ProductSubCategory] as [string, ...string[]], {
-      required_error: 'Product sub-category is required',
-      invalid_type_error: 'Invalid sub-category',
-    }).optional(),
-    productFor: z.enum([...ProductFor] as [string, ...string[]], {
-      required_error: 'Product for is required',
-      invalid_type_error: 'Invalid value',
-    }).optional(),
-    targetedAudiance: z.enum([...TargetedAudiance] as [string, ...string[]], {
-      required_error: 'Product target audience is required',
-      invalid_type_error: 'Invalid audience',
-    }).optional(),
+    title: z
+      .string({
+        required_error: 'Product title is required',
+      })
+      .optional(),
+    description: z
+      .string({
+        required_error: 'Product description is required',
+      })
+      .optional(),
+    group: z
+      .enum([...ProductGroup] as [string, ...string[]], {
+        required_error: 'Product group is required',
+        invalid_type_error: 'Group must be either Men, Women, or Kids',
+      })
+      .optional(),
+    category: z
+      .enum([...ProductCategory] as [string, ...string[]], {
+        required_error: 'Product category is required',
+        invalid_type_error:
+          'Category must be Clothing, Footwear, or Accessories',
+      })
+      .optional(),
+    subCategory: z
+      .enum([...ProductSubCategory] as [string, ...string[]], {
+        required_error: 'Product sub-category is required',
+        invalid_type_error: 'Invalid sub-category',
+      })
+      .optional(),
+    productFor: z
+      .enum([...ProductFor] as [string, ...string[]], {
+        required_error: 'Product for is required',
+        invalid_type_error: 'Invalid value',
+      })
+      .optional(),
+    targetedAudiance: z
+      .enum([...TargetedAudiance] as [string, ...string[]], {
+        required_error: 'Product target audience is required',
+        invalid_type_error: 'Invalid audience',
+      })
+      .optional(),
     price: z
       .number({
         required_error: 'Price is required',
       })
-      .min(0, 'Price must be non-negative').optional(),
+      .min(0, 'Price must be non-negative')
+      .optional(),
     discount: z
       .number({
         required_error: 'Discount price is required',
       })
       .min(0, 'Discount price must be non-negative')
-      .default(0).optional(),
+      .default(0)
+      .optional(),
     variants: z.array(variantValidationSchema).optional(),
     color: z.array(z.string()).optional(),
     productWeight: z.string().optional(),

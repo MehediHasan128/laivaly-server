@@ -94,6 +94,11 @@ const productSchema = new Schema<TProduct>(
       min: [0, 'Discount price must be non-negative'],
       default: 0,
     },
+    perUnitCost: {
+      type: Number,
+      required: [true, 'Product unit cost is required'],
+      min: [0, 'Unit cost must be non-negative'],
+    },
     variants: {
       type: [variantSchema],
       required: false,
