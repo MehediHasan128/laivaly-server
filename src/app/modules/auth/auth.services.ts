@@ -249,7 +249,7 @@ const verifyEmail = async (userEmail: string, otp: string) => {
   if (storedOTP !== otp) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
-      'The OTP you entered is incorrect. Please try again.',
+      'Incorrect OTP. Please try again.',
     );
   }
 
@@ -275,33 +275,8 @@ const verifyEmail = async (userEmail: string, otp: string) => {
 
   await Wishlist.create(wishlistData);
   await Cart.create(cartData);
-  // create token
-  const jwtPayload = {
-    id: isUserExist?.id,
-    userName: isUserExist?.userName,
-    userEmail: isUserExist?.userEmail,
-    userProfileURL: isUserExist?.userProfileURL,
-    userRole: isUserExist?.role,
-  };
 
-  // Create access token
-  const accessToken = createToken(
-    jwtPayload,
-    config.jwt_access_secret as string,
-    config.jwt_access_expires_in as string,
-  );
-
-  // Create refresh token
-  const refreshToken = createToken(
-    jwtPayload,
-    config.jwt_refresh_secret as string,
-    config.jwt_refresh_expires_in as string,
-  );
-
-  return {
-    accessToken,
-    refreshToken,
-  };
+  return null;
 };
 
 const resendOTPEmailVaerification = async (userEmail: string) => {

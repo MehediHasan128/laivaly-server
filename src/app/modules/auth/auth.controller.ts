@@ -91,27 +91,14 @@ const changePassword = catchAsync(async (req, res) => {
 });
 
 const emailVarification = catchAsync(async (req, res) => {
-  const data = await AuthServices.verifyEmail(
-    req.params.userEmail,
-    req.body.otp,
-  );
-
-  const { accessToken, refreshToken } = data;
-
-  //  Set refresh token in cookie
-  res.cookie('refreshToken', refreshToken, {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'none',
-  });
+  await AuthServices.verifyEmail(req.params.userEmail, req.body.otp);
 
   sendResponce(res, {
     statusCode: 200,
     success: true,
-    message: 'Your profile is verified!',
-    data: {
-      accessToken,
-    },
+    message:
+      'Your profile has been successfully verified. You can now log in to your Laivaly account.',
+    data: null,
   });
 });
 
