@@ -15,6 +15,7 @@ import { Wishlist } from '../wishlist/wishlist.model';
 import { Cart } from '../cart/cart.model';
 
 const userLogin = async (payload: TUserLogin) => {
+
   // Check the user is exist or not
   const isUserExist = await User.findOne({ userEmail: payload.userEmail });
   if (!isUserExist) {
@@ -107,9 +108,9 @@ const forgetUserPassword = async (userEmail: string) => {
   );
 
   // Createe password rest ui link
-  const resetPasswordUILink = `${config.reset_password_ui_link}?userEmail=${isUserExist.userEmail}&token=${resetToken}`;
+  const resetPasswordUILink = `${config.reset_password_ui_link}?token=${resetToken}`;
 
-  // Get password reset ui hyml file
+  // Get password reset ui html file
   const resetEmailUiHTMLFile = path.join(
     process.cwd(),
     'src/app/templates/pass_reset_email.html',

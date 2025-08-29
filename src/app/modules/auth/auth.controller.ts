@@ -8,10 +8,17 @@ const loginUser = catchAsync(async (req, res) => {
   const { accessToken, refreshToken } = data;
 
   //   Set refresh token in cookie
+  res.cookie('accessToken', accessToken, {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+    path: '/',
+  });
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
     secure: true,
     sameSite: 'none',
+    path: '/',
   });
 
   sendResponce(res, {
@@ -22,13 +29,38 @@ const loginUser = catchAsync(async (req, res) => {
   });
 });
 
+const logoutUser = catchAsync(async (req, res) => {
+  //   Remove token from cookie
+  res.clearCookie('accessToken', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+    path: '/',
+  });
+  res.clearCookie('refreshToken', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+    path: '/',
+  });
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: 'User logout succesfully!',
+    data: null,
+  });
+});
+
 const forgetPassword = catchAsync(async (req, res) => {
+  console.log(req.body);
   const data = await AuthServices.forgetUserPassword(req.body.userEmail);
 
   sendResponce(res, {
     statusCode: 200,
     success: true,
-    message: 'Password reset link is generated succesfully!',
+    message:
+      'A password reset link has been sent to your email. Please check your inbox.',
     data: data,
   });
 });
@@ -110,6 +142,7 @@ const refreshAccessToken = catchAsync(async (req, res) => {
 
 export const AuthController = {
   loginUser,
+  logoutUser,
   forgetPassword,
   resetPassword,
   changePassword,

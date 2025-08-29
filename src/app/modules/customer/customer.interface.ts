@@ -6,7 +6,7 @@ export interface TCustomer {
     customerId: string;
     userName: TUserName;
     userEmail: string;
-    dateOfBirth: Date | null;
+    dateOfBirth: string | null;
     phoneNumber: string | null;
     gender: 'male' | 'female' | null;
     shippingAddress: TShippingAddress[] | [];
