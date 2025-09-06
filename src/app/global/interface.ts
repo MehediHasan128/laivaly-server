@@ -12,4 +12,5 @@ export interface TShippingAddress {
     postalCode: string;
     state: string;
     country: string;
+    defaultAddress: boolean
 }

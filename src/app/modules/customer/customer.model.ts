@@ -26,7 +26,7 @@ const customerSchema = new Schema<TCustomer>(
       match: [/\S+@\S+\.\S+/, 'Please enter a valid email address'],
     },
     dateOfBirth: {
-      type: Date,
+      type: String,
       default: null,
     },
     phoneNumber: {
@@ -35,7 +35,7 @@ const customerSchema = new Schema<TCustomer>(
     },
     gender: {
       type: String,
-      enum: ['male', 'female'],
+      enum: ['men', 'women'],
       default: null,
     },
     shippingAddress: {

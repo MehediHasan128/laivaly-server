@@ -1,3 +1,4 @@
+import config from '../../config';
 import { catchAsync } from '../../utils/catchAsync';
 import { sendResponce } from '../../utils/sendResponce';
 import { AuthServices } from './auth.services';
@@ -10,15 +11,15 @@ const loginUser = catchAsync(async (req, res) => {
   //   Set refresh token in cookie
   res.cookie('accessToken', accessToken, {
     httpOnly: true,
-    secure: true,
-    sameSite: 'none',
-    path: '/',
+    secure: config.node_env === 'production'? true : false,
+    sameSite: config.node_env === 'production'? 'none' : 'lax',
+    path: '/'
   });
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
-    secure: true,
-    sameSite: 'none',
-    path: '/',
+    secure: config.node_env === 'production'? true : false,
+    sameSite: config.node_env === 'production'? 'none' : 'lax',
+    path: '/'
   });
 
   sendResponce(res, {
@@ -53,7 +54,7 @@ const logoutUser = catchAsync(async (req, res) => {
 });
 
 const forgetPassword = catchAsync(async (req, res) => {
-  console.log(req.body);
+  
   const data = await AuthServices.forgetUserPassword(req.body.userEmail);
 
   sendResponce(res, {

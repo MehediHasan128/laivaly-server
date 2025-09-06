@@ -15,7 +15,6 @@ export const globalErrorHandler = (
   res: Response,
   next: NextFunction,
 ) => {
-  console.log(err);
   let statusCode = 500;
   let message = 'Something went wrong!';
   let errorSources: TErrorSources[] = [
@@ -64,6 +63,7 @@ export const globalErrorHandler = (
   }
 
   return res.status(statusCode).json({
+    statusCode: statusCode,
     success: false,
     message,
     errorSources,

@@ -17,9 +17,15 @@ router.patch(
 // Add shipping address
 router.patch(
   '/add-shipping-address/:customerID',
-  auth(USER_ROLE.customer),
+  // auth(USER_ROLE.customer),
   validationRequest(CustomerValidation.addShippingAddressValidationScham),
   CustomerController.addShippingAddress,
+);
+// Get shipping address
+router.get(
+  '/shipping-address/:customerID',
+  auth(USER_ROLE.customer),
+  CustomerController.getShippingAddress,
 );
 // Update shipping address
 router.patch(
@@ -33,6 +39,12 @@ router.delete(
   '/delete-shipping-address/:customerID',
   auth(USER_ROLE.customer),
   CustomerController.deleteShippingAddress,
+);
+// Change default address
+router.patch(
+  '/change-default-address/:customerID',
+  auth(USER_ROLE.customer),
+  CustomerController.changeDefaultAddress,
 );
 
 export const CustomerRoutes = router;

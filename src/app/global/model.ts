@@ -59,5 +59,8 @@ export const shippingAddressSchema = new Schema<TShippingAddress>({
     type: String,
     required: [true, 'Country is required'],
     trim: true,
+  },
+  defaultAddress: {
+    type: Boolean
   }
 });
