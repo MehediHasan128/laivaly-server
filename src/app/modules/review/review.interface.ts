@@ -8,5 +8,6 @@ export interface Review {
 }
 
 export interface TReviews {
+    productId: Types.ObjectId,
     reviews: Review[] | [];
 }

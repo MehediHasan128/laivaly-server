@@ -1,140 +1,141 @@
 import { model, Schema } from 'mongoose';
-import { TProduct, TVariant } from './product.interface';
+import { TProduct, TProductDescription } from './product.interface';
 import {
   ProductCategory,
   ProductFor,
   ProductGroup,
   ProductSubCategory,
-  TargetedAudiance,
+  Season,
 } from './product.constant';
 
-const variantSchema = new Schema<TVariant>({
-  size: {
+const ProductDescriptionSchema = new Schema<TProductDescription>({
+  shortDescription: {
     type: String,
-    required: false,
+    required: [true, 'Short description is required'],
     trim: true,
+    maxlength: [200, 'Short description cannot exceed 200 characters'],
   },
-  stock: {
+  longDescription: {
+    type: String,
+    required: [true, 'Long description is required'],
+    trim: true,
+    maxlength: [2000, 'Long description cannot exceed 2000 characters'],
+  },
+  material: {
+    type: String,
+    required: [true, 'Material is required'],
+    trim: true,
+    maxlength: [100, 'Material cannot exceed 100 characters'],
+  },
+  careInstructions: {
+    type: String,
+    trim: true,
+    maxlength: [500, 'Care instructions cannot exceed 500 characters'],
+  },
+  features: {
+    type: String,
+    trim: true,
+    maxlength: [500, 'Features cannot exceed 500 characters'],
+  },
+  productWeight: {
     type: Number,
-    required: [true, 'Stock is required'],
-    min: [0, 'Stock cannot be negative'],
+    min: [0, 'Product weight cannot be negative'],
   },
-  SKU: {
+  countryOfOrigin: {
     type: String,
-    required: [true, 'SKU is required'],
     trim: true,
-    unique: true,
+    maxlength: [100, 'Country of origin cannot exceed 100 characters'],
   },
 });
 
-const productSchema = new Schema<TProduct>(
+const ProductSchema = new Schema<TProduct>(
   {
-    productId: {
+    highlightedProduct: {
+      type: Boolean,
+      default: false,
+    },
+    parentProductId: {
       type: String,
-      required: [true, 'Product id is required'],
+      required: [true, 'Product ID is required'],
+      unique: true,
       trim: true,
     },
     title: {
       type: String,
       required: [true, 'Product title is required'],
       trim: true,
+      maxlength: [200, 'Product title cannot exceed 200 characters'],
     },
     description: {
-      type: String,
+      type: ProductDescriptionSchema,
       required: [true, 'Product description is required'],
     },
-    group: {
+    season: {
       type: String,
-      enum: {
-        values: ProductGroup,
-        message: 'Group must be either Men, Women, or Kids',
-      },
-      required: [true, 'Product group is required'],
-    },
-    category: {
-      type: String,
-      enum: {
-        values: ProductCategory,
-        message: 'Category must be Clothing, Footwear, or Accessories',
-      },
-      required: [true, 'Product category is required'],
-    },
-    subCategory: {
-      type: String,
-      enum: {
-        values: ProductSubCategory,
-        message: 'Invalid sub-category',
-      },
-      required: [true, 'Product sub-category is required'],
+      enum: Season,
     },
     productFor: {
       type: String,
-      enum: {
-        values: ProductFor,
-        message: 'Invalid value',
-      },
-      required: [true, 'Product for is required'],
+      enum: ProductFor,
+      required: [true, 'Product gender is required'],
     },
-    targetedAudiance: {
+    productGroup: {
       type: String,
-      enum: {
-        values: TargetedAudiance,
-        message: 'Invalid audience',
-      },
-      required: [true, 'Product target audience is required'],
+      enum: ProductGroup,
+      required: [true, 'Product group is required'],
+    },
+    productCategory: {
+      type: String,
+      enum: ProductCategory,
+      required: [true, 'Product category is required'],
+      trim: true,
+    },
+    productSubCategory: {
+      type: String,
+      enum: ProductSubCategory,
+      required: [true, 'Product subcategory is required'],
+      trim: true,
+    },
+    productVeriants: {
+      type: Schema.Types.ObjectId,
+      ref: 'variant',
+      default: null,
     },
     price: {
       type: Number,
-      required: [true, 'Price is required'],
-      min: [0, 'Price must be non-negative'],
+      required: [true, 'Product price is required'],
+      min: [0, 'Price cannot be negative'],
     },
     discount: {
       type: Number,
-      required: [true, 'Discount price is required'],
-      min: [0, 'Discount price must be non-negative'],
       default: 0,
+      min: [0, 'Discount cannot be negative'],
     },
     perUnitCost: {
       type: Number,
-      required: [true, 'Product unit cost is required'],
-      min: [0, 'Unit cost must be non-negative'],
-    },
-    variants: {
-      type: [variantSchema],
-      required: false,
-    },
-    color: {
-      type: [String],
-      required: false,
+      required: [true, 'Per unit cost is required'],
+      min: [0, 'Per unit cost cannot be negative'],
     },
     productThumbnail: {
       type: String,
       required: [true, 'Product thumbnail is required'],
+      trim: true,
     },
     productImages: {
       type: [String],
-      required: [true, 'At least one product image is required'],
-      validate: {
-        validator: (v: string[]) => Array.isArray(v) && v.length > 0,
-        message: 'Product must have at least one image',
-      },
-    },
-    productWeight: {
-      type: String,
-      required: false,
+      default: [],
     },
     productReviews: {
       type: Schema.Types.ObjectId,
-      ref: 'review'
+      ref: 'review',
+      default: null,
     },
     isDeleted: {
       type: Boolean,
       default: false,
     },
   },
-  {
-    timestamps: true,
-  },
+  { timestamps: true },
 );
 
-export const Product = model<TProduct>('product', productSchema);
+export const Product = model<TProduct>('product', ProductSchema);

@@ -1,243 +1,138 @@
-export type TTargetedAudiance =
-  | 'baby'
-  | 'toddler'
-  | 'child'
-  | 'teen'
-  | 'adult'
-  | 'senior'
-  | 'all';
-export const TargetedAudiance = [
-  'baby',
-  'toddler',
-  'child',
-  'teen',
-  'adult',
-  'senior',
-  'all',
-];
+export type TProductFor = 'Men' | 'Women' | 'Kids';
+export const ProductFor = ['Men', 'Women', 'Kids'];
 
-export type TProductFor = 'men' | 'women' | 'children';
-export const ProductFor = ['men', 'women', 'children'];
+export type TSeason = 'Summer' | 'Winter' | 'All-season';
+export const Season = ['Summer', 'Winter', 'All-season'];
 
-export type TProductGroup =
-  | 'cloth'
-  | 'accessories'
-  | 'footwear'
-  | 'beauty & fragrance';
-export const ProductGroup = [
-  'cloth',
-  'accessories',
-  'footwear',
-  'beauty & fragrance',
-];
+export type TProductGroup = 'Cloth' | 'Accessories' | 'Footwear' | 'Fragrance';
+export const ProductGroup = ['Cloth', 'Accessories', 'Footwear', 'Fragrance'];
 
 export type TProductCategory =
-  | 't-shirts'
-  | 'shirts'
-  | 'bottoms'
-  | 'shorts'
-  | 'jackets'
-  | 'hoodies & sweatshirts'
-  | 'blazers'
-  | 'skirts'
-  | 'bags'
-  | 'headwear'
-  | 'belts'
-  | 'wallets'
-  | 'sunglasses'
-  | 'perfumes'
-  | 'shoes';
+  | 'Tops'
+  | 'Bottoms'
+  | 'Outerwear'
+  | 'Bags'
+  | 'Sneakers'
+  | 'Boots'
+  | 'Heels'
+  | 'Sandals'
+  | 'Flats'
+  | 'Slippers'
+  | 'Perfume';
 
 export const ProductCategory = [
-  't-shirts',
-  'shirts',
-  'bottoms',
-  'shorts',
-  'jackets',
-  'hoodies & sweatshirts',
-  'blazers',
-  'skirts',
-  'bags',
-  'headwear',
-  'belts',
-  'wallets',
-  'sunglasses',
-  'perfumes',
-  'shoes',
+  'Tops',
+  'Bottoms',
+  'Outerwear',
+  'Bags',
+  'Sneakers',
+  'Boots',
+  'Sandals',
+  'Slippers',
+  'Perfume',
 ];
 
 export type TProductSubCategory =
-  // t-shirts
-  | 'graphic t-shirts'
-  | 'plain t-shirts'
-  | 'oversized t-shirts'
-  | 'slim fit t-shirts'
-  | 'polo t-shirts'
-  | 'long sleeve t-shirts'
-  | 'short sleeve t-shirts'
-  
-  // shirts
-  | 'casual shirts'
-  | 'formal shirts'
-  | 'denim shirts'
-  | 'printed shirts'
-  | 'linen shirts'
-  | 'flannel shirts'
-
-  // bottoms
-  | 'jeans'
-  | 'trousers'
-  | 'chinos'
-  | 'cargo pants'
-  | 'joggers'
-  | 'sweatpants'
-  | 'formal pants'
-
-  // shorts
-  | 'denim shorts'
-  | 'casual shorts'
-  | 'sports shorts'
-  | 'lounge shorts'
-
-  // jackets
-  | 'bomber jackets'
-  | 'denim jackets'
-  | 'puffer jackets'
-  | 'leather jackets'
-  | 'windbreakers'
-
-  // hoodies & sweatshirts
-  | 'pullover hoodies'
-  | 'zip-up hoodies'
-  | 'crewneck sweatshirts'
-  | 'oversized sweatshirts'
-
-  // blazers
-  | 'casual blazers'
-  | 'formal blazers'
-
-  // skirts
-  | 'denim skirts'
-  | 'mini skirts'
-  | 'midi skirts'
-
-  // bags
-  | 'tote bags'
-  | 'backpacks'
-  | 'handbags'
-  | 'crossbody bags'
-  | 'sling bags'
-  | 'mini bags'
-
-  // headwear
-  | 'baseball caps'
-  | 'beanies'
-  | 'bucket hats'
-  | 'snapbacks'
-
-  // belts
-  | 'leather belts'
-  | 'canvas belts'
-  | 'formal belts'
-
-  // wallets
-  | 'bifold wallets'
-  | 'card holders'
-  | 'zip wallets'
-
-  // sunglasses
-  | 'aviator sunglasses'
-  | 'round frame sunglasses'
-  | 'wayfarer sunglasses'
-  | 'oversized sunglasses'
-
-  // perfumes
-  | 'eau de parfum'
-  | 'eau de toilette'
-  | 'body mists'
-  | 'roll-ons'
-
-  // shoes
-  | 'chunky sneakers'
-  | 'classic sneakers'
-  | 'high-top sneakers'
-  | 'chelsea boots'
-  | 'combat boots'
-  | 'slides'
-  | 'strappy sandals'
-  | 'loafers'
-  | 'oxford shoes';
+  | 'Graphic T-Shirts'
+  | 'Plain T-Shirts'
+  | 'Oversized T-Shirts'
+  | 'Slim fit T-Shirts'
+  | 'Polo T-Shirts'
+  | 'Long sleeve T-Shirts'
+  | 'Short sleeve T-Shirts'
+  | 'Casual Shirts'
+  | 'Formal Shirts'
+  | 'Denim Shirts'
+  | 'Printed Shirts'
+  | 'Linen Shirts'
+  | 'Flannel Shirts'
+  | 'Crop Top'
+  | 'Jeans'
+  | 'Trousers'
+  | 'Chinos'
+  | 'Cargo Pants'
+  | 'Joggers'
+  | 'Sweatpants'
+  | 'Formal Pants'
+  | 'Jacket'
+  | 'Coat'
+  | 'Hoodie'
+  | 'Blazer'
+  | 'Cardigan'
+  | 'Backpack'
+  | 'Wallet'
+  | 'Handbag'
+  | 'Running Sneakers'
+  | 'Casual Sneakers'
+  | 'High-top Sneakers'
+  | 'Ankle Boots'
+  | 'Chelsea Boots'
+  | 'Knee-high Boots'
+  | 'Flat Sandals'
+  | 'Slide Sandals'
+  | 'Sport Sandals'
+  | 'Flip Flops'
+  | 'Wedge Sandals'
+  | 'Gladiator Sandals'
+  | 'Heeled Sandals'
+  | 'Indoor Slippers'
+  | 'Outdoor Slippers'
+  | 'Slide Slippers'
+  | 'Flip Flops'
+  | 'Eau de parfum'
+  | 'Eau de toilette'
+  | 'Body Mists'
+  | 'Roll-ons';
 
 export const ProductSubCategory = [
-  'graphic t-shirts',
-  'plain t-shirts',
-  'oversized t-shirts',
-  'slim fit t-shirts',
-  'polo t-shirts',
-  'long sleeve t-shirts',
-  'short sleeve t-shirts',
-  'casual shirts',
-  'formal shirts',
-  'denim shirts',
-  'printed shirts',
-  'linen shirts',
-  'flannel shirts',
-  'jeans',
-  'trousers',
-  'chinos',
-  'cargo pants',
-  'joggers',
-  'sweatpants',
-  'formal pants',
-  'denim shorts',
-  'casual shorts',
-  'sports shorts',
-  'lounge shorts',
-  'bomber jackets',
-  'denim jackets',
-  'puffer jackets',
-  'leather jackets',
-  'windbreakers',
-  'pullover hoodies',
-  'zip-up hoodies',
-  'crewneck sweatshirts',
-  'oversized sweatshirts',
-  'casual blazers',
-  'formal blazers',
-  'denim skirts',
-  'mini skirts',
-  'midi skirts',
-  'tote bags',
-  'backpacks',
-  'handbags',
-  'crossbody bags',
-  'sling bags',
-  'mini bags',
-  'baseball caps',
-  'beanies',
-  'bucket hats',
-  'snapbacks',
-  'leather belts',
-  'canvas belts',
-  'formal belts',
-  'bifold wallets',
-  'card holders',
-  'zip wallets',
-  'aviator sunglasses',
-  'round frame sunglasses',
-  'wayfarer sunglasses',
-  'oversized sunglasses',
-  'eau de parfum',
-  'eau de toilette',
-  'body mists',
-  'roll-ons',
-  'chunky sneakers',
-  'classic sneakers',
-  'high-top sneakers',
-  'chelsea boots',
-  'combat boots',
-  'slides',
-  'strappy sandals',
-  'loafers',
-  'oxford shoes',
+  'Graphic T-Shirts',
+  'Plain T-Shirts',
+  'Oversized T-Shirts',
+  'Slim fit T-Shirts',
+  'Polo T-Shirts',
+  'Long sleeve T-Shirts',
+  'Short sleeve T-Shirts',
+  'Casual Shirts',
+  'Formal Shirts',
+  'Denim Shirts',
+  'Printed Shirts',
+  'Linen Shirts',
+  'Flannel Shirts',
+  'Crop Top',
+  'Jeans',
+  'Trousers',
+  'Chinos',
+  'Cargo Pants',
+  'Joggers',
+  'Sweatpants',
+  'Formal Pants',
+  'Jacket',
+  'Coat',
+  'Hoodie',
+  'Blazer',
+  'Cardigan',
+  'Backpack',
+  'Wallet',
+  'Handbag',
+  'Running Sneakers',
+  'Casual Sneakers',
+  'High-top Sneakers',
+  'Ankle Boots',
+  'Chelsea Boots',
+  'Knee-high Boots',
+  'Flat Sandals',
+  'Slide Sandals',
+  'Sport Sandals',
+  'Flip Flops',
+  'Wedge Sandals',
+  'Gladiator Sandals',
+  'Heeled Sandals',
+  'Indoor Slippers',
+  'Outdoor Slippers',
+  'Slide Slippers',
+  'Flip Flops',
+  'Eau de parfum',
+  'Eau de toilette',
+  'Body Mists',
+  'Roll-ons',
 ];

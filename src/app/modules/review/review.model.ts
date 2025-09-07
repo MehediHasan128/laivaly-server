@@ -22,11 +22,16 @@ const reviewSchema = new Schema<reviewContent>({
       validator: (arr: string[]) => arr.every((url) => typeof url === 'string'),
       message: 'All picture URLs must be strings',
     },
-    default: []
+    default: [],
   },
 });
 
 const createReviewSchema = new Schema<TReviews>({
+  productId: {
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: 'product',
+  },
   reviews: {
     type: [reviewSchema],
     default: [],

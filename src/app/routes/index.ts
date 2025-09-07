@@ -9,6 +9,7 @@ import { CartRoutes } from '../modules/cart/cart.router';
 import { StaffRoutes } from '../modules/staff/staff.router';
 import { OrdersRoutes } from '../modules/order/order.router';
 import { DashboardRoutes } from '../admin/dashboard.router';
+import { VariantRoutes } from '../modules/productVariant/variant.router';
 
 const router = Router();
 
@@ -32,6 +33,10 @@ const moduleRroutes = [
   {
     path: '/products',
     router: ProductRoutes,
+  },
+  {
+    path: '/variants',
+    router: VariantRoutes,
   },
   {
     path: '/wishlist',
