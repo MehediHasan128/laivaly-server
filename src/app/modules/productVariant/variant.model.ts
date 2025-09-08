@@ -31,7 +31,7 @@ const productVariantSchema = new Schema<TProductVariant>({
     required: true,
     ref: 'product',
   },
-  veriants: {
+  variants: {
     type: [variantSchema],
     default: [],
   },

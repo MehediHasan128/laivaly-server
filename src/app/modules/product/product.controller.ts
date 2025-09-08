@@ -13,77 +13,61 @@ const addProduct = catchAsync(async (req, res) => {
   });
 });
 
-// const updateProduct = catchAsync(async (req, res) => {
-//   const data = await ProductServices.updateProductIntoDB(
-//     req.params.productId,
-//     req.body,
-//   );
+const updateProduct = catchAsync(async (req, res) => {
+  const data = await ProductServices.updateProductIntoDB(
+    req.params.parentProductId,
+    req.body,
+  );
 
-//   sendResponce(res, {
-//     statusCode: 200,
-//     success: true,
-//     message: 'Product update successfully!',
-//     data: data,
-//   });
-// });
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Product update successfully!',
+    data: data,
+  });
+});
 
-// const productStockEntry = catchAsync(async (req, res) => {
+const getAllProduct = catchAsync(async (req, res) => {
+  const data = await ProductServices.getAllProductFromDB(req.query);
 
-//  const {productSKU, quantity} = req.query;
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: 'All products retrieved successfully!',
+    data: data,
+  });
+});
 
-//   const data = await ProductServices.productStockEntryIntoDB(req.params.productId, productSKU as string, quantity as string);
+const getsingleProduct = catchAsync(async (req, res) => {
+  const data = await ProductServices.getSingleProductFromDB(
+    req.params.parentProductId,
+  );
 
-//   sendResponce(res, {
-//     statusCode: 200,
-//     success: true,
-//     message: 'Product stock update successfully!',
-//     data: data,
-//   });
-// });
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: `Product with ID (${req.params.productId}) fetched successfully`,
+    data: data,
+  });
+});
 
-// const getAllProduct = catchAsync(async (req, res) => {
-//   const data = await ProductServices.getAllProductFromDB(req.query);
+const deleteProduct = catchAsync(async (req, res) => {
+  const data = await ProductServices.deleteSingleProductIntoDB(
+    req.params.productId,
+  );
 
-//   sendResponce(res, {
-//     statusCode: 200,
-//     success: true,
-//     message: 'All products retrieved successfully!',
-//     metaData: data?.meta,
-//     data: data?.data,
-//   });
-// });
-
-// const getsingleProduct = catchAsync(async (req, res) => {
-//   const data = await ProductServices.getSingleProductFromDB(
-//     req.params.productId,
-//   );
-
-//   sendResponce(res, {
-//     statusCode: 200,
-//     success: true,
-//     message: `Product with ID (${req.params.productId}) fetched successfully`,
-//     data: data,
-//   });
-// });
-
-// const deleteProduct = catchAsync(async (req, res) => {
-//   const data = await ProductServices.deleteSingleProductIntoDB(
-//     req.params.productId,
-//   );
-
-//   sendResponce(res, {
-//     statusCode: 200,
-//     success: true,
-//     message: 'Product has been moved to trash',
-//     data: data,
-//   });
-// });
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Product has been moved to trash',
+    data: data,
+  });
+});
 
 export const ProductController = {
   addProduct,
-  // updateProduct,
-  // productStockEntry,
-  // getAllProduct,
-  // getsingleProduct,
-  // deleteProduct,
+  updateProduct,
+  getAllProduct,
+  getsingleProduct,
+  deleteProduct,
 };

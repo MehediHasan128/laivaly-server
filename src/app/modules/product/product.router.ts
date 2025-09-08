@@ -2,8 +2,8 @@ import express, { NextFunction, Request, Response } from 'express';
 import { validationRequest } from '../../middlewares/zodValidationRequest';
 import { ProductController } from './product.controller';
 import { upload } from '../../utils/sendImageToCloudinary';
-// import auth from '../../middlewares/auth';
-// import { USER_ROLE } from '../user/user.contant';
+import auth from '../../middlewares/auth';
+import { USER_ROLE } from '../user/user.contant';
 import { ProductValidation } from './product.validation';
 
 const router = express.Router();
@@ -16,32 +16,26 @@ router.post(
     req.body = JSON.parse(req.body.data);
     next();
   },
-  // auth(USER_ROLE.admin),
+  auth(USER_ROLE.admin),
   validationRequest(ProductValidation.createProductValidationSchema),
   ProductController.addProduct,
 );
 // // Update product
-// router.patch(
-//   '/update-product/:productId',
-//   auth(USER_ROLE.admin),
-//   validationRequest(ProductValidation.updateProductValidationSchema),
-//   ProductController.updateProduct,
-// );
-// // Product stock entry
-// router.patch(
-//   '/update-product-stock/:productId',
-//   auth(USER_ROLE.admin),
-//   ProductController.productStockEntry,
-// );
-// // Get all product from db
-// router.get('/', ProductController.getAllProduct);
-// // Get single product from db
-// router.get('/:productId', ProductController.getsingleProduct);
-// // Delete single product from db
-// router.delete(
-//   '/:productId',
-//   auth(USER_ROLE.admin),
-//   ProductController.deleteProduct,
-// );
+router.patch(
+  '/update-product/:parentProductId',
+  //  auth(USER_ROLE.admin),
+  validationRequest(ProductValidation.updateProductValidationSchema),
+  ProductController.updateProduct,
+);
+// Get all product from db
+router.get('/', ProductController.getAllProduct);
+// Get single product from db
+router.get('/:parentProductId', ProductController.getsingleProduct);
+// Delete single product from db
+router.delete(
+  '/:productId',
+  auth(USER_ROLE.admin),
+  ProductController.deleteProduct,
+);
 
 export const ProductRoutes = router;

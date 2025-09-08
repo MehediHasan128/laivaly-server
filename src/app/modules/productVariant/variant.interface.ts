@@ -9,5 +9,5 @@ export interface TVariants {
 
 export interface TProductVariant {
     productId: Types.ObjectId,
-    veriants: TVariants[] | []
+    variants: TVariants[] | []
 }

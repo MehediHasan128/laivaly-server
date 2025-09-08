@@ -172,7 +172,7 @@ const updateProductValidationSchema = z.object({
       .max(200, 'Product title cannot exceed 200 characters')
       .optional(),
 
-    description: updateProductDescriptionValiadtionSchema,
+    description: updateProductDescriptionValiadtionSchema.optional(),
 
     season: z
       .enum([...Season] as [string, ...string[]], {

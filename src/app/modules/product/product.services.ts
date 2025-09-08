@@ -5,7 +5,7 @@ import { TProduct } from './product.interface';
 import { createProductID } from './product.utils';
 import { Product } from './product.model';
 import { uploadMultipleImage } from '../../utils/sendImageToCloudinary';
-// import QueryBuilder from '../../builder/QueryBuilder';
+import QueryBuilder from '../../builder/QueryBuilder';
 import mongoose from 'mongoose';
 import { Review } from '../review/review.model';
 import { Variant } from '../productVariant/variant.model';
@@ -97,130 +97,87 @@ const addProductIntoDB = async (files: any, payload: TProduct) => {
   }
 };
 
-// const updateProductIntoDB = async (
-//   productId: string,
-//   payload: Partial<TProduct>,
-// ) => {
-//   // Check the is is given or not
-//   if (!productId) {
-//     throw new AppError(httpStatus.BAD_REQUEST, 'Product ID is required!');
-//   }
+const updateProductIntoDB = async (
+  parentProductId: string,
+  payload: Partial<TProduct>,
+) => {
+  // Check the is is given or not
+  if (!parentProductId) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Product ID is required!');
+  }
 
-//   // Check the product is exist or not
-//   const isProductExists = await Product.findOne({ productId });
-//   if (!isProductExists) {
-//     throw new AppError(httpStatus.NOT_FOUND, 'Product not found!');
-//   }
+  // Check the product is exist or not
+  const isProductExists = await Product.findOne({ parentProductId });
+  if (!isProductExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Product not found!');
+  }
 
-//   // Check the product is already delete
-//   const isProductDelete = isProductExists?.isDeleted;
-//   if (isProductDelete) {
-//     throw new AppError(httpStatus.BAD_REQUEST, 'Product is already delete!');
-//   }
+  // Check the product is already delete
+  const isProductDelete = isProductExists?.isDeleted;
+  if (isProductDelete) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Product is already delete!');
+  }
 
-//   const data = await Product.findOneAndUpdate({ productId }, payload, {
-//     new: true,
-//   });
-//   return data;
-// };
+  const data = await Product.findOneAndUpdate({ parentProductId }, payload, {
+    new: true,
+  });
+  return data;
+};
 
-// const productStockEntryIntoDB = async (
-//   productId: string,
-//   productSKU: string,
-//   quantity: string,
-// ) => {
-//   // Check the is is given or not
-//   if (!productId) {
-//     throw new AppError(httpStatus.BAD_REQUEST, 'Product ID is required!');
-//   }
+const getAllProductFromDB = async (query: Record<string, unknown>) => {
+  const productQuery = new QueryBuilder(
+    Product.find({isDeleted: false}).populate('productVeriants').populate('productReviews'),
+    query,
+  )
+    .search(['parentProductId', 'title'])
+    .filter()
+    .sort();
 
-//   // Check the product is exist or not
-//   const isProductExists = await Product.findOne({ productId });
-//   if (!isProductExists) {
-//     throw new AppError(httpStatus.NOT_FOUND, 'Product not found!');
-//   }
+  const products = await productQuery.queryModel;
 
-//   // Check the product is already delete
-//   const isProductDelete = isProductExists?.isDeleted;
-//   if (isProductDelete) {
-//     throw new AppError(httpStatus.BAD_REQUEST, 'Product is already delete!');
-//   }
+  return products;
+};
 
-//   const productVerient = isProductExists?.variants?.find(
-//     (ver) => ver?.SKU === productSKU,
-//   );
-//   if (!productVerient) {
-//     throw new AppError(
-//       httpStatus.NOT_FOUND,
-//       'The specified product variant could not be found. Please check the SKU and try again!',
-//     );
-//   }
+const getSingleProductFromDB = async (parentProductId: string) => {
+  // Check the is is given or not
+  if (!parentProductId) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Product ID is required!');
+  }
 
-//   productVerient.stock += Number(quantity);
+  // Check the product is exist or not
+  const isProductExists = await Product.findOne({ parentProductId });
+  if (!isProductExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Product not found!');
+  }
 
-//   await isProductExists.save();
-// };
+  return isProductExists;
+};
 
-// const getAllProductFromDB = async (query: Record<string, unknown>) => {
-//   const productQuery = new QueryBuilder(
-//     Product.find().populate('productReviews'),
-//     query,
-//   )
-//     .search(['productId', 'title'])
-//     .filter()
-//     .sort()
-//     .paginate();
+const deleteSingleProductIntoDB = async (parentProductId: string) => {
+  // Check the is is given or not
+  if (!parentProductId) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Product ID is required!');
+  }
 
-//   const meta = await productQuery.countTotal();
-//   const data = await productQuery.queryModel;
+  // Check the product is exist or not
+  const isProductExists = await Product.findOne({ parentProductId });
+  if (!isProductExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Product not found!');
+  }
 
-//   return {
-//     meta,
-//     data,
-//   };
-// };
+  // Check the product is already delete
+  const isProductDelete = isProductExists?.isDeleted;
+  if (isProductDelete) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Product is already delete!');
+  }
 
-// const getSingleProductFromDB = async (productId: string) => {
-//   // Check the is is given or not
-//   if (!productId) {
-//     throw new AppError(httpStatus.BAD_REQUEST, 'Product ID is required!');
-//   }
-
-//   // Check the product is exist or not
-//   const isProductExists = await Product.findOne({ productId });
-//   if (!isProductExists) {
-//     throw new AppError(httpStatus.NOT_FOUND, 'Product not found!');
-//   }
-
-//   return isProductExists;
-// };
-
-// const deleteSingleProductIntoDB = async (productId: string) => {
-//   // Check the is is given or not
-//   if (!productId) {
-//     throw new AppError(httpStatus.BAD_REQUEST, 'Product ID is required!');
-//   }
-
-//   // Check the product is exist or not
-//   const isProductExists = await Product.findOne({ productId });
-//   if (!isProductExists) {
-//     throw new AppError(httpStatus.NOT_FOUND, 'Product not found!');
-//   }
-
-//   // Check the product is already delete
-//   const isProductDelete = isProductExists?.isDeleted;
-//   if (isProductDelete) {
-//     throw new AppError(httpStatus.BAD_REQUEST, 'Product is already delete!');
-//   }
-
-//   await Product.findOneAndUpdate({ productId }, { isDeleted: true });
-// };
+  await Product.findOneAndUpdate({ parentProductId }, { isDeleted: true });
+};
 
 export const ProductServices = {
   addProductIntoDB,
-  // updateProductIntoDB,
-  // productStockEntryIntoDB,
-  // getAllProductFromDB,
-  // getSingleProductFromDB,
-  // deleteSingleProductIntoDB,
+  updateProductIntoDB,
+  getAllProductFromDB,
+  getSingleProductFromDB,
+  deleteSingleProductIntoDB,
 };

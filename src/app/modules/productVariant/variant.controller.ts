@@ -1,18 +1,19 @@
 import { catchAsync } from '../../utils/catchAsync';
 import { sendResponce } from '../../utils/sendResponce';
+import { VariantServices } from './variant.services';
 
 
-const addProduct = catchAsync(async (req, res) => {
-  const data = await ''
+const addProductVariant = catchAsync(async (req, res) => {
+  const data = await VariantServices.addProductVariantIntoDB(req.params.productId, req.body);
 
   sendResponce(res, {
     statusCode: 200,
     success: true,
-    message: 'Successfully add product!',
+    message: `New variant has been added successfully.`,
     data: data,
   });
 });
 
 export const VariantController = {
-  
+  addProductVariant
 };
