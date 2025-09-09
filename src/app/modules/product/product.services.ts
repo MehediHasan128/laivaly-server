@@ -41,8 +41,10 @@ const addProductIntoDB = async (files: any, payload: TProduct) => {
     // Set product thumbnails
     payload.productThumbnail = uploadImages[0];
 
+    const remainingImages = uploadImages.slice(1);
+
     //Set product images
-    payload.productImages = uploadImages;
+    payload.productImages = remainingImages;
 
     // Create product in database
     const newProduct = await Product.create([payload], { session });
@@ -126,7 +128,9 @@ const updateProductIntoDB = async (
 
 const getAllProductFromDB = async (query: Record<string, unknown>) => {
   const productQuery = new QueryBuilder(
-    Product.find({isDeleted: false}).populate('productVeriants').populate('productReviews'),
+    Product.find({ isDeleted: false })
+      .populate('productVeriants')
+      .populate('productReviews'),
     query,
   )
     .search(['parentProductId', 'title'])
@@ -138,14 +142,10 @@ const getAllProductFromDB = async (query: Record<string, unknown>) => {
   return products;
 };
 
-const getSingleProductFromDB = async (parentProductId: string) => {
-  // Check the is is given or not
-  if (!parentProductId) {
-    throw new AppError(httpStatus.BAD_REQUEST, 'Product ID is required!');
-  }
+const getSingleProductFromDB = async (productId: string) => {
 
   // Check the product is exist or not
-  const isProductExists = await Product.findOne({ parentProductId });
+  const isProductExists = await Product.findById(productId);
   if (!isProductExists) {
     throw new AppError(httpStatus.NOT_FOUND, 'Product not found!');
   }

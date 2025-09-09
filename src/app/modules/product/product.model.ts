@@ -13,7 +13,7 @@ const ProductDescriptionSchema = new Schema<TProductDescription>({
     type: String,
     required: [true, 'Short description is required'],
     trim: true,
-    maxlength: [200, 'Short description cannot exceed 200 characters'],
+    maxlength: [300, 'Short description cannot exceed 200 characters'],
   },
   longDescription: {
     type: String,

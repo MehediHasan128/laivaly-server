@@ -21,7 +21,6 @@ const variantSchema = new Schema<TVariants>({
     type: String,
     required: [true, 'SKU is required'],
     trim: true,
-    unique: true,
   },
 });
 

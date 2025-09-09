@@ -10,7 +10,7 @@ import {
 const productDescriptionValiadtionSchema = z.object({
   shortDescription: z
     .string({ required_error: 'Short description is required' })
-    .max(200, 'Short description cannot exceed 200 characters'),
+    .max(300, 'Short description cannot exceed 200 characters'),
 
   longDescription: z
     .string({ required_error: 'Long description is required' })
@@ -44,7 +44,7 @@ const productDescriptionValiadtionSchema = z.object({
 const updateProductDescriptionValiadtionSchema = z.object({
   shortDescription: z
     .string({ required_error: 'Short description is required' })
-    .max(200, 'Short description cannot exceed 200 characters')
+    .max(300, 'Short description cannot exceed 200 characters')
     .optional(),
 
   longDescription: z

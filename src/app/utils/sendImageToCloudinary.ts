@@ -28,25 +28,28 @@ export const uploadSingleImageToCloudinary = async (
   return res;
 };
 
-export const uploadMultipleImage = async(files: {path: string; filename: string}[]) => {
+export const uploadMultipleImage = async (
+  files: { path: string; filename: string }[],
+) => {
+  const imageURLs: string[] = [];
 
-  const imageURL: string[] = [];
+  for(const file of files){
+    try{
+      const res = await cloudinary.uploader.upload(file.path, {
+        public_id: file.filename,
+      });
+      imageURLs.push(res.secure_url);
 
-  const uploadImages = files.map((file) => cloudinary.uploader.upload(file.path, {public_id: file.filename}).then((res) => {
-    imageURL.push(res.secure_url);
-    fs.unlink(file.path, (err) => {
-      if(err){
-        console.log(err);
-      }
-    })
-  }).catch((err) => {
-    console.log(err);
-  }));
+      fs.unlink(file.path, (err) => {
+        if (err) console.log(err);
+      });
+    }catch(err){
+      console.log("Upload failed for file:", file.filename, err);
+    }
+  }
 
-  await Promise.all(uploadImages);
-  return imageURL;
-
-}
+  return imageURLs;
+};
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {

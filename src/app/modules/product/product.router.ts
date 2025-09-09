@@ -16,7 +16,7 @@ router.post(
     req.body = JSON.parse(req.body.data);
     next();
   },
-  auth(USER_ROLE.admin),
+  // auth(USER_ROLE.admin),
   validationRequest(ProductValidation.createProductValidationSchema),
   ProductController.addProduct,
 );
@@ -30,7 +30,7 @@ router.patch(
 // Get all product from db
 router.get('/', ProductController.getAllProduct);
 // Get single product from db
-router.get('/:parentProductId', ProductController.getsingleProduct);
+router.get('/:productId', ProductController.getsingleProduct);
 // Delete single product from db
 router.delete(
   '/:productId',
