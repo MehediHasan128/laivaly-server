@@ -28,7 +28,7 @@ router.patch(
   ProductController.updateProduct,
 );
 // Get all product from db
-router.get('/', ProductController.getAllProduct);
+router.get('/', auth(USER_ROLE.customer), ProductController.getAllProduct);
 // Get single product from db
 router.get('/:productId', ProductController.getsingleProduct);
 // Delete single product from db

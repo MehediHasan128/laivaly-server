@@ -10,19 +10,36 @@ const app: Application = express();
 
 // Parser
 app.use(express.json());
-app.use(cors({origin: ['http://localhost:3000'], credentials: true}));
-app.use(cookieParser())
+
+app.use(
+  cors({
+    origin: 'http://localhost:3000',
+    credentials: true,
+  }),
+);
+
+app.use(cookieParser());
 
 // Application routes
 app.use('/api/v1', router);
 
 app.get('/', (req, res) => {
-  res.send('The Laivaly server is run successfully')
+  res.send('The Laivaly server is run successfully');
 });
 
 // middlewares
-app.use(globalErrorHandler as (err: any, req: Request, res: Response, next: NextFunction) => void);
+app.use(
+  globalErrorHandler as (
+    err: any,
+    req: Request,
+    res: Response,
+    next: NextFunction,
+  ) => void,
+);
 // Invalid Api
 app.use(notFound as (req: Request, res: Response) => void);
 
 export default app;
+
+// 'https://laivaly.com',
+// 'https://www.laivaly.com',

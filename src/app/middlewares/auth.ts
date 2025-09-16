@@ -11,8 +11,8 @@ const auth = (...requiredRoles: TUserRole[]) => {
 
     return catchAsync(async(req: Request, res: Response, next: NextFunction) => {
 
-        const token = req.headers.authorization;
-        
+        const token = req.cookies?.accessToken;
+            
         if(!token){
             throw new AppError(httpStatus.UNAUTHORIZED, 'You are not authorized person!')
         };

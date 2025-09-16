@@ -7,7 +7,7 @@
     "lint": "eslint",
     "lint:fix": "npx eslint src --fix",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
+    "dev": "set NODE_EXTRA_CA_CERTS=C:\\Users\\User\\AppData\\Local\\mkcert\\rootCA.pem && ts-node-dev --respawn --transpile-only src/server.ts",
     "prettier": "prettier --ignore-path .gitignore --write \"**/*.+(js|ts|json)\""
   },
   "keywords": [],

@@ -27,6 +27,7 @@ const createStaff = catchAsync(async (req, res) => {
 });
 
 const getMe = catchAsync(async (req, res) => {
+  
   const data = await UserServices.getMe(req.user);
 
   sendResponce(res, {

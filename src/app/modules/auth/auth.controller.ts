@@ -3,6 +3,8 @@ import { catchAsync } from '../../utils/catchAsync';
 import { sendResponce } from '../../utils/sendResponce';
 import { AuthServices } from './auth.services';
 
+const isProduction = config.node_env === 'production';
+
 const loginUser = catchAsync(async (req, res) => {
   const data = await AuthServices.userLogin(req.body);
 
@@ -11,38 +13,42 @@ const loginUser = catchAsync(async (req, res) => {
   //   Set refresh token in cookie
   res.cookie('accessToken', accessToken, {
     httpOnly: true,
-    secure: config.node_env === 'production'? true : false,
-    sameSite: config.node_env === 'production'? 'none' : 'lax',
-    path: '/'
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
+    maxAge: 1000 * 60 * 60,
   });
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
-    secure: config.node_env === 'production'? true : false,
-    sameSite: config.node_env === 'production'? 'none' : 'lax',
-    path: '/'
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
+    maxAge: 1000 * 60 * 60 * 24 * 7,
   });
 
   sendResponce(res, {
     statusCode: 200,
     success: true,
     message: 'User is logged in succesfully!',
-    data: { accessToken },
+    data: {
+      accessToken,
+      refreshToken,
+    },
   });
 });
 
 const logoutUser = catchAsync(async (req, res) => {
   //   Remove token from cookie
-  res.clearCookie('accessToken', {
+  res.cookie('accessToken', null, {
     httpOnly: true,
-    secure: true,
-    sameSite: 'none',
-    path: '/',
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
+    maxAge: 0,
   });
-  res.clearCookie('refreshToken', {
+
+  res.cookie('refreshToken', null, {
     httpOnly: true,
-    secure: true,
-    sameSite: 'none',
-    path: '/',
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
+    maxAge: 0,
   });
 
   sendResponce(res, {
@@ -54,23 +60,37 @@ const logoutUser = catchAsync(async (req, res) => {
 });
 
 const forgetPassword = catchAsync(async (req, res) => {
-  
   const data = await AuthServices.forgetUserPassword(req.body.userEmail);
+
+  const { resetToken } = data;
+
+  res.cookie('passwordResetToken', resetToken, {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
+    maxAge: 1000 * 60 * 5,
+  });
 
   sendResponce(res, {
     statusCode: 200,
     success: true,
     message:
       'A password reset link has been sent to your email. Please check your inbox.',
-    data: data,
+    data: { resetToken },
   });
 });
 
 const resetPassword = catchAsync(async (req, res) => {
   const data = await AuthServices.resetUserPassword(
     req.body,
-    req.headers.authorization as string,
+    req.cookies.passwordResetToken as string,
   );
+
+  res.clearCookie('passwordResetToken', {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
+  });
 
   sendResponce(res, {
     statusCode: 200,
