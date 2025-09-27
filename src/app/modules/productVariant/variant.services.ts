@@ -22,6 +22,7 @@ const addProductVariantIntoDB = async (
   }
 
   const productSku = await genarateProductSKU(productId, payload);
+
   payload.SKU = productSku;
 
   //   Now check the variant is alrady exit

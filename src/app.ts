@@ -5,6 +5,7 @@ import { globalErrorHandler } from './app/middlewares/globalErrorHandler';
 import { notFound } from './app/middlewares/notFound';
 import router from './app/routes';
 import cookieParser from 'cookie-parser';
+import { removeData } from './app/utils/Cookie';
 
 const app: Application = express();
 
@@ -22,6 +23,7 @@ app.use(cookieParser());
 
 // Application routes
 app.use('/api/v1', router);
+app.use('/api/v1', removeData);
 
 app.get('/', (req, res) => {
   res.send('The Laivaly server is run successfully');

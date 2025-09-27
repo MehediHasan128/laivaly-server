@@ -1,10 +1,15 @@
 import { model, Schema } from 'mongoose';
 import { TCart, TCartItem } from './cart.interface';
+import { ProductFor } from '../product/product.constant';
 
-const selectedVariantSchema = new Schema<{
+export const selectedVariantSchema = new Schema<{
+  color?: string;
   size?: string;
   SKU: string;
 }>({
+  color: {
+    type: String,
+  },
   size: {
     type: String,
   },
@@ -20,6 +25,14 @@ const cartItemSchema = new Schema<TCartItem>({
     required: [true, 'Product ID is required!'],
     ref: 'product',
   },
+  productTitle: {
+    type: String,
+    required: [true, 'Product title is required!'],
+  },
+  productThumbnail: {
+    type: String,
+    required: true,
+  },
   quantity: {
     type: Number,
     required: [true, 'Product quantity is required!'],
@@ -27,6 +40,14 @@ const cartItemSchema = new Schema<TCartItem>({
   selectedVariant: selectedVariantSchema,
   totalPrice: {
     type: Number,
+  },
+  disscountRate: {
+    type: Number,
+  },
+  productFor: {
+    type: String,
+    enum: ProductFor,
+    required: [true, 'Product gender is required'],
   },
 });
 
@@ -38,8 +59,8 @@ const cartSchema = new Schema<TCart>({
   },
   items: {
     type: [cartItemSchema],
-    default: []
-  }
+    default: [],
+  },
 });
 
 export const Cart = model<TCart>('cart', cartSchema);

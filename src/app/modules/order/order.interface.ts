@@ -1,32 +1,42 @@
-import { Types } from "mongoose";
-import { TShippingAddress } from "../../global/interface";
+import { Types } from 'mongoose';
+import { TShippingAddress } from '../../global/interface';
 
-
-export interface TOrderItems {
-    productId: Types.ObjectId;
-    quantity: number;
-    size?: string;
+export interface TOrderItem {
+  productId: Types.ObjectId;
+  productTitle: string;
+  productThumbnail: string;
+  quantity: number;
+  selectedVariant: {
     color?: string;
+    size?: string;
     SKU: string;
+  };
+  totalPrice: number;
 }
 
 export interface TPaymentInfo {
-    TXID?: string;
-    email?: string;
-    paidAt?: Date;
-    status?: "success" | "failed";
+  TXID?: string;
+  email?: string;
+  paidAt?: Date;
+  status?: 'success' | 'failed';
 }
 
 export interface TOrder {
-    orderId: string;
-    userId: Types.ObjectId;
-    orderItems: TOrderItems[];
-    shippingAddress: TShippingAddress;
-    paymentMethod: "stripe" | "sslcommerz" | "cod";
-    paymentStatus: "pending" | "paid" | "failed" | "refunded";
-    paymentInfo?: TPaymentInfo;
-    itemsPrice: number;
-    shippingCharge: number;
-    totalPrice: number;
-    orderStatus: "processing" | "shipped" | "delivered" | "cancelled" | "returned"
+  orderId: string;
+  userId: Types.ObjectId;
+  orderItems: TOrderItem[];
+  shippingCharge: number;
+  grandTotal: number;
+  shippingMethod: 'standard' | 'second Day' | 'overnight';
+  shippingAddress: TShippingAddress;
+  paymentMethod: 'stripe' | 'sslcommerz' | 'cod';
+  paymentInfo?: TPaymentInfo;
+  paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
+  orderStatus:
+    | 'pending'
+    | 'processing'
+    | 'shipped'
+    | 'delivered'
+    | 'cancelled'
+    | 'returned';
 }

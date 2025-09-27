@@ -1,11 +1,11 @@
-export type TProductFor = 'Men' | 'Women' | 'Kids';
-export const ProductFor = ['Men', 'Women', 'Kids'];
+export type TProductFor = 'men' | 'women' | 'kids';
+export const ProductFor = ['men', 'women', 'kids'];
 
-export type TSeason = 'Summer' | 'Winter' | 'All-season';
-export const Season = ['Summer', 'Winter', 'All-season'];
+export type TSeason = 'summer' | 'winter' | 'all-season';
+export const Season = ['summer', 'winter', 'all-season'];
 
-export type TProductGroup = 'Cloth' | 'Accessories' | 'Footwear' | 'Fragrance';
-export const ProductGroup = ['Cloth', 'Accessories', 'Footwear', 'Fragrance'];
+export type TProductGroup = 'cloth' | 'accessories' | 'footwear' | 'fragrance';
+export const ProductGroup = ['cloth', 'accessories', 'footwear', 'fragrance'];
 
 export type TProductCategory =
   | 'Tops'

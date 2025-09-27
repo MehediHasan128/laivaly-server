@@ -1,26 +1,29 @@
 import { model, Schema } from 'mongoose';
-import { TOrder, TOrderItems, TPaymentInfo } from './order.interface';
+import { TOrder, TOrderItem, TPaymentInfo } from './order.interface';
 import { shippingAddressSchema } from '../../global/model';
+import { selectedVariantSchema } from '../cart/cart.model';
 
-const orderItemsSchema = new Schema<TOrderItems>({
+const orderItemsSchema = new Schema<TOrderItem>({
   productId: {
     type: Schema.Types.ObjectId,
-    ref: 'Product',
-    required: [true, 'Product ID is required for each order item.'],
+    required: [true, 'Product ID is required!'],
+    ref: 'product',
+  },
+  productTitle: {
+    type: String,
+    required: [true, 'Product title is required!'],
+  },
+  productThumbnail: {
+    type: String,
+    required: true,
   },
   quantity: {
     type: Number,
-    required: [true, 'Quantity is required for each order item.'],
+    required: [true, 'Product quantity is required!'],
   },
-  size: {
-    type: String,
-  },
-  color: {
-    type: String,
-  },
-  SKU: {
-    type: String,
-    required: [true, 'SKU is required for each order item.'],
+  selectedVariant: selectedVariantSchema,
+  totalPrice: {
+    type: Number,
   },
 });
 
@@ -59,9 +62,26 @@ const createOrderSchema = new Schema<TOrder>(
       type: [orderItemsSchema],
       required: [true, 'At least one order item is required.'],
       validate: {
-        validator: (v: TOrderItems[]) => Array.isArray(v) && v.length > 0,
+        validator: (v: TOrderItem[]) => Array.isArray(v) && v.length > 0,
         message: 'Order must contain at least one item.',
       },
+    },
+    shippingCharge: {
+      type: Number,
+      required: [true, 'Shipping charge is required.'],
+    },
+    grandTotal: {
+      type: Number,
+      required: [true, 'Total price is required.'],
+    },
+    shippingMethod: {
+      type: String,
+      enum: {
+        values: ['standard', 'second Day', 'overnight'],
+        message:
+          'Shipping method must be either standard, second Day, or overnight.',
+      },
+      required: [true, 'Shipping method is required.'],
     },
     shippingAddress: {
       type: shippingAddressSchema,
@@ -75,6 +95,9 @@ const createOrderSchema = new Schema<TOrder>(
       },
       required: [true, 'Payment method is required.'],
     },
+    paymentInfo: {
+      type: paymentInfoSchema,
+    },
     paymentStatus: {
       type: String,
       enum: {
@@ -84,21 +107,6 @@ const createOrderSchema = new Schema<TOrder>(
       },
       required: [true, 'Payment status is required.'],
       default: 'pending',
-    },
-    paymentInfo: {
-      type: paymentInfoSchema,
-    },
-    itemsPrice: {
-      type: Number,
-      required: [true, 'Items price is required.'],
-    },
-    shippingCharge: {
-      type: Number,
-      required: [true, 'Shipping charge is required.'],
-    },
-    totalPrice: {
-      type: Number,
-      required: [true, 'Total price is required.'],
     },
     orderStatus: {
       type: String,

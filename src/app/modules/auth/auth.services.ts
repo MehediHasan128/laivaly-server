@@ -41,9 +41,11 @@ const userLogin = async (payload: TUserLogin) => {
   if (!isPasswordMatch) {
     throw new AppError(httpStatus.BAD_REQUEST, 'Incorrect password !!');
   }
+  
 
   // create token
   const jwtPayload = {
+    userId: isUserExist?._id,
     id: isUserExist?.id,
     userName: isUserExist?.userName,
     userEmail: isUserExist?.userEmail,

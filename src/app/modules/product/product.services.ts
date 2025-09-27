@@ -135,7 +135,8 @@ const getAllProductFromDB = async (query: Record<string, unknown>) => {
   )
     .search(['parentProductId', 'title'])
     .filter()
-    .sort();
+    .sort()
+    .paginate();
 
   const products = await productQuery.queryModel;
 
@@ -145,7 +146,7 @@ const getAllProductFromDB = async (query: Record<string, unknown>) => {
 const getSingleProductFromDB = async (productId: string) => {
 
   // Check the product is exist or not
-  const isProductExists = await Product.findById(productId);
+  const isProductExists = await Product.findById(productId).populate('productVeriants');
   if (!isProductExists) {
     throw new AppError(httpStatus.NOT_FOUND, 'Product not found!');
   }

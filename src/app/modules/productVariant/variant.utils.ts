@@ -1,6 +1,6 @@
 import { Product } from '../product/product.model';
 import { TVariants } from './variant.interface';
-import { GetColorName } from 'hex-color-to-color-name';
+// import { GetColorName } from 'hex-color-to-color-name';
 import crypto from 'crypto';
 
 export const genarateProductSKU = async (
@@ -16,7 +16,7 @@ export const genarateProductSKU = async (
   //   get product color and size
   let productColor = null;
   if (payload?.color) {
-    productColor = GetColorName(payload?.color as string).toUpperCase();
+    productColor = payload.color.toUpperCase();
   }
   let productSize = null;
   if (payload?.size) {

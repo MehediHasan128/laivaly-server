@@ -51,7 +51,7 @@ const moduleRroutes = [
     router: CartRoutes,
   },
   {
-    path: '/order',
+    path: '/orders',
     router: OrdersRoutes,
   },
   {

@@ -15,8 +15,9 @@ const loginUser = catchAsync(async (req, res) => {
     httpOnly: true,
     secure: isProduction,
     sameSite: isProduction ? 'none' : 'lax',
-    maxAge: 1000 * 60 * 60,
+    maxAge: 1000 * 60 * 60 * 24,
   });
+  
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
     secure: isProduction,
