@@ -29,7 +29,7 @@ router.get(
 );
 // Add user profile picture
 router.post(
-  '/add-profile-picture/:userId',
+  '/add-profile-picture',
   upload.single('file'),
   auth(USER_ROLE.admin, USER_ROLE.staff, USER_ROLE.customer),
   UserController.addProfilePicture

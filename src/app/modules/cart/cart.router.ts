@@ -18,7 +18,7 @@ router.patch(
 router.get(
   '/',
   auth(USER_ROLE.customer),
-  CartController.getALlProductFromCart,
+  CartController.getAllProductFromCart,
 );
 // Remove product from cart
 router.delete(

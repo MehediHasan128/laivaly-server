@@ -49,7 +49,6 @@ const userLogin = async (payload: TUserLogin) => {
     id: isUserExist?.id,
     userName: isUserExist?.userName,
     userEmail: isUserExist?.userEmail,
-    userProfileURL: isUserExist?.userProfileURL,
     userRole: isUserExist?.role,
   };
 

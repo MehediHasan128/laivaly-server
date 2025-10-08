@@ -40,7 +40,7 @@ const getMe = catchAsync(async (req, res) => {
 
 const addProfilePicture = catchAsync(async (req, res) => {
   const data = await UserServices.addUserProfilePicture(
-    req.params.userId,
+    req.user,
     req.file,
   );
 

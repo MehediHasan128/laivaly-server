@@ -5,7 +5,6 @@ export interface TJwtPayload {
   id: string;
   userName: TUserName;
   userEmail: string;
-  userProfileURL: string | null;
   userRole: string;
 }
 

@@ -4,8 +4,8 @@ import { WishlistServices } from './wishlist.services';
 
 const addProductInWishlist = catchAsync(async (req, res) => {
   const data = await WishlistServices.addProductIntoWishlist(
-    req.params.userId,
-    req.query.productId as string,
+    req.user,
+    req.params.productId,
   );
 
   sendResponce(res, {
@@ -16,10 +16,37 @@ const addProductInWishlist = catchAsync(async (req, res) => {
   });
 });
 
+const getAllProductFromWishlist = catchAsync(async (req, res) => {
+  const data = await WishlistServices.getAllProductFromWishlist(
+    req.user,
+  );
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: '',
+    data: data,
+  });
+});
+
+const productExistToWishlist = catchAsync(async (req, res) => {
+  const data = await WishlistServices.productExistToWishlist(
+    req.user,
+    req.params.productId,
+  );
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: '',
+    data: data,
+  });
+});
+
 const removeProductFromWishlist = catchAsync(async (req, res) => {
   const data = await WishlistServices.removeProductFromWishlist(
-    req.params.userId,
-    req.query.productId as string,
+    req.user,
+    req.params.productId,
   );
 
   sendResponce(res, {
@@ -32,5 +59,7 @@ const removeProductFromWishlist = catchAsync(async (req, res) => {
 
 export const WishlistController = {
   addProductInWishlist,
+  getAllProductFromWishlist,
+  productExistToWishlist,
   removeProductFromWishlist,
 };

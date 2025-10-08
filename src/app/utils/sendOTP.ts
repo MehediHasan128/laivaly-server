@@ -22,7 +22,8 @@ export const sendOTP = async (userEmail: string) => {
   htmlContent = htmlContent.replace('{{OTP_CODE}}', getOTP);
 
   // Store otp in resdis
-  const isStoreOTP = await redis.set(`otp-${userEmail}`, getOTP, 'EX', 300);
+  const isStoreOTP = null;
+  // const isStoreOTP = await redis.set(`otp-${userEmail}`, getOTP, 'EX', 300);
 
   if (isStoreOTP !== 'OK') {
     throw new AppError(httpStatus.BAD_REQUEST, 'Failed to store OTP in Redis');

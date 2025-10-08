@@ -13,8 +13,8 @@ const addProductIntoCart = catchAsync(async (req, res) => {
   });
 });
 
-const getALlProductFromCart = catchAsync(async (req, res) => {
-  const data = await CartServices.getALlProductFromCart(req.user);
+const getAllProductFromCart = catchAsync(async (req, res) => {
+  const data = await CartServices.getAllProductFromCart(req.user);
 
   sendResponce(res, {
     statusCode: 200,
@@ -27,7 +27,7 @@ const getALlProductFromCart = catchAsync(async (req, res) => {
 const deleteProductFromCart = catchAsync(async (req, res) => {
   const data = await CartServices.deleteProductFromCart(
     req.user,
-    req.params.cartId as string
+    req.params.cartId as string,
   );
 
   sendResponce(res, {
@@ -51,7 +51,7 @@ const deleteProductFromCart = catchAsync(async (req, res) => {
 
 export const CartController = {
   addProductIntoCart,
-  getALlProductFromCart,
+  getAllProductFromCart,
   deleteProductFromCart,
   //   updateProductQuantity
 };

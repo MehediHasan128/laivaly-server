@@ -7,14 +7,26 @@ const router = express.Router();
 
 // Add product into wishlist
 router.patch(
-  '/add-product/:userId',
+  '/add-product/:productId',
   auth(USER_ROLE.customer),
   WishlistController.addProductInWishlist,
 );
+// Get all product from wishlist
+router.get(
+  '/',
+  auth(USER_ROLE.customer),
+  WishlistController.getAllProductFromWishlist,
+);
+// Add product into wishlist
+router.get(
+  '/exist-product/:productId',
+  auth(USER_ROLE.customer),
+  WishlistController.productExistToWishlist,
+);
 // Remove product from wishlist
 router.patch(
-  '/remove-product/:userId',
-  //   auth(USER_ROLE.customer),
+  '/remove-product/:productId',
+  auth(USER_ROLE.customer),
   WishlistController.removeProductFromWishlist,
 );
 

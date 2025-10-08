@@ -11,8 +11,6 @@ import { sendOTP } from '../../utils/sendOTP';
 import { USER_ROLE } from './user.contant';
 import { JwtPayload } from 'jsonwebtoken';
 import { uploadSingleImageToCloudinary } from '../../utils/sendImageToCloudinary';
-import config from '../../config';
-import { createToken, TJwtPayload } from '../auth/auth.utils';
 import { TStaff } from '../staff/staff.interface';
 import { Staff } from '../staff/staff.model';
 import { sendStaffEmailPassword } from '../staff/staff.utils';
@@ -84,8 +82,7 @@ const createCustomerIntoDB = async (payload: TCustomer, password: string) => {
   }
 };
 
-const createStaffIntoDB = async(payload: TStaff) => {
-
+const createStaffIntoDB = async (payload: TStaff) => {
   // Check the user is already exist
   const isUserExists = await User.findOne({ userEmail: payload.userEmail });
   if (isUserExists) {
@@ -93,7 +90,7 @@ const createStaffIntoDB = async(payload: TStaff) => {
       httpStatus.CONFLICT,
       'An account with this email already exists.',
     );
-  };
+  }
 
   // Create a empty object
   const userData: Partial<TUser> = {};
@@ -148,7 +145,11 @@ const createStaffIntoDB = async(payload: TStaff) => {
     await session.commitTransaction();
     await session.endSession();
 
-    sendStaffEmailPassword(`${payload.userName.firstName} ${payload.userName.lastName}`, payload?.userEmail, staffPass);
+    sendStaffEmailPassword(
+      `${payload.userName.firstName} ${payload.userName.lastName}`,
+      payload?.userEmail,
+      staffPass,
+    );
 
     return newStaff;
   } catch (err: any) {
@@ -156,7 +157,7 @@ const createStaffIntoDB = async(payload: TStaff) => {
     await session.endSession();
     throw new Error(err);
   }
-}
+};
 
 const getMe = async (user: JwtPayload) => {
   let data = null;
@@ -176,9 +177,9 @@ const getMe = async (user: JwtPayload) => {
   return data;
 };
 
-const addUserProfilePicture = async (userId: string, imageFile: any) => {
+const addUserProfilePicture = async (user: JwtPayload, imageFile: any) => {
   // Check the user is exists
-  const isUserExists = await User.findById(userId);
+  const isUserExists = await User.findById(user?.userId);
   if (!isUserExists) {
     throw new AppError(httpStatus.NOT_FOUND, 'User is not found !');
   }
@@ -204,30 +205,12 @@ const addUserProfilePicture = async (userId: string, imageFile: any) => {
 
   // place image url in user profile url
   const updatedUserData = await User.findByIdAndUpdate(
-    userId,
+    user?.userId,
     { userProfileURL: uploadRes?.secure_url },
     { new: true },
   ).select('-password');
 
-  // create token
-  const jwtPayload = {
-    id: updatedUserData?.id,
-    userName: updatedUserData?.userName,
-    userEmail: updatedUserData?.userEmail,
-    userProfileURL: updatedUserData?.userProfileURL,
-    userRole: updatedUserData?.role,
-  } as TJwtPayload;
-
-  // Create access token
-  const accessToken = createToken(
-    jwtPayload,
-    config.jwt_access_secret as string,
-    config.jwt_access_expires_in as string,
-  );
-
-  return {
-    accessToken
-  }
+  return updatedUserData;
 };
 
 export const UserServices = {

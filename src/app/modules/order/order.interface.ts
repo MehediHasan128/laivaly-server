@@ -1,17 +1,17 @@
 import { Types } from 'mongoose';
 import { TShippingAddress } from '../../global/interface';
 
-export interface TOrderItem {
+export interface TOrderItems {
   productId: Types.ObjectId;
-  productTitle: string;
-  productThumbnail: string;
+  title: string;
+  productFor: string;
+  price: number;
+  discount: number;
+  productImages: string;
   quantity: number;
-  selectedVariant: {
-    color?: string;
-    size?: string;
-    SKU: string;
-  };
-  totalPrice: number;
+  color?: string;
+  size?: string;
+  SKU: string;
 }
 
 export interface TPaymentInfo {
@@ -24,8 +24,10 @@ export interface TPaymentInfo {
 export interface TOrder {
   orderId: string;
   userId: Types.ObjectId;
-  orderItems: TOrderItem[];
+  orderItems: TOrderItems[];
+  subTotal: number;
   shippingCharge: number;
+  tax: number;
   grandTotal: number;
   shippingMethod: 'standard' | 'second Day' | 'overnight';
   shippingAddress: TShippingAddress;

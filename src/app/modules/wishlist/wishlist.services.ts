@@ -3,10 +3,11 @@ import httpStatus from 'http-status';
 import { Wishlist } from './wishlist.model';
 import { User } from '../user/user.model';
 import { Product } from '../product/product.model';
+import { JwtPayload } from 'jsonwebtoken';
 
-const addProductIntoWishlist = async (userId: string, productId: string) => {
+const addProductIntoWishlist = async (user: JwtPayload, productId: string) => {
   // Check the user is exist
-  const isUserExist = await User.findById(userId).select('-password');
+  const isUserExist = await User.findById(user?.userId).select('-password');
   if (!isUserExist) {
     throw new AppError(httpStatus.NOT_FOUND, 'User is not found!');
   }
@@ -37,7 +38,7 @@ const addProductIntoWishlist = async (userId: string, productId: string) => {
 
   // Now check the added product is already exist
   const isProductAdded = await Wishlist.findOne({
-    userId,
+    userId: user?.userId,
     productId: productId,
   });
   if (isProductAdded) {
@@ -48,14 +49,74 @@ const addProductIntoWishlist = async (userId: string, productId: string) => {
   }
 
   await Wishlist.findOneAndUpdate(
-    { userId },
+    { userId: user?.userId },
     { $push: { productId: productId } },
   );
 };
 
-const removeProductFromWishlist = async (userId: string, productId: string) => {
+const getAllProductFromWishlist = async (user: JwtPayload) => {
   // Check the user is exist
-  const isUserExist = await User.findById(userId).select('-password');
+  const isUserExist = await User.findById(user?.userId).select('-password');
+  if (!isUserExist) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User is not found!');
+  }
+
+  // Check the user is delete
+  const isUserDelete = isUserExist?.isDelete;
+  if (isUserDelete) {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is already delete!');
+  }
+
+  // Check the user is banned
+  const isUserBanned = isUserExist?.status;
+  if (isUserBanned === 'banned') {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is banned!');
+  }
+
+  const data = await Wishlist.findOne({ userId: user?.userId }).populate('productId');
+  const products = data?.productId;
+
+  return products;
+};
+
+const productExistToWishlist = async (user: JwtPayload, productId: string) => {
+  // Check the user is exist
+  const isUserExist = await User.findById(user?.userId).select('-password');
+  if (!isUserExist) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User is not found!');
+  }
+
+  // Check the user is delete
+  const isUserDelete = isUserExist?.isDelete;
+  if (isUserDelete) {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is already delete!');
+  }
+
+  // Check the user is banned
+  const isUserBanned = isUserExist?.status;
+  if (isUserBanned === 'banned') {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is banned!');
+  }
+
+  // Now check the added product is already exist
+  const isProductExist = await Wishlist.findOne({
+    userId: user?.userId,
+    productId: productId,
+  });
+
+  if (!isProductExist) {
+    return false;
+  }
+
+  return true;
+};
+
+const removeProductFromWishlist = async (
+  user: JwtPayload,
+  productId: string,
+) => {
+  // Check the user is exist
+  const isUserExist = await User.findById(user?.userId).select('-password');
   if (!isUserExist) {
     throw new AppError(httpStatus.NOT_FOUND, 'User is not found!');
   }
@@ -86,7 +147,7 @@ const removeProductFromWishlist = async (userId: string, productId: string) => {
 
   // Now check the added product is already exist
   const isProductAdded = await Wishlist.findOne({
-    userId,
+    userId: user?.userId,
     productId: productId,
   });
   if (!isProductAdded) {
@@ -94,16 +155,18 @@ const removeProductFromWishlist = async (userId: string, productId: string) => {
       httpStatus.CONFLICT,
       'This product is not exist in your wishlist',
     );
-  };
+  }
 
   // Now remove product from wishlist
   await Wishlist.findOneAndUpdate(
-    { userId },
+    { userId: user?.userId },
     { $pull: { productId: productId } },
   );
 };
 
 export const WishlistServices = {
   addProductIntoWishlist,
+  getAllProductFromWishlist,
+  productExistToWishlist,
   removeProductFromWishlist,
 };

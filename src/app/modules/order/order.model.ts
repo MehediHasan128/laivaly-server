@@ -1,29 +1,55 @@
 import { model, Schema } from 'mongoose';
-import { TOrder, TOrderItem, TPaymentInfo } from './order.interface';
+import { TOrder, TOrderItems, TPaymentInfo } from './order.interface';
 import { shippingAddressSchema } from '../../global/model';
-import { selectedVariantSchema } from '../cart/cart.model';
 
-const orderItemsSchema = new Schema<TOrderItem>({
+const orderItemsSchema = new Schema<TOrderItems>({
   productId: {
     type: Schema.Types.ObjectId,
-    required: [true, 'Product ID is required!'],
-    ref: 'product',
+    ref: 'Product',
+    required: [true, 'Product ID is required'],
   },
-  productTitle: {
+  title: {
     type: String,
-    required: [true, 'Product title is required!'],
+    required: [true, 'Product title is required'],
+    trim: true,
   },
-  productThumbnail: {
+  productFor: {
     type: String,
-    required: true,
+    required: [true, 'Product category (productFor) is required'],
+    trim: true,
+  },
+  price: {
+    type: Number,
+    required: [true, 'Product price is required'],
+    min: [0, 'Price cannot be negative'],
+  },
+  discount: {
+    type: Number,
+    required: [true, 'Discount is required'],
+    min: [0, 'Discount cannot be negative'],
+    max: [100, 'Discount cannot exceed 100%'],
+  },
+  productImages: {
+    type: String,
+    required: [true, 'Product image is required'],
   },
   quantity: {
     type: Number,
-    required: [true, 'Product quantity is required!'],
+    required: [true, 'Quantity is required'],
+    min: [1, 'Quantity must be at least 1'],
   },
-  selectedVariant: selectedVariantSchema,
-  totalPrice: {
-    type: Number,
+  color: {
+    type: String,
+    default: null,
+  },
+  size: {
+    type: String,
+    default: null,
+  },
+  SKU: {
+    type: String,
+    required: [true, 'SKU is required'],
+    trim: true,
   },
 });
 
@@ -51,7 +77,6 @@ const createOrderSchema = new Schema<TOrder>(
     orderId: {
       type: String,
       required: [true, 'Order ID is required.'],
-      unique: true,
     },
     userId: {
       type: Schema.Types.ObjectId,
@@ -60,15 +85,23 @@ const createOrderSchema = new Schema<TOrder>(
     },
     orderItems: {
       type: [orderItemsSchema],
-      required: [true, 'At least one order item is required.'],
+      required: [true, 'Order items are required.'],
       validate: {
-        validator: (v: TOrderItem[]) => Array.isArray(v) && v.length > 0,
-        message: 'Order must contain at least one item.',
+        validator: (value: TOrderItems[]) => value.length > 0,
+        message: 'Order must have at least one item.',
       },
+    },
+    subTotal: {
+      type: Number,
+      required: [true, 'Subtotal is required.'],
     },
     shippingCharge: {
       type: Number,
       required: [true, 'Shipping charge is required.'],
+    },
+    tax: {
+      type: Number,
+      required: [true, 'Tax is required.'],
     },
     grandTotal: {
       type: Number,
@@ -101,21 +134,35 @@ const createOrderSchema = new Schema<TOrder>(
     paymentStatus: {
       type: String,
       enum: {
-        values: ['pending', 'paid', 'failed', 'refunded'],
+        values: [
+          'pending',
+          'processing',
+          'shipped',
+          'delivered',
+          'cancelled',
+          'returned',
+        ],
         message:
-          'Payment status must be one of: pending, paid, failed, or refunded.',
+          'Order status must be one of: pending, processing, shipped, delivered, cancelled, or returned.',
       },
-      required: [true, 'Payment status is required.'],
       default: 'pending',
+      required: [true, 'Order status is required.'],
     },
     orderStatus: {
       type: String,
       enum: {
-        values: ['processing', 'shipped', 'delivered', 'cancelled', 'returned'],
+        values: [
+          'pending',
+          'processing',
+          'shipped',
+          'delivered',
+          'cancelled',
+          'returned',
+        ],
         message:
-          'Order status must be one of: processing, shipped, delivered, cancelled, or returned.',
+          'Order status must be one of: pending, processing, shipped, delivered, cancelled, or returned.',
       },
-      default: 'processing',
+      default: 'pending',
       required: [true, 'Order status is required.'],
     },
   },

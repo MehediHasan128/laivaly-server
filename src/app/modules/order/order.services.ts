@@ -9,178 +9,6 @@ import { genarateOrderId } from './order.utils';
 import { Order } from './order.model';
 import { JwtPayload } from 'jsonwebtoken';
 
-// const createOrderWithCODIntoDB = async (payload: TOrder) => {
-//   // Check the user is exist
-//   const isUserExist = await User.findById(payload?.userId);
-//   if (!isUserExist) {
-//     throw new AppError(httpStatus.NOT_FOUND, 'User not found!');
-//   }
-
-//   // Check the user id delete
-//   const isUserDelete = isUserExist?.isDelete;
-//   if (isUserDelete) {
-//     throw new AppError(httpStatus.FORBIDDEN, 'User is already delete!');
-//   }
-
-//   // Check the user is banned
-//   const isUserBanned = isUserExist?.status;
-//   if (isUserBanned === 'banned') {
-//     throw new AppError(httpStatus.FORBIDDEN, 'User is banned!');
-//   }
-
-//   let itemsPrice = 0;
-//   let shippingCharge = 0;
-//   for (const item of payload!.orderItems) {
-//     const { productId, SKU, quantity, size } = item;
-
-//     // Check the product is exist
-//     const isProductExist = await Product.findById(productId);
-//     if (!isProductExist) {
-//       throw new AppError(
-//         httpStatus.NOT_FOUND,
-//         `Product with ID ${productId} not found.`,
-//       );
-//     }
-
-//     // Find the correct variant by size and SKU
-//     const matchedVeriant = isProductExist?.variants?.find(
-//       (veriant) => veriant.size === size || veriant.SKU === SKU,
-//     );
-//     if (!matchedVeriant) {
-//       throw new AppError(
-//         httpStatus.NOT_FOUND,
-//         `Variant not found for product ID: ${productId} with size ${size} and SKU ${SKU}.`,
-//       );
-//     }
-
-//     if (matchedVeriant.stock < quantity) {
-//       throw new AppError(
-//         httpStatus.NOT_FOUND,
-//         `Only ${matchedVeriant?.stock} item's in stock for ${isProductExist?.title} Size: ${size}, SKU: ${SKU}`,
-//       );
-//     }
-
-//     // Calculate items total price
-//     const productPrice = isProductExist?.price * quantity;
-//     itemsPrice += productPrice;
-
-//     // Calculate the shipping charge
-//     const shippingCost = (Number(isProductExist?.productWeight) / 1000) * 0.5;
-//     shippingCharge += shippingCost;
-//   }
-
-//   // Now set the total price of the requested items and shipping charge
-//   payload.itemsPrice = itemsPrice;
-//   payload.shippingCharge = Number(shippingCharge.toFixed(2));
-//   // now calculate the total price
-//   payload.totalPrice = payload?.itemsPrice + payload.shippingCharge;
-
-//   // Generate order id and set this id
-//   const orderId = await genarateOrderId();
-//   payload.orderId = orderId;
-
-//   // Now place the order
-//   const orderData = await Order.create(payload);
-//   return orderData;
-// };
-
-// const createOrderWithSSLCommerzIntoDB = async () => {};
-
-// const getAllOrderfromDB = async () => {
-//   const data = await Order.find();
-//   return data;
-// };
-
-// const getOrdersByUserIdFromDB = async (userId: string) => {
-//   // Check the user is exist
-//   const isUserExist = await User.findById(userId);
-//   if (!isUserExist) {
-//     throw new AppError(httpStatus.NOT_FOUND, 'User not found!');
-//   }
-
-//   // Check the user is delete
-//   const isUserDelete = isUserExist?.isDelete;
-//   if (isUserDelete) {
-//     throw new AppError(httpStatus.FORBIDDEN, 'User is already delete!');
-//   }
-
-//   // Check the user is banned
-//   const isUserBanned = isUserExist?.status;
-//   if (isUserBanned === 'banned') {
-//     throw new AppError(httpStatus.FORBIDDEN, 'User is banned!');
-//   }
-
-//   // Find the orders using user id
-//   const data = await Order.find({ userId });
-//   return data;
-// };
-
-// const getOrdersForStaffFromDB = async (userId: string) => {
-//   // Check the staff is exist
-//   const isStaffExist = await User.findById(userId);
-//   if (!isStaffExist) {
-//     throw new AppError(httpStatus.NOT_FOUND, 'Staff account not found!');
-//   }
-
-//   // Check the staff is exist
-//   const isStaffDelete = isStaffExist?.isDelete;
-//   if (isStaffDelete) {
-//     throw new AppError(
-//       httpStatus.FORBIDDEN,
-//       'Staff account is already delete!',
-//     );
-//   }
-
-//   // Check the staff is exist
-//   const isStaffBanned = isStaffExist?.status;
-//   if (isStaffBanned === 'banned') {
-//     throw new AppError(httpStatus.FORBIDDEN, 'Staff account is banned!');
-//   }
-
-//   // Const staff address
-//   const getStaffAddress = await Staff.findOne({ userId }).select(
-//     '-_id presentAddress',
-//   );
-//   const staffCountry = getStaffAddress?.presentAddress?.country;
-
-//   // find orders
-//   const data = await Order.find({ 'shippingAddress.country': staffCountry });
-//   return data;
-// };
-
-// const updateOrderStatusIntoDB = async (
-//   orderId: string,
-//   {
-//     status,
-//   }: {
-//     status: 'processing' | 'shipped' | 'delivered' | 'cancelled' | 'returned';
-//   },
-// ) => {
-//   // Check the order is exist on database
-//   const isOrderExist = await Order.findById(orderId);
-//   if (!isOrderExist) {
-//     throw new AppError(httpStatus.NOT_FOUND, 'Order not found!');
-//   }
-
-//   if (isOrderExist) {
-//     isOrderExist.orderStatus = status;
-//     await isOrderExist.save();
-//   }
-
-//   const orderItems = isOrderExist?.orderItems;
-
-//   for (const item of orderItems) {
-//     const product = await Product.findById(item?.productId);
-
-//     const productVeriants = product?.variants;
-//     const veriant = productVeriants?.find((v) => v.SKU === item.SKU);
-
-//     veriant!.stock = veriant!.stock - item.quantity;
-
-//     await product?.save();
-//   }
-// };
-
 const createOrderWithCODIntoDB = async (payload: TOrder) => {
   // Check the user is exit or not
   const isUserExist = await User.findById(payload?.userId).select('-password');
@@ -200,14 +28,14 @@ const createOrderWithCODIntoDB = async (payload: TOrder) => {
     throw new AppError(httpStatus.FORBIDDEN, 'User is banned!');
   }
 
-  // noe get the order items
+  // now get the order items
   const orderItems = payload?.orderItems;
 
   for (const item of orderItems) {
-    const productId = item?.productId;
-
     // Check the product is exist
-    const isProductExist = (await Product.findById(productId)) as TProduct;
+    const isProductExist = (await Product.findById(
+      item?.productId,
+    )) as TProduct;
     const { title } = isProductExist;
     if (!isProductExist) {
       throw new AppError(httpStatus.NOT_FOUND, `${title} is not found`);
@@ -219,17 +47,17 @@ const createOrderWithCODIntoDB = async (payload: TOrder) => {
       throw new AppError(httpStatus.FORBIDDEN, 'User is already delete!');
     }
 
-    const veriantId = isProductExist?.productVeriants;
-
+    const productVariantId = isProductExist?.productVeriants;
     const selectedProductVariants =
-      await Variant.findById(veriantId).select('-_id variants');
+      await Variant.findById(productVariantId).select('-_id variants');
     const variants = selectedProductVariants?.variants;
-    const selectedVariantSKU = item.selectedVariant.SKU;
+    const selectedVariantSKU = item.SKU;
 
     const selecteVariant = variants?.find(
-      (variant) => variant.SKU === selectedVariantSKU,
+      (variant) => (variant.SKU = selectedVariantSKU),
     );
     const selectedQuantity = item?.quantity;
+
     const availableStock = selecteVariant?.stock;
 
     if (selectedQuantity > availableStock!) {
@@ -239,7 +67,6 @@ const createOrderWithCODIntoDB = async (payload: TOrder) => {
       );
     }
   }
-
   // Generate order id and set this id
   const orderId = await genarateOrderId();
   payload.orderId = orderId;
@@ -269,7 +96,38 @@ const getOrdersByUserIdFromDB = async (user: JwtPayload) => {
   }
 
   // Find the orders using user id
-  const data = await Order.find({ userId: user?.userId });
+  const data = await Order.find({
+    userId: user?.userId,
+    orderStatus: { $ne: 'cancelled' },
+  });
+  return data;
+};
+
+const getOrderHistoryByUserIdFromDB = async (user: JwtPayload) => {
+  // Check the user is exist
+  const isUserExist = await User.findById(user?.userId);
+  if (!isUserExist) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User not found!');
+  }
+
+  // Check the user is delete
+  const isUserDelete = isUserExist?.isDelete;
+  if (isUserDelete) {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is already delete!');
+  }
+
+  // Check the user is banned
+  const isUserBanned = isUserExist?.status;
+  if (isUserBanned === 'banned') {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is banned!');
+  }
+
+  const data = await Order.find({
+    userId: user?.userId,
+    orderStatus: { $in: ['cancelled', 'delivered', 'returned'] },
+  });
+
+  console.log(data);
   return data;
 };
 
@@ -299,10 +157,7 @@ const cancelOrderFromDB = async (orderId: string) => {
 
 export const OrderServices = {
   createOrderWithCODIntoDB,
-  //   createOrderWithSSLCommerzIntoDB,
-  //   getAllOrderfromDB,
   getOrdersByUserIdFromDB,
+  getOrderHistoryByUserIdFromDB,
   cancelOrderFromDB,
-  //   getOrdersForStaffFromDB,
-  // updateOrderStatusIntoDB,
 };

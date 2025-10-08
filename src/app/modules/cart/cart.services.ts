@@ -77,17 +77,21 @@ const addProductIntoCart = async (user: JwtPayload, payload: TCartItem) => {
   return data;
 };
 
-const getALlProductFromCart = async (user: JwtPayload) => {
+const getAllProductFromCart = async (user: JwtPayload) => {
   // Check the cart is exist
   const isCartExists = await Cart.findOne({ userId: user?.userId });
   if (!isCartExists) {
     throw new AppError(httpStatus.NOT_FOUND, 'Cart not found for this user.!');
   }
 
-  const data = await Cart.findOne({ userId: user?.userId }).select(
-    '-_id items',
-  );
-  return data;
+  const data = await Cart.findOne({ userId: user?.userId })
+    .select('-_id items')
+    .populate({
+      path: 'items.productId',
+      select: '_id title price discount productFor productImages',
+    });
+  const items = data?.items;
+  return items;
 };
 
 const deleteProductFromCart = async (user: JwtPayload, cartId: string) => {
@@ -100,8 +104,9 @@ const deleteProductFromCart = async (user: JwtPayload, cartId: string) => {
   const { items } = isCartExists;
 
   const isDeletedProductExistsOnCart = items.find(
-    (item) => item._id.toString() === cartId,
+    (item: TCartItem) => item._id.toString() === cartId,
   );
+
   if (!isDeletedProductExistsOnCart) {
     throw new AppError(
       httpStatus.NOT_FOUND,
@@ -157,7 +162,7 @@ const deleteProductFromCart = async (user: JwtPayload, cartId: string) => {
 
 export const CartServices = {
   addProductIntoCart,
-  getALlProductFromCart,
+  getAllProductFromCart,
   deleteProductFromCart,
   //   updateProductQuantity,
 };
