@@ -9,7 +9,7 @@ import { upload } from '../../utils/sendImageToCloudinary';
 const router = express.Router();
 
 // Add review
-router.patch(
+router.post(
   '/add-review/:reviewId',
   auth(USER_ROLE.customer),
   upload.array('file'),
@@ -19,6 +19,11 @@ router.patch(
   },
   validationRequest(ReviewValidation.addReviewValidationSchema),
   ReviewController.addReview,
+);
+// Add review
+router.get(
+  '/:productId',
+  ReviewController.getReview,
 );
 
 export const ReviewRoutes = router;

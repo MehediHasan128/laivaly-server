@@ -9,8 +9,7 @@ const addReviewValidationSchema = z.object({
     rating: z
       .number()
       .min(1, { message: 'Rating must be at least 1.' })
-      .max(5, { message: 'Rating cannot exceed 5.' })
-      .optional(),
+      .max(5, { message: 'Rating cannot exceed 5.' }),
     comment: z
       .string()
       .trim()

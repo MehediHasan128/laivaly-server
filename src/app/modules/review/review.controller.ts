@@ -13,6 +13,18 @@ const addReview = catchAsync(async (req, res) => {
   });
 });
 
+const getReview = catchAsync(async (req, res) => {
+  const data = await ReviewServices.getAllReviewOfProductFromDB(req.params.productId);
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: '',
+    data: data,
+  });
+});
+
 export const ReviewController = {
-  addReview
+  addReview,
+  getReview
 };

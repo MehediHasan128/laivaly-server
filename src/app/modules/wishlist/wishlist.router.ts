@@ -24,7 +24,7 @@ router.get(
   WishlistController.productExistToWishlist,
 );
 // Remove product from wishlist
-router.patch(
+router.delete(
   '/remove-product/:productId',
   auth(USER_ROLE.customer),
   WishlistController.removeProductFromWishlist,
