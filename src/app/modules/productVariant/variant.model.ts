@@ -1,13 +1,8 @@
 import { model, Schema } from 'mongoose';
-import { TProductVariant, TVariants } from './variant.interface';
+import { TProductSizes, TProductVariant, TVariants } from './variant.interface';
 
-const variantSchema = new Schema<TVariants>({
+const productSizeSchema = new Schema<TProductSizes>({
   size: {
-    type: String,
-    required: false,
-    trim: true,
-  },
-  color: {
     type: String,
     required: false,
     trim: true,
@@ -24,6 +19,22 @@ const variantSchema = new Schema<TVariants>({
   },
 });
 
+const variantSchema = new Schema<TVariants>({
+  color: {
+    type: String,
+    required: false,
+    trim: true,
+  },
+  images: {
+    type: [String],
+    required: true,
+  },
+  sizes: {
+    type: [productSizeSchema],
+    required: true,
+  },
+});
+
 const productVariantSchema = new Schema<TProductVariant>({
   productId: {
     type: Schema.Types.ObjectId,
@@ -36,5 +47,4 @@ const productVariantSchema = new Schema<TProductVariant>({
   },
 });
 
-
-export const Variant = model<TProductVariant>('variant', productVariantSchema)
+export const Variant = model<TProductVariant>('variant', productVariantSchema);

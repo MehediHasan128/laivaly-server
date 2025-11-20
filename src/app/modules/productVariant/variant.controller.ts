@@ -14,6 +14,18 @@ const addProductVariant = catchAsync(async (req, res) => {
   });
 });
 
+const getProductVariant = catchAsync(async (req, res) => {
+  const data = await VariantServices.getProductVariantFromDB(req.params.variantId);
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: '',
+    data: data,
+  });
+});
+
 export const VariantController = {
-  addProductVariant
+  addProductVariant,
+  getProductVariant
 };

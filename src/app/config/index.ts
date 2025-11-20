@@ -6,6 +6,7 @@ dotenv.config({ path: path.join(process.cwd(), '.env') });
 export default {
   port: process.env.PORT,
   node_env: process.env.NODE_ENV,
+  server_url: process.env.SERVER_URL,
   database_url: process.env.DATABASE_URL,
   admin_pass: process.env.ADMIN_PASS,
   bcrypt_salt_rounds: process.env.BCRYPT_SALT_ROUNDS,
@@ -22,4 +23,8 @@ export default {
   cloudinary_cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   cloudinary_api_key: process.env.CLOUDINARY_API_KEY,
   cloudinary_api_secret: process.env.CLOUDINARY_API_SECRET,
+  klarna_username: process.env.KLARNA_USERNAME,
+  klarna_password: process.env.KLARNA_PASSWORD,
+  klarna_API_URL: process.env.KLARNA_API_URL,
+  client_url: process.env.CLIENT_URL,
 };

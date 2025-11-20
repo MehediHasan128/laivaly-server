@@ -31,7 +31,7 @@ export interface TOrder {
   grandTotal: number;
   shippingMethod: 'standard' | 'second Day' | 'overnight';
   shippingAddress: TShippingAddress;
-  paymentMethod: 'stripe' | 'sslcommerz' | 'cod';
+  paymentMethod: 'stripe' | 'klarna' | 'cod';
   paymentInfo?: TPaymentInfo;
   paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
   orderStatus:

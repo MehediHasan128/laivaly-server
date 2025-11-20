@@ -129,7 +129,6 @@ const updateProductIntoDB = async (
 const getAllProductFromDB = async (query: Record<string, unknown>) => {
   const productQuery = new QueryBuilder(
     Product.find({ isDeleted: false })
-      .populate('productVeriants')
       .populate('productReviews'),
     query,
   )
@@ -146,7 +145,7 @@ const getAllProductFromDB = async (query: Record<string, unknown>) => {
 const getSingleProductFromDB = async (productId: string) => {
 
   // Check the product is exist or not
-  const isProductExists = await Product.findById(productId).populate('productVeriants');
+  const isProductExists = await Product.findById(productId);
   if (!isProductExists) {
     throw new AppError(httpStatus.NOT_FOUND, 'Product not found!');
   }

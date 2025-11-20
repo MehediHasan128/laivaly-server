@@ -1,13 +1,18 @@
-import { Types } from "mongoose";
+import { Types } from 'mongoose';
+
+export interface TProductSizes {
+  size?: string;
+  stock: number;
+  SKU: string;
+}
 
 export interface TVariants {
-    size?: string;
-    color?: string;
-    stock: number;
-    SKU: string;
+  color?: string;
+  images: string[];
+  sizes: TProductSizes[];
 }
 
 export interface TProductVariant {
-    productId: Types.ObjectId,
-    variants: TVariants[] | []
+  productId: Types.ObjectId;
+  variants: TVariants[] | [];
 }

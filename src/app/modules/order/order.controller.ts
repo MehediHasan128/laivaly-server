@@ -4,6 +4,28 @@ import { sendResponce } from '../../utils/sendResponce';
 import { TCartItem } from '../cart/cart.interface';
 import { OrderServices } from './order.services';
 
+const kalarnaSession = catchAsync(async (req, res) => {
+  const data = await OrderServices.createKalarnaCheckOutSession(req.body);
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Klarna checkout session created successfully.',
+    data: data,
+  });
+});
+
+const klarnaPush = catchAsync(async (req, res) => {
+  const data = await OrderServices.klarnaPush();
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: '',
+    data: data,
+  });
+});
+
 const createOrderOnCOD = catchAsync(async (req, res) => {
   const data = await OrderServices.createOrderWithCODIntoDB(req.body);
 
@@ -91,6 +113,8 @@ const storedOrderData = catchAsync(async (req, res) => {
 });
 
 export const OrderController = {
+  kalarnaSession,
+  klarnaPush,
   createOrderOnCOD,
   getOrdersByUserId,
   getOrdersHistoryByUserId,

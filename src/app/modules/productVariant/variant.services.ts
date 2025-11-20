@@ -46,6 +46,13 @@ const addProductVariantIntoDB = async (
   );
 };
 
+const getProductVariantFromDB = async (variantId: string) => {
+  const data = await Variant.findById(variantId);
+  const productVariants = data?.variants;
+  return productVariants;
+};
+
 export const VariantServices = {
   addProductVariantIntoDB,
+  getProductVariantFromDB,
 };

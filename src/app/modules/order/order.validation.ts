@@ -50,7 +50,7 @@ const createOrderValidationSchema = z.object({
     }),
     shippingMethod: z.enum(['standard', 'second Day', 'overnight']),
     shippingAddress: shippingAddressValidationSchema,
-    paymentMethod: z.enum(['stripe', 'sslcommerz', 'cod']),
+    paymentMethod: z.enum(['stripe', 'klarna', 'cod']),
     paymentStatus: z
       .enum(['pending', 'paid', 'failed', 'refunded'])
       .default('pending'),

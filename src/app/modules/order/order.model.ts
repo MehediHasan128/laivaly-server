@@ -123,7 +123,7 @@ const createOrderSchema = new Schema<TOrder>(
     paymentMethod: {
       type: String,
       enum: {
-        values: ['stripe', 'sslcommerz', 'cod'],
+        values: ['stripe', 'klarna', 'cod'],
         message: 'Payment method must be either stripe, sslcommerz, or cod.',
       },
       required: [true, 'Payment method is required.'],
