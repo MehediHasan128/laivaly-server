@@ -20,19 +20,18 @@ export interface TProductDescription {
 export interface TProduct {
   highlightedProduct: boolean;
   parentProductId: string;
-  title: string; //
-  description: TProductDescription; //
-  season?: TSeason; //
-  productFor: TProductFor; //
-  productGroup: TProductGroup; //
-  productCategory: TProductCategory; //
-  productSubCategory: TProductSubCategory; //
+  title: string; 
+  description: TProductDescription; 
+  season?: TSeason;
+  productFor: TProductFor;
+  productGroup: TProductGroup;
+  productCategory: TProductCategory;
+  productSubCategory: TProductSubCategory;
   productVeriants: Types.ObjectId | null;
   price: number;
   discount: number;
   perUnitCost: number;
   productThumbnail: string;
-  productImages: string[];
   productReviews: Types.ObjectId | null;
   isDeleted: boolean;
 }

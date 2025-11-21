@@ -121,10 +121,6 @@ const ProductSchema = new Schema<TProduct>(
       required: [true, 'Product thumbnail is required'],
       trim: true,
     },
-    productImages: {
-      type: [String],
-      default: [],
-    },
     productReviews: {
       type: Schema.Types.ObjectId,
       ref: 'review',

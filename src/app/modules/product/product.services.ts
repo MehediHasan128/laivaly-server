@@ -4,13 +4,13 @@ import httpStatus from 'http-status';
 import { TProduct } from './product.interface';
 import { createProductID } from './product.utils';
 import { Product } from './product.model';
-import { uploadMultipleImage } from '../../utils/sendImageToCloudinary';
+import { uploadSingleImageToCloudinary } from '../../utils/sendImageToCloudinary';
 import QueryBuilder from '../../builder/QueryBuilder';
 import mongoose from 'mongoose';
 import { Review } from '../review/review.model';
 import { Variant } from '../productVariant/variant.model';
 
-const addProductIntoDB = async (files: any, payload: TProduct) => {
+const addProductIntoDB = async (file: any, payload: TProduct) => {
   // Get auto generate product id
   const autoGenerateProductId = createProductID(
     payload?.productGroup,
@@ -36,15 +36,11 @@ const addProductIntoDB = async (files: any, payload: TProduct) => {
     payload.parentProductId = autoGenerateProductId;
 
     //Now upload the product image
-    const uploadImages = await uploadMultipleImage(files);
-
-    // Set product thumbnails
-    payload.productThumbnail = uploadImages[0];
-
-    const remainingImages = uploadImages.slice(1);
-
-    //Set product images
-    payload.productImages = remainingImages;
+    const uploadImage = await uploadSingleImageToCloudinary(
+      file.path,
+      file.filename,
+    );
+    payload.productThumbnail = uploadImage?.secure_url as string;
 
     // Create product in database
     const newProduct = await Product.create([payload], { session });
@@ -128,8 +124,7 @@ const updateProductIntoDB = async (
 
 const getAllProductFromDB = async (query: Record<string, unknown>) => {
   const productQuery = new QueryBuilder(
-    Product.find({ isDeleted: false })
-      .populate('productReviews'),
+    Product.find({ isDeleted: false }).populate('productReviews'),
     query,
   )
     .search(['parentProductId', 'title'])
@@ -143,7 +138,6 @@ const getAllProductFromDB = async (query: Record<string, unknown>) => {
 };
 
 const getSingleProductFromDB = async (productId: string) => {
-
   // Check the product is exist or not
   const isProductExists = await Product.findById(productId);
   if (!isProductExists) {

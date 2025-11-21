@@ -11,7 +11,7 @@ const router = express.Router();
 // Add product
 router.post(
   '/add-product',
-  upload.array('file'),
+  upload.single('file'),
   (req: Request, res: Response, next: NextFunction) => {
     req.body = JSON.parse(req.body.data);
     next();
