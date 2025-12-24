@@ -68,8 +68,8 @@ const addProductIntoDB = async (file: any, payload: TProduct) => {
       );
     }
 
-    const productVeriants = await Variant.create([initialVariant], { session });
-    if (!productVeriants) {
+    const productVariants = await Variant.create([initialVariant], { session });
+    if (!productVariants) {
       throw new AppError(
         httpStatus.BAD_REQUEST,
         'Failed to create product variant.',
@@ -77,11 +77,11 @@ const addProductIntoDB = async (file: any, payload: TProduct) => {
     }
 
     const reviewId = productReview[0]._id;
-    const variantId = productVeriants[0]._id;
+    const variantId = productVariants[0]._id;
 
     const updatedProduct = await Product.findByIdAndUpdate(
       newProductId,
-      { productVeriants: variantId, productReviews: reviewId },
+      { productVariants: variantId, productReviews: reviewId },
       { session, new: true },
     );
 

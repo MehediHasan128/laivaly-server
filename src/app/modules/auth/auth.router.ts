@@ -13,23 +13,27 @@ router.post(
   validationRequest(AuthValidation.userLoginValidationSchema),
   AuthController.loginUser,
 );
+
 // User logout
 router.post(
   '/logout',
   AuthController.logoutUser,
 );
+
 // Forget user password
 router.post(
   '/forget-password',
   validationRequest(AuthValidation.forgetUserPasswordValidationSchema),
   AuthController.forgetPassword,
 );
+
 // Reset user password
 router.post(
   '/reset-password',
   validationRequest(AuthValidation.resetUserPasswordValidationSchema),
   AuthController.resetPassword,
 );
+
 // Change user password
 router.patch(
   '/change-password',
@@ -43,8 +47,10 @@ router.patch(
   validationRequest(AuthValidation.otpVerificationValidationSchema),
   AuthController.emailVarification,
 );
+
 // Resend otp verification email
 router.post('/resend-otp/:userEmail', AuthController.resendOTPEmail);
+
 // Refresh access token
 router.post(
   '/refresh-token',

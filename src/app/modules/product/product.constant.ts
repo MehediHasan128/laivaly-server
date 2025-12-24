@@ -4,135 +4,156 @@ export const ProductFor = ['men', 'women', 'kids'];
 export type TSeason = 'summer' | 'winter' | 'all-season';
 export const Season = ['summer', 'winter', 'all-season'];
 
-export type TProductGroup = 'cloth' | 'accessories' | 'footwear' | 'fragrance';
-export const ProductGroup = ['cloth', 'accessories', 'footwear', 'fragrance'];
+export type TProductGroup =
+  | 'cloth'
+  | 'accessories'
+  | 'footwear'
+  | 'bags'
+  | 'fragrance';
+export const ProductGroup = [
+  'cloth',
+  'accessories',
+  'footwear',
+  'bags',
+  'fragrance',
+] as const;
 
 export type TProductCategory =
-  | 'Tops'
-  | 'Bottoms'
-  | 'Outerwear'
-  | 'Bags'
-  | 'Sneakers'
-  | 'Boots'
-  | 'Heels'
-  | 'Sandals'
-  | 'Flats'
-  | 'Slippers'
-  | 'Perfume';
+  | 'tops'
+  | 'bottoms'
+  | 'outerwear'
+  | 'wallets'
+  | 'belts'
+  | 'caps'
+  | 'sunglasses'
+  | 'backpack'
+  | 'handbag'
+  | 'crossbody bag'
+  | 'sneakers'
+  | 'boots'
+  | 'sandals'
+  | 'slippers'
+  | 'perfume';
 
 export const ProductCategory = [
-  'Tops',
-  'Bottoms',
-  'Outerwear',
-  'Bags',
-  'Sneakers',
-  'Boots',
-  'Sandals',
-  'Slippers',
-  'Perfume',
-];
+  'tops',
+  'bottoms',
+  'outerwear',
+  'wallets',
+  'belts',
+  'caps',
+  'sunglasses',
+  'backpack',
+  'handbag',
+  'crossbody bag',
+  'sneakers',
+  'boots',
+  'sandals',
+  'slippers',
+  'perfume',
+] as const;
 
 export type TProductSubCategory =
-  | 'Graphic T-Shirts'
-  | 'Plain T-Shirts'
-  | 'Oversized T-Shirts'
-  | 'Slim fit T-Shirts'
-  | 'Polo T-Shirts'
-  | 'Long sleeve T-Shirts'
-  | 'Short sleeve T-Shirts'
-  | 'Casual Shirts'
-  | 'Formal Shirts'
-  | 'Denim Shirts'
-  | 'Printed Shirts'
-  | 'Linen Shirts'
-  | 'Flannel Shirts'
-  | 'Crop Top'
-  | 'Jeans'
-  | 'Trousers'
-  | 'Chinos'
-  | 'Cargo Pants'
-  | 'Joggers'
-  | 'Sweatpants'
-  | 'Formal Pants'
-  | 'Jacket'
-  | 'Coat'
-  | 'Hoodie'
-  | 'Blazer'
-  | 'Cardigan'
-  | 'Backpack'
-  | 'Wallet'
-  | 'Handbag'
-  | 'Running Sneakers'
-  | 'Casual Sneakers'
-  | 'High-top Sneakers'
-  | 'Ankle Boots'
-  | 'Chelsea Boots'
-  | 'Knee-high Boots'
-  | 'Flat Sandals'
-  | 'Slide Sandals'
-  | 'Sport Sandals'
-  | 'Flip Flops'
-  | 'Wedge Sandals'
-  | 'Gladiator Sandals'
-  | 'Heeled Sandals'
-  | 'Indoor Slippers'
-  | 'Outdoor Slippers'
-  | 'Slide Slippers'
-  | 'Flip Flops'
-  | 'Eau de parfum'
-  | 'Eau de toilette'
-  | 'Body Mists'
-  | 'Roll-ons';
+  | 'graphic t-shirts'
+  | 'plain t-shirts'
+  | 'oversized t-shirts'
+  | 'polo t-shirts'
+  | 'casual shirts'
+  | 'formal shirts'
+  | 'crop top'
+  | 'jeans'
+  | 'trousers'
+  | 'chinos'
+  | 'cargo pants'
+  | 'joggers'
+  | 'sweatpants'
+  | 'hoodie'
+  | 'jacket'
+  | 'coat'
+  | 'leather wallet'
+  | 'card holder'
+  | 'formal belt'
+  | 'casual belt'
+  | 'baseball cap'
+  | 'beanie'
+  | 'classic sunglasses'
+  | 'aviator sunglasses'
+  | 'casual backpack'
+  | 'travel backpack'
+  | 'shoulder handbag'
+  | 'tote bag'
+  | 'mini crossbody'
+  | 'casual crossbody'
+  | 'running sneakers'
+  | 'casual sneakers'
+  | 'ankle boots'
+  | 'chelsea boots'
+  | 'flat sandals'
+  | 'slide sandals'
+  | 'sport sandals'
+  | 'indoor slippers'
+  | 'slide slippers'
+  | 'eau de parfum'
+  | 'eau de toilette'
+  | 'body mists'
+  | 'roll-ons';
 
 export const ProductSubCategory = [
-  'Graphic T-Shirts',
-  'Plain T-Shirts',
-  'Oversized T-Shirts',
-  'Slim fit T-Shirts',
-  'Polo T-Shirts',
-  'Long sleeve T-Shirts',
-  'Short sleeve T-Shirts',
-  'Casual Shirts',
-  'Formal Shirts',
-  'Denim Shirts',
-  'Printed Shirts',
-  'Linen Shirts',
-  'Flannel Shirts',
-  'Crop Top',
-  'Jeans',
-  'Trousers',
-  'Chinos',
-  'Cargo Pants',
-  'Joggers',
-  'Sweatpants',
-  'Formal Pants',
-  'Jacket',
-  'Coat',
-  'Hoodie',
-  'Blazer',
-  'Cardigan',
-  'Backpack',
-  'Wallet',
-  'Handbag',
-  'Running Sneakers',
-  'Casual Sneakers',
-  'High-top Sneakers',
-  'Ankle Boots',
-  'Chelsea Boots',
-  'Knee-high Boots',
-  'Flat Sandals',
-  'Slide Sandals',
-  'Sport Sandals',
-  'Flip Flops',
-  'Wedge Sandals',
-  'Gladiator Sandals',
-  'Heeled Sandals',
-  'Indoor Slippers',
-  'Outdoor Slippers',
-  'Slide Slippers',
-  'Flip Flops',
-  'Eau de parfum',
-  'Eau de toilette',
-  'Body Mists',
-  'Roll-ons',
-];
+  'graphic t-shirts',
+  'plain t-shirts',
+  'oversized t-shirts',
+  'polo t-shirts',
+  'casual shirts',
+  'formal shirts',
+  'crop top',
+
+  'jeans',
+  'trousers',
+  'chinos',
+  'cargo pants',
+  'joggers',
+  'sweatpants',
+
+  'hoodie',
+  'jacket',
+  'coat',
+
+  'leather wallet',
+  'card holder',
+
+  'formal belt',
+  'casual belt',
+
+  'baseball cap',
+  'beanie',
+
+  'classic sunglasses',
+  'aviator sunglasses',
+
+  'casual backpack',
+  'travel backpack',
+
+  'shoulder handbag',
+  'tote bag',
+
+  'mini crossbody',
+  'casual crossbody',
+
+  'running sneakers',
+  'casual sneakers',
+
+  'ankle boots',
+  'chelsea boots',
+
+  'flat sandals',
+  'slide sandals',
+  'sport sandals',
+
+  'indoor slippers',
+  'slide slippers',
+
+  'eau de parfum',
+  'eau de toilette',
+  'body mists',
+  'roll-ons',
+] as const;

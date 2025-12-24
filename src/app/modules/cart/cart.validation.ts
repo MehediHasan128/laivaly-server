@@ -7,6 +7,9 @@ const selectedVariantValidationSchema = z.object({
   SKU: z.string({
     required_error: 'Product SKU is required!',
   }),
+  productImage: z.string({
+    required_error: 'Product Image is required!',
+  })
 });
 
 const cartItemValidationSchema = z.object({

@@ -27,7 +27,7 @@ export interface TProduct {
   productGroup: TProductGroup;
   productCategory: TProductCategory;
   productSubCategory: TProductSubCategory;
-  productVeriants: Types.ObjectId | null;
+  productVariants: Types.ObjectId | null;
   price: number;
   discount: number;
   perUnitCost: number;

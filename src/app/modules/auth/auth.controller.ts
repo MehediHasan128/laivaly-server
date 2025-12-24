@@ -14,14 +14,14 @@ const loginUser = catchAsync(async (req, res) => {
   res.cookie('accessToken', accessToken, {
     httpOnly: true,
     secure: isProduction,
-    sameSite: isProduction ? 'none' : 'lax',
+    sameSite: 'none',
     maxAge: 1000 * 60 * 60 * 24,
   });
   
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
     secure: isProduction,
-    sameSite: isProduction ? 'none' : 'lax',
+    sameSite: 'none',
     maxAge: 1000 * 60 * 60 * 24 * 7,
   });
 
@@ -41,14 +41,14 @@ const logoutUser = catchAsync(async (req, res) => {
   res.cookie('accessToken', null, {
     httpOnly: true,
     secure: isProduction,
-    sameSite: isProduction ? 'none' : 'lax',
+    sameSite: 'none',
     maxAge: 0,
   });
 
   res.cookie('refreshToken', null, {
     httpOnly: true,
     secure: isProduction,
-    sameSite: isProduction ? 'none' : 'lax',
+    sameSite: 'none',
     maxAge: 0,
   });
 

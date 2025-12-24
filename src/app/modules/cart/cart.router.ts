@@ -21,11 +21,11 @@ router.get(
   CartController.getAllProductFromCart,
 );
 // Remove product from cart
-router.delete(
-  '/remove-product/:cartId',
-  auth(USER_ROLE.customer),
-  CartController.deleteProductFromCart,
-);
+// router.delete(
+//   '/remove-product/:cartId',
+//   auth(USER_ROLE.customer),
+//   CartController.deleteProductFromCart,
+// );
 // // Update product quantity
 // router.patch(
 //   '/update-product-quantity/:userId',

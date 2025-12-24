@@ -1,11 +1,7 @@
 import { model, Schema } from 'mongoose';
-import { TCart, TCartItem } from './cart.interface';
+import { TCart, TCartItem, TSelectedVariant } from './cart.interface';
 
-export const selectedVariantSchema = new Schema<{
-  color?: string;
-  size?: string;
-  SKU: string;
-}>({
+export const selectedVariantSchema = new Schema<TSelectedVariant>({
   color: {
     type: String,
   },
@@ -16,6 +12,10 @@ export const selectedVariantSchema = new Schema<{
     type: String,
     required: [true, 'Product SKU is required!'],
   },
+  productImage: {
+    type: String,
+    required: [true, 'Product SKU is required!'],
+  }
 });
 
 const cartItemSchema = new Schema<TCartItem>({

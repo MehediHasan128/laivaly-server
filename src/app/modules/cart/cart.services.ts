@@ -52,19 +52,31 @@ const addProductIntoCart = async (user: JwtPayload, payload: TCartItem) => {
   const productVariant = await Variant.findOne({
     productId: payload?.productId,
   });
-  const allVariants = productVariant?.variants;
-  const selectedVariant = allVariants?.find(
-    (variant) => variant.SKU === payload?.selectedVariant.SKU,
+  const variants = productVariant?.variants;
+
+  // let sizeAndStock;
+  const sizesAndStock = [];
+
+  for (const variant of variants!) {
+    const sizes = variant?.sizes;
+
+    for (const size of sizes) {
+      sizesAndStock.push(size);
+    }
+  }
+
+  const selectedSize = sizesAndStock?.find(
+    (v) => v.SKU === payload?.selectedVariant.SKU,
   );
-  if (selectedVariant?.stock === 0) {
+  if (selectedSize?.stock === 0) {
     throw new AppError(httpStatus.FORBIDDEN, 'This product is out of stock!');
   }
 
   // Check the requested quantity is exceeds available stock.
-  if (selectedVariant!.stock < payload?.quantity) {
+  if (selectedSize!.stock < payload?.quantity) {
     throw new AppError(
       httpStatus.FORBIDDEN,
-      `Only ${selectedVariant?.stock} item's available in stock for the selected variant.`,
+      `Only ${selectedSize?.stock} item's available in stock for the selected variant.`,
     );
   }
 
@@ -74,6 +86,7 @@ const addProductIntoCart = async (user: JwtPayload, payload: TCartItem) => {
     { $push: { items: payload } },
     { new: true },
   );
+  console.log(data);
   return data;
 };
 
@@ -84,42 +97,43 @@ const getAllProductFromCart = async (user: JwtPayload) => {
     throw new AppError(httpStatus.NOT_FOUND, 'Cart not found for this user.!');
   }
 
-  const data = await Cart.findOne({ userId: user?.userId })
-    .select('-_id items')
-    .populate({
-      path: 'items.productId',
-      select: '_id title price discount productFor productImages',
-    });
+  const data = await Cart.findOne({ userId: user?.userId }).select(
+    '-_id items',
+  )
+  .populate({
+    path: 'items.productId',
+    select: '_id title price discount productFor',
+  });
   const items = data?.items;
   return items;
 };
 
-const deleteProductFromCart = async (user: JwtPayload, cartId: string) => {
-  // Check the cart is exist
-  const isCartExists = await Cart.findOne({ userId: user?.userId });
-  if (!isCartExists) {
-    throw new AppError(httpStatus.NOT_FOUND, 'Cart not found for this user.!');
-  }
+// const deleteProductFromCart = async (user: JwtPayload, cartId: string) => {
+//   // Check the cart is exist
+//   const isCartExists = await Cart.findOne({ userId: user?.userId });
+//   if (!isCartExists) {
+//     throw new AppError(httpStatus.NOT_FOUND, 'Cart not found for this user.!');
+//   }
 
-  const { items } = isCartExists;
+//   const { items } = isCartExists;
 
-  const isDeletedProductExistsOnCart = items.find(
-    (item: TCartItem) => item._id.toString() === cartId,
-  );
+//   const isDeletedProductExistsOnCart = items.find(
+//     (item: TCartItem) => item._id.toString() === cartId,
+//   );
 
-  if (!isDeletedProductExistsOnCart) {
-    throw new AppError(
-      httpStatus.NOT_FOUND,
-      'The product you are trying to remove is not in your cart.',
-    );
-  }
+//   if (!isDeletedProductExistsOnCart) {
+//     throw new AppError(
+//       httpStatus.NOT_FOUND,
+//       'The product you are trying to remove is not in your cart.',
+//     );
+//   }
 
-  await Cart.findOneAndUpdate(
-    { userId: user?.userId },
-    { $pull: { items: { _id: cartId } } },
-    { new: true },
-  );
-};
+//   await Cart.findOneAndUpdate(
+//     { userId: user?.userId },
+//     { $pull: { items: { _id: cartId } } },
+//     { new: true },
+//   );
+// };
 
 // const updateProductQuantity = async (
 //   userId: string,
@@ -163,6 +177,6 @@ const deleteProductFromCart = async (user: JwtPayload, cartId: string) => {
 export const CartServices = {
   addProductIntoCart,
   getAllProductFromCart,
-  deleteProductFromCart,
+  // deleteProductFromCart,
   //   updateProductQuantity,
 };

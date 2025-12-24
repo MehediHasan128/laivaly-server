@@ -4,7 +4,7 @@ import { VariantServices } from './variant.services';
 
 
 const addProductVariant = catchAsync(async (req, res) => {
-  const data = await VariantServices.addProductVariantIntoDB(req.params.productId, req.body);
+  const data = await VariantServices.addProductVariantIntoDB(req.files, req.params.productId, req.body);
 
   sendResponce(res, {
     statusCode: 200,

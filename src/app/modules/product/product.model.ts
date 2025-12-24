@@ -96,7 +96,7 @@ const ProductSchema = new Schema<TProduct>(
       required: [true, 'Product subcategory is required'],
       trim: true,
     },
-    productVeriants: {
+    productVariants: {
       type: Schema.Types.ObjectId,
       ref: 'variant',
       default: null,

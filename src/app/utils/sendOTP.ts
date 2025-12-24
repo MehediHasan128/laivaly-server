@@ -2,18 +2,13 @@ import { generateOTP } from './generateOTP';
 import path from 'path';
 import fs from 'fs';
 import sendEmail from './sendEmail';
-import { redis } from '../lib/redis';
-import AppError from '../errors/AppError';
-import httpStatus from 'http-status';
+import { OTP } from '../modules/otp/otp.model';
 
 export const sendOTP = async (userEmail: string) => {
   const getOTP = generateOTP();
 
   // Get otp ui html file
-  const otpUiHTMLFile = path.join(
-    process.cwd(),
-    'src/app/templates/OTP.html',
-  );
+  const otpUiHTMLFile = path.join(process.cwd(), 'src/app/templates/OTP.html');
 
   // Get the html content
   let htmlContent = fs.readFileSync(otpUiHTMLFile, 'utf8');
@@ -21,14 +16,19 @@ export const sendOTP = async (userEmail: string) => {
   // Now replace the html content
   htmlContent = htmlContent.replace('{{OTP_CODE}}', getOTP);
 
-  // Store otp in resdis
-  const isStoreOTP = null;
-  // const isStoreOTP = await redis.set(`otp-${userEmail}`, getOTP, 'EX', 300);
+  const ttlMinutes = 5
 
-  if (isStoreOTP !== 'OK') {
-    throw new AppError(httpStatus.BAD_REQUEST, 'Failed to store OTP in Redis');
-  }
+  const expiresAt = new Date(Date.now() + ttlMinutes * 60 *1000);
 
   // Send email with password reset link
   await sendEmail(userEmail, 'Verify your email', htmlContent);
+
+  const otpData = {
+    identifier: userEmail,
+    otp: getOTP,
+    expiresAt
+  }
+
+  await OTP.create(otpData);
+
 };

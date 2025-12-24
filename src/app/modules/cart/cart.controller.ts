@@ -24,19 +24,19 @@ const getAllProductFromCart = catchAsync(async (req, res) => {
   });
 });
 
-const deleteProductFromCart = catchAsync(async (req, res) => {
-  const data = await CartServices.deleteProductFromCart(
-    req.user,
-    req.params.cartId as string,
-  );
+// const deleteProductFromCart = catchAsync(async (req, res) => {
+//   const data = await CartServices.deleteProductFromCart(
+//     req.user,
+//     req.params.cartId as string,
+//   );
 
-  sendResponce(res, {
-    statusCode: 200,
-    success: true,
-    message: 'The item has been removed from your cart.',
-    data: data,
-  });
-});
+//   sendResponce(res, {
+//     statusCode: 200,
+//     success: true,
+//     message: 'The item has been removed from your cart.',
+//     data: data,
+//   });
+// });
 
 // const updateProductQuantity = catchAsync(async (req, res) => {
 //   const data = await CartServices.updateProductQuantity(req.params.userId, req.query.productId as string, req.query.SKU as string, req.query.action as string);
@@ -52,6 +52,6 @@ const deleteProductFromCart = catchAsync(async (req, res) => {
 export const CartController = {
   addProductIntoCart,
   getAllProductFromCart,
-  deleteProductFromCart,
-  //   updateProductQuantity
+  // deleteProductFromCart,
+  // updateProductQuantity
 };

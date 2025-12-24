@@ -9,10 +9,10 @@ import path from 'path';
 import fs from 'fs';
 import sendEmail from '../../utils/sendEmail';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import { redis } from '../../lib/redis';
 import { sendOTP } from '../../utils/sendOTP';
 import { Wishlist } from '../wishlist/wishlist.model';
 import { Cart } from '../cart/cart.model';
+import { OTP } from '../otp/otp.model';
 
 const userLogin = async (payload: TUserLogin) => {
   // Check the user is exist or not
@@ -239,13 +239,16 @@ const verifyEmail = async (userEmail: string, otp: string) => {
   }
 
   //  Get OTP from Redis
-  const storedOTP = await redis.get(`otp-${userEmail}`);
-  if (storedOTP === null) {
+  const getOTPData = await OTP.findOne({identifier: userEmail});
+  if (getOTPData === null) {
     throw new AppError(
       httpStatus.NOT_FOUND,
       'Your OTP has expired. Please request a new one.',
     );
-  }
+  };
+
+  const storedOTP = getOTPData?.otp;
+  
   if (storedOTP !== otp) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
@@ -261,7 +264,7 @@ const verifyEmail = async (userEmail: string, otp: string) => {
   );
 
   if (isUserStatusUpdate) {
-    await redis.del(`otp-${userEmail}`);
+    await OTP.deleteOne({identifier: userEmail});
   }
 
   const wishlistData = {

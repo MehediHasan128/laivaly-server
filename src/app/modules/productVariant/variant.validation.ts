@@ -12,11 +12,6 @@ const productSizesValiadtionSchema = z.object({
 
 const VariantsValiadtionSchema = z.object({
   color: z.string().trim().optional(),
-  images: z
-    .array(z.string().trim(), {
-      required_error: 'Images are required',
-    })
-    .min(1, 'At least one image is required'),
   sizes: z
     .array(productSizesValiadtionSchema, {
       required_error: 'Sizes are required',
