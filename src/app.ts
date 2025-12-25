@@ -14,7 +14,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: ['https://laivaly-client.vercel.app', 'https://localhost:3000'],
+    origin: ['https://laivaly.vercel.app', 'https://localhost:3000'],
     credentials: true,
   }),
 );
