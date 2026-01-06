@@ -13,9 +13,9 @@ import { Variant } from '../productVariant/variant.model';
 const addProductIntoDB = async (file: any, payload: TProduct) => {
   // Get auto generate product id
   const autoGenerateProductId = createProductID(
-    payload?.productGroup,
-    payload?.productCategory,
-    payload?.productSubCategory,
+    payload?.group,
+    payload?.category,
+    payload?.subCategory,
   );
 
   // Now check the product is already create in database

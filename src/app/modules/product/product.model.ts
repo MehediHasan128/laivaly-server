@@ -4,6 +4,8 @@ import {
   ProductCategory,
   ProductFor,
   ProductGroup,
+  ProductLayout,
+  ProductStyle,
   ProductSubCategory,
   Season,
 } from './product.constant';
@@ -50,9 +52,10 @@ const ProductDescriptionSchema = new Schema<TProductDescription>({
 
 const ProductSchema = new Schema<TProduct>(
   {
-    highlightedProduct: {
-      type: Boolean,
-      default: false,
+    productLayout: {
+      type: String,
+      enum: ProductLayout,
+      default: 'fixed',
     },
     parentProductId: {
       type: String,
@@ -79,20 +82,26 @@ const ProductSchema = new Schema<TProduct>(
       enum: ProductFor,
       required: [true, 'Product gender is required'],
     },
-    productGroup: {
+    group: {
       type: String,
       enum: ProductGroup,
       required: [true, 'Product group is required'],
     },
-    productCategory: {
+    category: {
       type: String,
       enum: ProductCategory,
       required: [true, 'Product category is required'],
       trim: true,
     },
-    productSubCategory: {
+    subCategory: {
       type: String,
       enum: ProductSubCategory,
+      required: [true, 'Product subcategory is required'],
+      trim: true,
+    },
+    style: {
+      type: String,
+      enum: ProductStyle,
       required: [true, 'Product subcategory is required'],
       trim: true,
     },
@@ -120,6 +129,15 @@ const ProductSchema = new Schema<TProduct>(
       type: String,
       required: [true, 'Product thumbnail is required'],
       trim: true,
+    },
+    status: {
+      type: String,
+      enum: ['active', 'draft', 'coming-soon', 'discontinued'],
+      default: 'draft',
+    },
+    launchDate: {
+      type: Date,
+      required: false,
     },
     productReviews: {
       type: Schema.Types.ObjectId,

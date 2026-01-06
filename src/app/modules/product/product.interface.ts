@@ -3,6 +3,7 @@ import {
   TProductCategory,
   TProductFor,
   TProductGroup,
+  TProductLayout,
   TProductSubCategory,
   TSeason,
 } from './product.constant';
@@ -18,20 +19,23 @@ export interface TProductDescription {
 }
 
 export interface TProduct {
-  highlightedProduct: boolean;
+  productLayout: TProductLayout;
   parentProductId: string;
   title: string; 
   description: TProductDescription; 
   season?: TSeason;
   productFor: TProductFor;
-  productGroup: TProductGroup;
-  productCategory: TProductCategory;
-  productSubCategory: TProductSubCategory;
+  group: TProductGroup;
+  category: TProductCategory;
+  subCategory: TProductSubCategory;
+  style: TProductSubCategory;
   productVariants: Types.ObjectId | null;
   price: number;
   discount: number;
   perUnitCost: number;
   productThumbnail: string;
+  status: 'active' | 'draft' | 'coming-soon' | 'discontinued';
+  launchDate?: Date;
   productReviews: Types.ObjectId | null;
   isDeleted: boolean;
 }

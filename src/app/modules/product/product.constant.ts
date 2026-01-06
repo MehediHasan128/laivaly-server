@@ -1,159 +1,413 @@
-export type TProductFor = 'men' | 'women' | 'kids';
-export const ProductFor = ['men', 'women', 'kids'];
+export type TProductLayout = 'vertical' | 'horizontal' | 'fixed';
+export const ProductLayout = ['vertical', 'horizontal', 'fixed'];
 
-export type TSeason = 'summer' | 'winter' | 'all-season';
-export const Season = ['summer', 'winter', 'all-season'];
+export type TProductFor = 'men' | 'women' | 'kids' | 'unisex';
+export const ProductFor = ['men', 'women', 'kids', 'unisex'] as const;
+
+export type TSeason = 'summer' | 'winter' | 'essentials';
+export const Season = ['summer', 'winter', 'essentials'] as const;
 
 export type TProductGroup =
-  | 'cloth'
-  | 'accessories'
+  | 'clothing'
   | 'footwear'
+  | 'accessories'
   | 'bags'
   | 'fragrance';
+
 export const ProductGroup = [
-  'cloth',
-  'accessories',
+  'clothing',
   'footwear',
+  'accessories',
   'bags',
   'fragrance',
 ] as const;
 
 export type TProductCategory =
+  // --- Group: Clothing ---
   | 'tops'
   | 'bottoms'
   | 'outerwear'
-  | 'wallets'
-  | 'belts'
-  | 'caps'
-  | 'sunglasses'
-  | 'backpack'
-  | 'handbag'
-  | 'crossbody bag'
-  | 'sneakers'
-  | 'boots'
-  | 'sandals'
-  | 'slippers'
-  | 'perfume';
+  | 'dresses-jumpsuits'
+  | 'activewear'
+  | 'innerwear'
+
+  // --- Group: Footwear ---
+  | 'shoes'
+
+  // --- Group: Accessories ---
+  | 'fashion-accessories'
+
+  // --- Group: Bags ---
+  | 'luggage-bags'
+
+  // --- Group: Fragrance ---
+  | 'scents-grooming';
 
 export const ProductCategory = [
   'tops',
   'bottoms',
   'outerwear',
-  'wallets',
-  'belts',
-  'caps',
-  'sunglasses',
-  'backpack',
-  'handbag',
-  'crossbody bag',
-  'sneakers',
-  'boots',
-  'sandals',
-  'slippers',
-  'perfume',
+  'dresses-jumpsuits',
+  'activewear',
+  'innerwear', 
+  'shoes', 
+  'fashion-accessories', 
+  'luggage-bags', 
+  'scents-grooming', 
 ] as const;
 
 export type TProductSubCategory =
-  | 'graphic t-shirts'
-  | 'plain t-shirts'
-  | 'oversized t-shirts'
-  | 'polo t-shirts'
-  | 'casual shirts'
-  | 'formal shirts'
-  | 'crop top'
+  // --- Under Category: Tops ---
+  | 't-shirts'
+  | 'shirts'
+  | 'polos'
+  | 'tank-tops'
+  | 'tunics'
+
+  // --- Under Category: Bottoms ---
   | 'jeans'
-  | 'trousers'
-  | 'chinos'
-  | 'cargo pants'
-  | 'joggers'
-  | 'sweatpants'
-  | 'hoodie'
-  | 'jacket'
-  | 'coat'
-  | 'leather wallet'
-  | 'card holder'
-  | 'formal belt'
-  | 'casual belt'
-  | 'baseball cap'
-  | 'beanie'
-  | 'classic sunglasses'
-  | 'aviator sunglasses'
-  | 'casual backpack'
-  | 'travel backpack'
-  | 'shoulder handbag'
-  | 'tote bag'
-  | 'mini crossbody'
-  | 'casual crossbody'
-  | 'running sneakers'
-  | 'casual sneakers'
-  | 'ankle boots'
-  | 'chelsea boots'
-  | 'flat sandals'
-  | 'slide sandals'
-  | 'sport sandals'
-  | 'indoor slippers'
-  | 'slide slippers'
-  | 'eau de parfum'
-  | 'eau de toilette'
-  | 'body mists'
-  | 'roll-ons';
+  | 'trousers' // Includes Chinos, Formal Pants
+  | 'shorts'
+  | 'skirts'
+  | 'leggings'
+
+  // --- Under Category: Outerwear ---
+  | 'jackets'
+  | 'coats'
+  | 'hoodies-sweatshirts'
+  | 'blazers-vests'
+
+  // --- Under Category: Knitwear (Often merged with Outerwear or Tops) ---
+  | 'sweaters-cardigans'
+
+  // --- Under Category: Dresses & Jumpsuits ---
+  | 'dresses'
+  | 'jumpsuits'
+
+  // --- Under Category: Activewear & Innerwear ---
+  | 'activewear-tops'
+  | 'activewear-bottoms'
+  | 'underwear-socks'
+
+  // --- Under Category: Shoes (Footwear) ---
+  | 'sneakers'
+  | 'boots'
+  | 'formal-shoes'
+  | 'sandals'
+  | 'heels'
+
+  // --- Under Category: Fashion Accessories ---
+  | 'headwear'
+  | 'eyewear'
+  | 'wallets'
+  | 'belts'
+  | 'jewelry'
+  | 'scarves-gloves'
+
+  // --- Under Category: Luggage Bags ---
+  | 'backpacks'
+  | 'handbags'
+  | 'crossbody-bags'
+  | 'travel-bags'
+
+  // --- Under Category: Scents Grooming ---
+  | 'perfume'
+  | 'body-care';
 
 export const ProductSubCategory = [
-  'graphic t-shirts',
-  'plain t-shirts',
-  'oversized t-shirts',
-  'polo t-shirts',
-  'casual shirts',
-  'formal shirts',
-  'crop top',
-
+  // Tops
+  't-shirts',
+  'shirts',
+  'polos',
+  'tank-tops',
+  'tunics',
+  // Bottoms
   'jeans',
   'trousers',
+  'shorts',
+  'skirts',
+  'leggings',
+  // Outerwear/Knitwear
+  'jackets',
+  'coats',
+  'hoodies-sweatshirts',
+  'blazers-vests',
+  'sweaters-cardigans',
+  // Dresses
+  'dresses',
+  'jumpsuits',
+  // Active/Inner
+  'activewear-tops',
+  'activewear-bottoms',
+  'underwear-socks',
+  // Footwear
+  'sneakers',
+  'boots',
+  'formal-shoes',
+  'sandals',
+  'heels',
+  // Accessories
+  'headwear',
+  'eyewear',
+  'wallets',
+  'belts',
+  'jewelry',
+  'scarves-gloves',
+  // Bags
+  'backpacks',
+  'handbags',
+  'crossbody-bags',
+  'travel-bags',
+  // Fragrance
+  'perfume',
+  'body-care',
+] as const;
+
+export type TProductStyle =
+  // --- Under Sub-Category: T-Shirts ---
+  | 'graphic'
+  | 'solid-plain'
+  | 'oversized'
+  | 'v-neck'
+  | 'crew-neck'
+  | 'long-sleeve'
+
+  // --- Under Sub-Category: Shirts ---
+  | 'flannel'
+  | 'oxford'
+  | 'denim-shirt'
+  | 'linen'
+  | 'formal-solid'
+  | 'casual-checked'
+
+  // --- Under Sub-Category: Polos ---
+  | 'classic-fit'
+  | 'slim-fit'
+  | 'striped-polo'
+
+  // --- Under Sub-Category: Jeans ---
+  | 'skinny'
+  | 'straight-leg'
+  | 'wide-leg'
+  | 'mom-fit'
+  | 'ripped'
+  | 'high-waisted'
+
+  // --- Under Sub-Category: Trousers ---
+  | 'chinos'
+  | 'cargo'
+  | 'formal-pleated'
+  | 'jogger-fit'
+
+  // --- Under Sub-Category: Shorts ---
+  | 'denim-shorts'
+  | 'chino-shorts'
+  | 'cargo-shorts'
+  | 'bermuda'
+  | 'swim-shorts'
+
+  // --- Under Sub-Category: Skirts ---
+  | 'mini'
+  | 'midi'
+  | 'maxi'
+  | 'pencil'
+  | 'pleated'
+  | 'a-line-skirt'
+
+  // --- Under Sub-Category: Jackets/Coats ---
+  | 'bomber'
+  | 'leather-biker'
+  | 'denim-jacket'
+  | 'puffer'
+  | 'trench'
+  | 'parka'
+  | 'varsity'
+
+  // --- Under Sub-Category: Hoodies/Sweatshirts ---
+  | 'pullover'
+  | 'zip-up'
+  | 'hoodie-graphic'
+
+  // --- Under Sub-Category: Sweaters/Cardigans ---
+  | 'turtle-neck'
+  | 'cable-knit'
+  | 'cardigan-button'
+
+  // --- Under Sub-Category: Dresses ---
+  | 'bodycon'
+  | 'shirt-dress'
+  | 'wrap-dress'
+  | 'slip-dress'
+  | 'party-gown'
+  | 'summer-floral'
+
+  // --- Under Sub-Category: Sneakers ---
+  | 'low-top'
+  | 'high-top'
+  | 'chunky'
+  | 'running'
+  | 'canvas'
+  | 'slip-on'
+
+  // --- Under Sub-Category: Boots ---
+  | 'chelsea'
+  | 'combat'
+  | 'ankle-boot'
+  | 'lace-up-boot'
+
+  // --- Under Sub-Category: Formal Shoes ---
+  | 'oxford'
+  | 'derby'
+  | 'loafer'
+  | 'monk-strap'
+  | 'brogue'
+
+  // --- Under Sub-Category: Heels/Sandals ---
+  | 'stilettos'
+  | 'block-heels'
+  | 'platform'
+  | 'slides'
+  | 'flip-flops'
+  | 'gladiators'
+
+  // --- Under Sub-Category: Headwear ---
+  | 'baseball-cap'
+  | 'beanie'
+  | 'bucket-hat'
+  | 'fedora'
+
+  // --- Under Sub-Category: Eyewear ---
+  | 'aviator'
+  | 'wayfarer'
+  | 'round'
+  | 'cat-eye'
+
+  // --- Under Sub-Category: Bags (All types) ---
+  | 'laptop-backpack'
+  | 'travel-backpack'
+  | 'tote'
+  | 'satchel'
+  | 'sling'
+  | 'messenger'
+  | 'clutch'
+  | 'duffle'
+
+  // --- Under Sub-Category: Perfume ---
+  | 'eau-de-parfum'
+  | 'eau-de-toilette'
+  | 'body-mist'
+  | 'roll-on';
+
+export const ProductStyle = [
+  // Tops Styles
+  'graphic',
+  'solid-plain',
+  'oversized',
+  'v-neck',
+  'crew-neck',
+  'long-sleeve',
+  'flannel',
+  'oxford',
+  'denim-shirt',
+  'linen',
+  'formal-solid',
+  'casual-checked',
+  'classic-fit',
+  'slim-fit',
+  'striped-polo',
+
+  // Bottoms Styles
+  'skinny',
+  'straight-leg',
+  'wide-leg',
+  'mom-fit',
+  'ripped',
+  'high-waisted',
   'chinos',
-  'cargo pants',
-  'joggers',
-  'sweatpants',
+  'cargo',
+  'formal-pleated',
+  'jogger-fit',
+  'denim-shorts',
+  'chino-shorts',
+  'cargo-shorts',
+  'bermuda',
+  'swim-shorts',
+  'mini',
+  'midi',
+  'maxi',
+  'pencil',
+  'pleated',
+  'a-line-skirt',
 
-  'hoodie',
-  'jacket',
-  'coat',
+  // Outerwear Styles
+  'bomber',
+  'leather-biker',
+  'denim-jacket',
+  'puffer',
+  'trench',
+  'parka',
+  'varsity',
+  'pullover',
+  'zip-up',
+  'hoodie-graphic',
+  'turtle-neck',
+  'cable-knit',
+  'cardigan-button',
 
-  'leather wallet',
-  'card holder',
+  // Dress Styles
+  'bodycon',
+  'shirt-dress',
+  'wrap-dress',
+  'slip-dress',
+  'party-gown',
+  'summer-floral',
 
-  'formal belt',
-  'casual belt',
+  // Footwear Styles
+  'low-top',
+  'high-top',
+  'chunky',
+  'running',
+  'canvas',
+  'slip-on',
+  'chelsea',
+  'combat',
+  'ankle-boot',
+  'lace-up-boot',
+  'oxford',
+  'derby',
+  'loafer',
+  'monk-strap',
+  'brogue',
+  'stilettos',
+  'block-heels',
+  'platform',
+  'slides',
+  'flip-flops',
+  'gladiators',
 
-  'baseball cap',
+  // Accessories Styles
+  'baseball-cap',
   'beanie',
+  'bucket-hat',
+  'fedora',
+  'aviator',
+  'wayfarer',
+  'round',
+  'cat-eye',
 
-  'classic sunglasses',
-  'aviator sunglasses',
+  // Bag Styles
+  'laptop-backpack',
+  'travel-backpack',
+  'tote',
+  'satchel',
+  'sling',
+  'messenger',
+  'clutch',
+  'duffle',
 
-  'casual backpack',
-  'travel backpack',
-
-  'shoulder handbag',
-  'tote bag',
-
-  'mini crossbody',
-  'casual crossbody',
-
-  'running sneakers',
-  'casual sneakers',
-
-  'ankle boots',
-  'chelsea boots',
-
-  'flat sandals',
-  'slide sandals',
-  'sport sandals',
-
-  'indoor slippers',
-  'slide slippers',
-
-  'eau de parfum',
-  'eau de toilette',
-  'body mists',
-  'roll-ons',
+  // Fragrance Styles
+  'eau-de-parfum',
+  'eau-de-toilette',
+  'body-mist',
+  'roll-on',
 ] as const;

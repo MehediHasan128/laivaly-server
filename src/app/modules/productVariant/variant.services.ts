@@ -26,8 +26,11 @@ const addProductVariantIntoDB = async (
 
   // Check the variants is exists or not
   const isVariantExist = await Variant.findOne({
+    productId: productId,
     'variants.color': payload?.color,
   });
+
+
   if (isVariantExist) {
     throw new AppError(httpStatus.CONFLICT, 'This variant is already added!');
   }

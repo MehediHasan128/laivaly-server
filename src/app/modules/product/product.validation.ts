@@ -3,6 +3,8 @@ import {
   ProductCategory,
   ProductFor,
   ProductGroup,
+  ProductLayout,
+  ProductStyle,
   ProductSubCategory,
   Season,
 } from './product.constant';
@@ -80,12 +82,9 @@ const updateProductDescriptionValiadtionSchema = z.object({
 
 const createProductValidationSchema = z.object({
   body: z.object({
-    highlightedProduct: z
-      .boolean({
-        invalid_type_error: 'Highlighted product must be a boolean',
-      })
-      .optional()
-      .default(false),
+    productLayout: z
+      .enum([...ProductLayout] as [string, ...string[]])
+      .default('fixed'),
 
     title: z
       .string({
@@ -107,24 +106,25 @@ const createProductValidationSchema = z.object({
       invalid_type_error: 'Product gender must be Men, Women, or Kids',
     }),
 
-    productGroup: z.enum([...ProductGroup] as [string, ...string[]], {
+    group: z.enum([...ProductGroup] as [string, ...string[]], {
       required_error: 'Product group is required',
       invalid_type_error:
         'Product group must be one of cloth, accessories, footwear, or fragrance',
     }),
 
-    productCategory: z.enum([...ProductCategory] as [string, ...string[]], {
+    category: z.enum([...ProductCategory] as [string, ...string[]], {
       required_error: 'Product category is required',
       invalid_type_error: 'Product category must be string',
     }),
 
-    productSubCategory: z.enum(
-      [...ProductSubCategory] as [string, ...string[]],
-      {
-        required_error: 'Product sub category is required',
-        invalid_type_error: 'Product sub category must be string',
-      },
-    ),
+    subCategory: z.enum([...ProductSubCategory] as [string, ...string[]], {
+      required_error: 'Product sub category is required',
+      invalid_type_error: 'Product sub category must be string',
+    }),
+    style: z.enum([...ProductStyle] as [string, ...string[]], {
+      required_error: 'Product sub category is required',
+      invalid_type_error: 'Product sub category must be string',
+    }),
     price: z
       .number({
         required_error: 'Product price is required',
@@ -187,7 +187,7 @@ const updateProductValidationSchema = z.object({
       })
       .optional(),
 
-    productGroup: z
+    group: z
       .enum([...ProductGroup] as [string, ...string[]], {
         required_error: 'Product group is required',
         invalid_type_error:
@@ -195,15 +195,21 @@ const updateProductValidationSchema = z.object({
       })
       .optional(),
 
-    productCategory: z
+    category: z
       .enum([...ProductCategory] as [string, ...string[]], {
         required_error: 'Product category is required',
         invalid_type_error: 'Product category must be string',
       })
       .optional(),
 
-    productSubCategory: z
+    subCategory: z
       .enum([...ProductSubCategory] as [string, ...string[]], {
+        required_error: 'Product sub category is required',
+        invalid_type_error: 'Product sub category must be string',
+      })
+      .optional(),
+    style: z
+      .enum([...ProductStyle] as [string, ...string[]], {
         required_error: 'Product sub category is required',
         invalid_type_error: 'Product sub category must be string',
       })
