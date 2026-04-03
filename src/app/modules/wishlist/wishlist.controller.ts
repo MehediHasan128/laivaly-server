@@ -16,6 +16,21 @@ const addProductInWishlist = catchAsync(async (req, res) => {
   });
 });
 
+const addProductInWishlistFromLoaclStorage = catchAsync(async (req, res) => {
+
+  const data = await WishlistServices.addProductIntoWishlistFromLoaclStorage(
+    req.user,
+    req.body
+  );
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: '',
+    data: data,
+  });
+});
+
 const getAllProductFromWishlist = catchAsync(async (req, res) => {
   const data = await WishlistServices.getAllProductFromWishlist(
     req.user,
@@ -59,6 +74,7 @@ const removeProductFromWishlist = catchAsync(async (req, res) => {
 
 export const WishlistController = {
   addProductInWishlist,
+  addProductInWishlistFromLoaclStorage,
   getAllProductFromWishlist,
   productExistToWishlist,
   removeProductFromWishlist,

@@ -39,6 +39,7 @@ const getAllProduct = catchAsync(async (req, res) => {
 });
 
 const getsingleProduct = catchAsync(async (req, res) => {
+
   const data = await ProductServices.getSingleProductFromDB(
     req.params.productId,
   );

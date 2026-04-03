@@ -15,6 +15,7 @@ import { Cart } from '../cart/cart.model';
 import { OTP } from '../otp/otp.model';
 
 const userLogin = async (payload: TUserLogin) => {
+
   // Check the user is exist or not
   const isUserExist = await User.findOne({ userEmail: payload.userEmail });
   if (!isUserExist) {

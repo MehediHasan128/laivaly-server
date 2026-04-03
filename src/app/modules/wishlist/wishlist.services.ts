@@ -54,6 +54,58 @@ const addProductIntoWishlist = async (user: JwtPayload, productId: string) => {
   );
 };
 
+const addProductIntoWishlistFromLoaclStorage = async (
+  user: JwtPayload,
+  productIds: string[],
+) => {
+  // Check the user is exist
+  const isUserExist = await User.findById(user?.userId).select('-password');
+  if (!isUserExist) {
+    throw new AppError(httpStatus.NOT_FOUND, 'User is not found!');
+  }
+
+  // Check the user is delete
+  const isUserDelete = isUserExist?.isDelete;
+  if (isUserDelete) {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is already delete!');
+  }
+
+  // Check the user is banned
+  const isUserBanned = isUserExist?.status;
+  if (isUserBanned === 'banned') {
+    throw new AppError(httpStatus.FORBIDDEN, 'User is banned!');
+  }
+
+  for (const productId of productIds) {
+    // Now check the product is exist
+    const isProductExist = await Product.findById(productId);
+    if (!isProductExist) {
+      throw new AppError(httpStatus.NOT_FOUND, 'Product is not found!');
+    }
+
+    // Check the product is delete
+    const isProductDelete = isProductExist?.isDeleted;
+    if (isProductDelete) {
+      throw new AppError(httpStatus.FORBIDDEN, 'Product is already delete!');
+    }
+
+    // Now check the added product is already exist
+    const isProductAdded = await Wishlist.findOne({
+      userId: user?.userId,
+      productId: productId,
+    });
+
+    if (isProductAdded) {
+      continue;
+    }
+
+    await Wishlist.findOneAndUpdate(
+      { userId: user?.userId },
+      { $push: { productId: productId } },
+    );
+  }
+};
+
 const getAllProductFromWishlist = async (user: JwtPayload) => {
   // Check the user is exist
   const isUserExist = await User.findById(user?.userId).select('-password');
@@ -73,7 +125,9 @@ const getAllProductFromWishlist = async (user: JwtPayload) => {
     throw new AppError(httpStatus.FORBIDDEN, 'User is banned!');
   }
 
-  const data = await Wishlist.findOne({ userId: user?.userId }).populate('productId');
+  const data = await Wishlist.findOne({ userId: user?.userId }).populate(
+    'productId',
+  );
   const products = data?.productId;
 
   return products;
@@ -166,6 +220,7 @@ const removeProductFromWishlist = async (
 
 export const WishlistServices = {
   addProductIntoWishlist,
+  addProductIntoWishlistFromLoaclStorage,
   getAllProductFromWishlist,
   productExistToWishlist,
   removeProductFromWishlist,

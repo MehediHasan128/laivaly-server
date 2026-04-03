@@ -63,6 +63,7 @@ export type TProductSubCategory =
   | 'polos'
   | 'tank-tops'
   | 'tunics'
+  | 'kimonos'
 
   // --- Under Category: Bottoms ---
   | 'jeans'
@@ -121,6 +122,7 @@ export const ProductSubCategory = [
   'polos',
   'tank-tops',
   'tunics',
+  'kimonos',
   // Bottoms
   'jeans',
   'trousers',

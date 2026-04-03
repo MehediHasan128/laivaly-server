@@ -14,7 +14,6 @@ export interface TTimeRange {
 }
 
 export const calculateTotalSellsAndRevenue = async (filter?: TTimeRange) => {
-    console.log(filter);
   let totalSells = 0;
   let totalRevenue = 0;
 
@@ -28,8 +27,6 @@ export const calculateTotalSellsAndRevenue = async (filter?: TTimeRange) => {
 
   // Find the paid orders
   const paidOrders = await Order.find({ paymentStatus: 'paid', ...dateFilter });
-
-  console.log(dateFilter);
 
   for (const items of paidOrders) {
     const productVeriants = items?.orderItems;

@@ -11,10 +11,9 @@ const app: Application = express();
 
 // Parser
 app.use(express.json());
-
 app.use(
   cors({
-    origin: ['https://laivaly.vercel.app', 'https://localhost:3000'],
+    origin: ['https://client.laivaly.com', 'http://localhost:3000'],
     credentials: true,
   }),
 );
@@ -29,7 +28,7 @@ app.get('/', (req, res) => {
   res.send('The Laivaly server is run successfully');
 });
 
-// middlewares
+// middlewaress
 app.use(
   globalErrorHandler as (
     err: any,
@@ -42,6 +41,3 @@ app.use(
 app.use(notFound as (req: Request, res: Response) => void);
 
 export default app;
-
-// 'https://laivaly.com',
-// 'https://www.laivaly.com',

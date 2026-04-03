@@ -10,18 +10,20 @@ const loginUser = catchAsync(async (req, res) => {
 
   const { accessToken, refreshToken } = data;
 
-  //   Set refresh token in cookie
+    // Set refresh token in cookie
   res.cookie('accessToken', accessToken, {
     httpOnly: true,
-    secure: true,
-    sameSite: 'none',
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
+    domain: isProduction ? '.laivaly.com' : undefined,
     maxAge: 1000 * 60 * 60 * 24,
   });
   
   res.cookie('refreshToken', refreshToken, {
     httpOnly: true,
-    secure: true,
-    sameSite: 'none',
+    secure: isProduction,
+    sameSite: isProduction ? 'none' : 'lax',
+    domain: isProduction ? '.laivaly.com' : undefined,
     maxAge: 1000 * 60 * 60 * 24 * 7,
   });
 
@@ -41,14 +43,16 @@ const logoutUser = catchAsync(async (req, res) => {
   res.cookie('accessToken', null, {
     httpOnly: true,
     secure: isProduction,
-    sameSite: 'none',
+    sameSite: isProduction ? 'none' : 'lax',
+    domain: isProduction ? '.laivaly.com' : undefined,
     maxAge: 0,
   });
 
   res.cookie('refreshToken', null, {
     httpOnly: true,
     secure: isProduction,
-    sameSite: 'none',
+    sameSite: isProduction ? 'none' : 'lax',
+    domain: isProduction ? '.laivaly.com' : undefined,
     maxAge: 0,
   });
 
@@ -69,6 +73,7 @@ const forgetPassword = catchAsync(async (req, res) => {
     httpOnly: true,
     secure: isProduction,
     sameSite: isProduction ? 'none' : 'lax',
+    domain: isProduction ? '.laivaly.com' : undefined,
     maxAge: 1000 * 60 * 5,
   });
 
@@ -91,6 +96,7 @@ const resetPassword = catchAsync(async (req, res) => {
     httpOnly: true,
     secure: isProduction,
     sameSite: isProduction ? 'none' : 'lax',
+    domain: isProduction ? '.laivaly.com' : undefined,
   });
 
   sendResponce(res, {
@@ -159,3 +165,5 @@ export const AuthController = {
   resendOTPEmail,
   refreshAccessToken,
 };
+
+
