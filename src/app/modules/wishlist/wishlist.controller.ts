@@ -32,6 +32,8 @@ const addProductInWishlistFromLoaclStorage = catchAsync(async (req, res) => {
 });
 
 const getAllProductFromWishlist = catchAsync(async (req, res) => {
+
+  console.log(5);
   const data = await WishlistServices.getAllProductFromWishlist(
     req.user,
   );

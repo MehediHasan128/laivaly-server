@@ -11,7 +11,7 @@ router.patch(
   auth(USER_ROLE.customer),
   WishlistController.addProductInWishlist,
 );
-// Add product into wishlist
+// Add product into wishlist from local storage
 router.patch(
   '/add-product-from-local-storage',
   auth(USER_ROLE.customer),

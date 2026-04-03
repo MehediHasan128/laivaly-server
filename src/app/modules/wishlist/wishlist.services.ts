@@ -125,12 +125,12 @@ const getAllProductFromWishlist = async (user: JwtPayload) => {
     throw new AppError(httpStatus.FORBIDDEN, 'User is banned!');
   }
 
-  const data = await Wishlist.findOne({ userId: user?.userId }).populate(
-    'productId',
-  );
-  const products = data?.productId;
+  const data = await Wishlist.findOne({ userId: user?.userId }).populate({
+    path: 'productId',
+    select: '_id title productThumbnail',
+  });
 
-  return products;
+  return data?.productId || [];
 };
 
 const productExistToWishlist = async (user: JwtPayload, productId: string) => {
