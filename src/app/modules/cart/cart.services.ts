@@ -108,32 +108,35 @@ const getAllProductFromCart = async (user: JwtPayload) => {
   return items;
 };
 
-// const deleteProductFromCart = async (user: JwtPayload, cartId: string) => {
-//   // Check the cart is exist
-//   const isCartExists = await Cart.findOne({ userId: user?.userId });
-//   if (!isCartExists) {
-//     throw new AppError(httpStatus.NOT_FOUND, 'Cart not found for this user.!');
-//   }
+const deleteProductFromCart = async (user: JwtPayload, cartId: string) => {
 
-//   const { items } = isCartExists;
+  console.log(user, cartId);
 
-//   const isDeletedProductExistsOnCart = items.find(
-//     (item: TCartItem) => item._id.toString() === cartId,
-//   );
+  // Check the cart is exist
+  const isCartExists = await Cart.findOne({ userId: user?.userId });
+  if (!isCartExists) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Cart not found for this user.!');
+  }
 
-//   if (!isDeletedProductExistsOnCart) {
-//     throw new AppError(
-//       httpStatus.NOT_FOUND,
-//       'The product you are trying to remove is not in your cart.',
-//     );
-//   }
+  const { items } = isCartExists;
 
-//   await Cart.findOneAndUpdate(
-//     { userId: user?.userId },
-//     { $pull: { items: { _id: cartId } } },
-//     { new: true },
-//   );
-// };
+  const isDeletedProductExistsOnCart = items.find(
+    (item: TCartItem) => item._id.toString() === cartId,
+  );
+
+  if (!isDeletedProductExistsOnCart) {
+    throw new AppError(
+      httpStatus.NOT_FOUND,
+      'The product you are trying to remove is not in your cart.',
+    );
+  }
+
+  await Cart.findOneAndUpdate(
+    { userId: user?.userId },
+    { $pull: { items: { _id: cartId } } },
+    { new: true },
+  );
+};
 
 // const updateProductQuantity = async (
 //   userId: string,
@@ -177,6 +180,6 @@ const getAllProductFromCart = async (user: JwtPayload) => {
 export const CartServices = {
   addProductIntoCart,
   getAllProductFromCart,
-  // deleteProductFromCart,
-  //   updateProductQuantity,
+  deleteProductFromCart,
+    // updateProductQuantity,
 };

@@ -27,4 +27,7 @@ export default {
   klarna_password: process.env.KLARNA_PASSWORD,
   klarna_API_URL: process.env.KLARNA_API_URL,
   client_url: process.env.CLIENT_URL,
+  stripe_secret_key: process.env.STRIPE_SECRET_KEY,
+  stripe_webhook_key: process.env.STRIPE_WEBHOOKS_KEY,
+  production_client_url: process.env.PRODUCTION_CLIENT_URL,
 };

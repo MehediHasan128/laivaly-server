@@ -15,6 +15,14 @@ router.post(
   OrderController.createOrderOnCOD,
 );
 
+// Order with Stripe
+router.post(
+  '/stripe-payment',
+  // auth(USER_ROLE.customer),
+  validationRequest(OrderValidation.createOrderValidationSchema),
+  OrderController.stripeCheckoutSession,
+);
+
 // Order with Klarna
 router.post(
   '/klarna-payment',
@@ -22,10 +30,8 @@ router.post(
   validationRequest(OrderValidation.createOrderValidationSchema),
   OrderController.kalarnaSession,
 );
-router.post(
-  '/klarna-push',
-  OrderController.klarnaPush,
-);
+
+router.post('/klarna-push', OrderController.klarnaPush);
 
 router.get('/my', auth(USER_ROLE.customer), OrderController.getOrdersByUserId);
 

@@ -8,6 +8,7 @@ export interface TSelectedVariant {
 }
 
 export interface TCartItem {
+  _id: string;
   productId: Types.ObjectId;
   quantity: number;
   selectedVariant: TSelectedVariant;

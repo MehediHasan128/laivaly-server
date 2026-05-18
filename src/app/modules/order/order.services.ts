@@ -13,6 +13,68 @@ import config from '../../config';
 import { Product } from '../product/product.model';
 import { TProduct } from '../product/product.interface';
 import { Variant } from '../productVariant/variant.model';
+import { stripe } from '../../config/stripe';
+
+const createStripeCheckOutSession = async (payload: TOrder) => {
+  const orderId = await genarateOrderId();
+  payload.orderId = orderId;
+
+  const order = await Order.create(payload);
+
+  const lineItems = payload?.orderItems.map((item) => ({
+    price_data: {
+      currency: 'usd',
+      product_data: {
+        name: item?.title,
+        images: [item?.productImages],
+      },
+      unit_amount: Math.round(item?.price * 100),
+    },
+
+    quantity: item?.quantity,
+  }));
+
+  // Shipping charge add
+  lineItems.push({
+    price_data: {
+      currency: 'usd',
+      product_data: {
+        name: 'Shipping Charge',
+        images: [],
+      },
+      unit_amount: Math.round(payload?.shippingCharge * 100),
+    },
+    quantity: 1,
+  });
+
+  // Tax
+  lineItems.push({
+    price_data: {
+      currency: 'usd',
+      product_data: {
+        name: 'Tax',
+        images: [],
+      },
+      unit_amount: Math.round(payload?.tax * 100),
+    },
+    quantity: 1,
+  });
+
+  // Stripe session create
+  const session = await stripe.checkout.sessions.create({
+    payment_method_types: ['card'],
+    mode: 'payment',
+    line_items: lineItems,
+    success_url: `${config.node_env === 'production' ? config.production_client_url : config.client_url}/my-account/orders`,
+    cancel_url: `${config.node_env === 'production' ? config.production_client_url : config.client_url}/payment/cancel`,
+
+    metadata: {
+      orderId: order._id.toString() || '',
+    },
+  });
+
+  return session.url;
+};
 
 const createKalarnaCheckOutSession = async (payload: TOrder) => {
   try {
@@ -262,6 +324,7 @@ const cancelOrderFromDB = async (orderId: string) => {
 };
 
 export const OrderServices = {
+  createStripeCheckOutSession,
   createKalarnaCheckOutSession,
   klarnaPush,
   createOrderWithCODIntoDB,

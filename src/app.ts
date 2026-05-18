@@ -6,8 +6,15 @@ import { notFound } from './app/middlewares/notFound';
 import router from './app/routes';
 import cookieParser from 'cookie-parser';
 import { removeData } from './app/utils/Cookie';
+import { OrderController } from './app/modules/order/order.controller';
 
 const app: Application = express();
+
+app.post(
+  '/api/v1/orders/webhook',
+  express.raw({ type: 'application/json' }),
+  OrderController.stripeWebhook,
+);
 
 // Parser
 app.use(express.json());

@@ -1,8 +1,54 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { RequestHandler } from 'express';
 import config from '../../config';
 import { catchAsync } from '../../utils/catchAsync';
 import { sendResponce } from '../../utils/sendResponce';
 import { TCartItem } from '../cart/cart.interface';
 import { OrderServices } from './order.services';
+import { stripe } from '../../config/stripe';
+import { Order } from './order.model';
+
+const stripeCheckoutSession = catchAsync(async (req, res) => {
+  const data = await OrderServices.createStripeCheckOutSession(req.body);
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: 'Stripe checkout session created successfully.',
+    data: data,
+  });
+});
+
+export const stripeWebhook: RequestHandler = async (req, res) => {
+  try {
+    const signature = req.headers['stripe-signature'] as string;
+
+    const event = stripe.webhooks.constructEvent(
+      req.body,
+      signature,
+      config.stripe_webhook_key as string,
+    );
+
+    if (event.type === 'checkout.session.completed') {
+      const session: any = event.data.object;
+
+      const orderId = session.metadata?.orderId;
+
+      console.log('Payment Successful for Order ID:', orderId);
+
+      await Order.findByIdAndUpdate(orderId, {
+        paymentStatus: 'paid',
+        'paymentInfo.TXID': session.payment_intent,
+        'paymentInfo.paidAt': new Date(),
+        'paymentInfo.status': 'success',
+      });
+    }
+
+    res.status(200).json({ received: true });
+  } catch (error: any) {
+    res.status(400).send(`Webhook Error: ${error.message}`);
+  }
+};
 
 const kalarnaSession = catchAsync(async (req, res) => {
   const data = await OrderServices.createKalarnaCheckOutSession(req.body);
@@ -115,6 +161,8 @@ const storedOrderData = catchAsync(async (req, res) => {
 });
 
 export const OrderController = {
+  stripeCheckoutSession,
+  stripeWebhook,
   kalarnaSession,
   klarnaPush,
   createOrderOnCOD,
