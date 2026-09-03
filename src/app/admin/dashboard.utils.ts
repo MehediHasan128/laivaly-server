@@ -13,6 +13,20 @@ export interface TTimeRange {
   endDate?: string;
 }
 
+
+export const getTotalRevenue = async () => {
+  const orders = await Order.find({ paymentStatus: 'paid' }).select('subTotal');
+
+  let totalSeals = 0;
+  for (const order of orders) { 
+    const subTotal = order?.subTotal || 0;
+    totalSeals = Number((totalSeals + subTotal).toFixed(2));
+   }
+
+  return totalSeals;
+}
+
+
 export const calculateTotalSellsAndRevenue = async (filter?: TTimeRange) => {
   let totalSells = 0;
   let totalRevenue = 0;

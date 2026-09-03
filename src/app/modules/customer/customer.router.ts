@@ -46,5 +46,11 @@ router.patch(
   auth(USER_ROLE.customer),
   CustomerController.changeDefaultAddress,
 );
+// Get all customer from database
+router.get(
+  '/',
+  auth(USER_ROLE.admin),
+  CustomerController.getAllCustomer,
+);
 
 export const CustomerRoutes = router;

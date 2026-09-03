@@ -33,7 +33,7 @@ export interface TOrder {
   shippingAddress: TShippingAddress;
   paymentMethod: 'stripe' | 'klarna' | 'cod';
   paymentInfo?: TPaymentInfo;
-  paymentStatus: 'pending' | 'paid' | 'failed' | 'refunded';
+  paymentStatus: 'unpaid' | 'paid' | 'failed' | 'refunded';
   orderStatus:
     | 'pending'
     | 'processing'

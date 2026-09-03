@@ -52,8 +52,8 @@ const createOrderValidationSchema = z.object({
     shippingAddress: shippingAddressValidationSchema,
     paymentMethod: z.enum(['stripe', 'klarna', 'cod']),
     paymentStatus: z
-      .enum(['pending', 'paid', 'failed', 'refunded'])
-      .default('pending'),
+      .enum(['unpaid', 'paid', 'failed', 'refunded'])
+      .default('unpaid'),
     orderStatus: z
       .enum(['processing', 'shipped', 'delivered', 'cancelled', 'returned'])
       .default('processing'),

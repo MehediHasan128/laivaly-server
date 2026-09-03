@@ -14,6 +14,7 @@ import { Product } from '../product/product.model';
 import { TProduct } from '../product/product.interface';
 import { Variant } from '../productVariant/variant.model';
 import { stripe } from '../../config/stripe';
+import QueryBuilder from '../../builder/QueryBuilder';
 
 const createStripeCheckOutSession = async (payload: TOrder) => {
   const orderId = await genarateOrderId();
@@ -244,6 +245,29 @@ const createOrderWithCODIntoDB = async (payload: TOrder) => {
   return newOrder;
 };
 
+const getAllOrdersFromDB = async (query: Record<string, unknown>) => {
+  const orderQuery = new QueryBuilder(Order.find().populate('userId'), query)
+    .search(['orderId'])
+    .filter()
+    .sort();
+
+  const orders = await orderQuery.queryModel;
+
+  return orders;
+};
+
+const getSinfleOrderByIdFromDB = async (orderId: string) => {
+
+  console.log(orderId);
+  // const oredr = await Order.findById(orderId).populate('userId');
+  // if (!oredr) {
+  //   throw new AppError(httpStatus.NOT_FOUND, 'Order not found!');
+  // }
+
+  // return oredr;
+
+ }
+
 const getOrdersByUserIdFromDB = async (user: JwtPayload) => {
   // Check the user is exist
   const isUserExist = await User.findById(user?.userId);
@@ -328,6 +352,8 @@ export const OrderServices = {
   createKalarnaCheckOutSession,
   klarnaPush,
   createOrderWithCODIntoDB,
+  getAllOrdersFromDB,
+  getSinfleOrderByIdFromDB,
   getOrdersByUserIdFromDB,
   getOrderHistoryByUserIdFromDB,
   cancelOrderFromDB,

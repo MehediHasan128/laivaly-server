@@ -67,5 +67,6 @@ export const globalErrorHandler = (
     success: false,
     message,
     errorSources,
+    err: err
   });
 };

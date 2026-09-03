@@ -8,7 +8,7 @@ export interface TCustomer {
     userEmail: string;
     dateOfBirth: string | null;
     phoneNumber: string | null;
-    gender: 'men' | 'women' | null;
+    gender: 'male' | 'female' | null;
     shippingAddress: TShippingAddress[] | [];
     isDeleted: boolean;
 }

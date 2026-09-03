@@ -39,9 +39,10 @@ const updateCustomerProfileValidationSchema = z.object({
     userName: userNameUpdateValidationSchema.optional(),
     dateOfBirth: z.string().optional(),
     phoneNumber: z.string().optional(),
-    gender: z.enum(['men', 'women']).nullable().optional(),
+    gender: z.enum(['male', 'female']).optional().or(z.literal('')),
   }),
 });
+
 
 const addShippingAddressValidationScham = z.object({
   body: z.object({

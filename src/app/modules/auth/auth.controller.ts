@@ -39,6 +39,7 @@ const loginUser = catchAsync(async (req, res) => {
 });
 
 const logoutUser = catchAsync(async (req, res) => {
+
   //   Remove token from cookie
   res.cookie('accessToken', null, {
     httpOnly: true,

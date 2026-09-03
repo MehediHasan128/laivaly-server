@@ -134,19 +134,12 @@ const createOrderSchema = new Schema<TOrder>(
     paymentStatus: {
       type: String,
       enum: {
-        values: [
-          'pending',
-          'processing',
-          'shipped',
-          'delivered',
-          'cancelled',
-          'returned',
-        ],
+        values: ['unpaid', 'paid', 'failed', 'refunded'],
         message:
-          'Order status must be one of: pending, processing, shipped, delivered, cancelled, or returned.',
+          'Payment status must be one of: unpaid, paid, failed, or refunded.',
       },
-      default: 'pending',
-      required: [true, 'Order status is required.'],
+      default: 'unpaid',
+      required: [true, 'Payment status is required.'],
     },
     orderStatus: {
       type: String,

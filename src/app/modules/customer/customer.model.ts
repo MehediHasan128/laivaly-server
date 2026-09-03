@@ -35,7 +35,7 @@ const customerSchema = new Schema<TCustomer>(
     },
     gender: {
       type: String,
-      enum: ['men', 'women'],
+      enum: ['male', 'female'],
       default: null,
     },
     shippingAddress: {

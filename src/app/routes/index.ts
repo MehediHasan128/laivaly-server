@@ -55,7 +55,7 @@ const moduleRroutes = [
     router: OrdersRoutes,
   },
   {
-    path: '/admin-dashboard',
+    path: '/admin',
     router: DashboardRoutes,
   },
 ];

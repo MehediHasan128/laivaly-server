@@ -190,7 +190,7 @@ const removeProductFromWishlist = async (
   // Now check the product is exist
   const isProductExist = await Product.findById(productId);
   if (!isProductExist) {
-    throw new AppError(httpStatus.NOT_FOUND, 'Product is not found!');
+    throw new AppError(httpStatus.NOT_FOUND, '');
   }
 
   // Check the product is delete

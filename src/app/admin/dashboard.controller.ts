@@ -28,7 +28,22 @@ const getTotalSellsAndRevenue = catchAsync(async (req, res) => {
   });
 });
 
+const getCustomerDetails = catchAsync(async (req, res) => {
+
+  const data = await AdminDashboardServices.getCustomerDetailsFromDB(
+    req.params.userId,
+  );
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: '',
+    data: data,
+  });
+});
+
 export const AdminDashboardController = {
   getAllInformation,
-  getTotalSellsAndRevenue
+  getTotalSellsAndRevenue,
+  getCustomerDetails,
 };

@@ -71,11 +71,24 @@ const changeDefaultAddress = catchAsync(async (req, res) => {
   });
 });
 
+
+const getAllCustomer = catchAsync(async (req, res) => {
+  const data = await CustomerServices.getAllCustomerFromDB(req.query);
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: '',
+    data: data,
+  });
+});
+
 export const CustomerController = {
   updateCustomerProfile,
   addShippingAddress,
   getShippingAddress,
   updatedShippingAddress,
   deleteShippingAddress,
-  changeDefaultAddress
+  changeDefaultAddress,
+  getAllCustomer,
 };

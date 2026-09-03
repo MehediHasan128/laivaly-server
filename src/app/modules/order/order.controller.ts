@@ -105,6 +105,28 @@ const getOrdersHistoryByUserId = catchAsync(async (req, res) => {
   });
 });
 
+const getOrdersFromDB = catchAsync(async (req, res) => {
+  const data = await OrderServices.getAllOrdersFromDB(req.query);
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: '',
+    data: data,
+  });
+});
+
+const getSingleOrder = catchAsync(async (req, res) => {
+  const data = await OrderServices.getSinfleOrderByIdFromDB(req.params.id);
+
+  sendResponce(res, {
+    statusCode: 200,
+    success: true,
+    message: '',
+    data: data,
+  });
+});
+
 const cancelOrder = catchAsync(async (req, res) => {
   const data = await OrderServices.cancelOrderFromDB(req.params.orderId);
 
@@ -168,6 +190,8 @@ export const OrderController = {
   createOrderOnCOD,
   getOrdersByUserId,
   getOrdersHistoryByUserId,
+  getOrdersFromDB,
+  getSingleOrder,
   cancelOrder,
   buySingleProduct,
   storedOrderData,

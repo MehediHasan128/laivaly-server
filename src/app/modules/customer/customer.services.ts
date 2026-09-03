@@ -5,6 +5,7 @@ import { TCustomer } from './customer.interface';
 import httpStatus from 'http-status';
 import { Customer } from './customer.model';
 import { TShippingAddress } from '../../global/interface';
+import QueryBuilder from '../../builder/QueryBuilder';
 
 const updateCustomerProfileIntoDB = async (
   customerID: string,
@@ -294,13 +295,38 @@ const changeDefaultAddressIntoDB = async (
     },
   );
 
-  await Customer.findOneAndUpdate({customerId: customerID}, {$push: {
-    shippingAddress: {
-      $each: [],
-      $sort: { defaultAddress: -1 }
-    }
-  }})
+  await Customer.findOneAndUpdate(
+    { customerId: customerID },
+    {
+      $push: {
+        shippingAddress: {
+          $each: [],
+          $sort: { defaultAddress: -1 },
+        },
+      },
+    },
+  );
 };
+
+const getAllCustomerFromDB = async (query: Record<string, unknown>) => {
+  const customerQuery = new QueryBuilder(
+    Customer.find({ isDeleted: false }).populate({
+      path: 'userId',
+      select: '-password -userName -userEmail -id',
+    }),
+    query,
+  )
+    .search(['customerId'])
+    .filter()
+    .sort()
+    .paginate();
+
+  const customers = await customerQuery.queryModel;
+
+  return customers;
+};
+
+
 
 export const CustomerServices = {
   updateCustomerProfileIntoDB,
@@ -309,4 +335,5 @@ export const CustomerServices = {
   updateShippingAddressIntoDB,
   deleteShippingAddressFromDB,
   changeDefaultAddressIntoDB,
+  getAllCustomerFromDB,
 };

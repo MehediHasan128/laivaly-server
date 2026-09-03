@@ -41,6 +41,10 @@ router.get(
   OrderController.getOrdersHistoryByUserId,
 );
 
+router.get('/', auth(USER_ROLE.admin), OrderController.getOrdersFromDB);
+
+router.get('/:id', auth(USER_ROLE.admin), OrderController.getSingleOrder);
+
 router.patch(
   '/cancel-order/:orderId',
   auth(USER_ROLE.customer),
